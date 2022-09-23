@@ -8,7 +8,7 @@ beforeEach(()=>{
 })
 
 describe('push', () => {
-  it('push deve adicionar um novo instrutor ao meu super array.', () => {
+  it('push deve adicionar um novo instrutor ao meu super array', () => {
     const esperado = [...INSTRUTORES.itens, { "nome": "Batata Batata Batata", "dandoAula": true }]
     INSTRUTORES.push({ "nome": "Batata Batata Batata", "dandoAula": true })
 
