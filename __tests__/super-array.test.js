@@ -52,7 +52,7 @@ describe('testes das funções de array', () => {
     
     expect(primeiroIntrutorDandoAula).toEqual(esperado)
   })
-  
+
   it('deve retornar o total de letras no nome dos instrutores', () => {
     const meuArray = SuperArray(instrutores)
     const esperado = [14,13,13,28,14,12,15,17]
