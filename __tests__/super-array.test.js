@@ -1,7 +1,8 @@
 import instrutores from './instrutores.json'
 import { SuperArray } from '../src/super-array'
 
-describe('push', () => {
+describe('testes das funções de array', () => {
+
   it('deve adicionar um novo instrutor ao meu super array.', () => {
     const meuArray = SuperArray(instrutores)
     const esperado = [...instrutores, { "nome": "Batata Batata Batata", "dandoAula": true }]
@@ -10,9 +11,6 @@ describe('push', () => {
     expect(meuArray.itens).toEqual(esperado)
   })
 
-})
-
-describe('forEach', () => {
   it('deve passar por todos os instrutores e chamando o callback esperado', () => {
     let listaNova = []
     const meuArray = SuperArray(instrutores)
@@ -24,9 +22,7 @@ describe('forEach', () => {
   
     expect(listaNova).toEqual(esperado)
   })
-})
 
-describe('filter', () => {
   it('deve retornar um novo array apenas com os instrutores que estão dando aula', () => {
     const meuArray = SuperArray(instrutores)
     const esperado = [
@@ -37,9 +33,7 @@ describe('filter', () => {
     
     expect(dandoAula).toEqual(esperado)
   })
-})
 
-describe('map', () => {
   it('deve retornar um novo array com o numero de nomes que o instrutor tem', () => {
     const meuArray = SuperArray(instrutores)
     const esperado = [2,2,2,3,2,2,2,3]
@@ -50,9 +44,7 @@ describe('map', () => {
     
     expect(quant_nomes).toEqual(esperado)
   })
-})
 
-describe('find', () => {
   it('deve retornar o primeiro instrutor que está dando aula', () => {
     const meuArray = SuperArray(instrutores)
     const esperado = {"nome": "Gustavo Büttenbender Rodrigues", "dandoAula": true }
@@ -60,9 +52,7 @@ describe('find', () => {
     
     expect(primeiroIntrutorDandoAula).toEqual(esperado)
   })
-})
-
-describe('reduce', () => {
+  
   it('deve retornar o total de letras no nome dos instrutores', () => {
     const meuArray = SuperArray(instrutores)
     const esperado = [14,13,13,28,14,12,15,17]
