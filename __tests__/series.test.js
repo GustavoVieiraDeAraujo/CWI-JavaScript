@@ -67,8 +67,23 @@ describe('Testes dos metodos', () => {
       JS: ['10 Days Why'],
       'USA Network': ['Mr. Robot']
     }
-    
+
     expect(agruparTituloDasSeriesPorPropriedade(series, "distribuidora")).toEqual(esperado)
+  })
+
+  it('Deve agrupar corretamente em um objeto os titulos das series baseado no Ano', () => {
+    const esperado = {
+      '2008': ['Breaking Bad'],
+      '2010': ['The Walking Dead', '10 Days Why'],
+      '2011': ['Game Of Thrones'],
+      '2015': ['Narcos'],
+      '2016': ['Stranger Things', 'Westworld'],
+      '2018': ['Mr. Robot'],
+      '2021': ['Gus and Will The Masters of the Wizards'],
+      '20001': ['Band of Brothers']
+    }
+
+    expect(agruparTituloDasSeriesPorPropriedade(series, "ano")).toEqual(esperado)
   })
 
 })
