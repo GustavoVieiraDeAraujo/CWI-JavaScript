@@ -126,7 +126,7 @@ const verificaSeHaGanhador = (listaDeCorredores, pista) => {
 } 
 
 // funcionando
-export const executaRodadaComAceleracao = (listaDeCorredores, pista, posicoesComBuff) => {
+export const executaRodada = (listaDeCorredores, pista, posicoesComBuff, atributo) => {
     listaDeCorredores.forEach(corredor => {
         const temAliado = verificaSeTemAliadoProximo(listaDeCorredores, pegaCorredor(listaDeCorredores, corredor.nome))
         const temInimigo = verificaSeTemInimigoProximo(listaDeCorredores, pegaCorredor(listaDeCorredores, corredor.nome))
@@ -138,56 +138,22 @@ export const executaRodadaComAceleracao = (listaDeCorredores, pista, posicoesCom
                 if (temInimigo && corredor.posicao >= 1){
                     corredor.posicao -= 1
                 }}
-            if( corredor.aceleracao + pista.debuff > 0){
-                corredor.posicao += (corredor.aceleracao + pista.debuff)
-            }
-            adicionaBuffDePosicao(pegaCorredor(listaDeCorredores, corredor.nome), posicoesComBuff)
-        }
-    })
-    atualizarDicionarioDePosicoesComBuff(posicoesComBuff, listaDeCorredores)
-    return listaDeCorredores
-}
-
-// funcionando
-export const executaRodadaComDrift = (listaDeCorredores, pista, posicoesComBuff) => {
-    listaDeCorredores.forEach(corredor => {
-        const temAliado = verificaSeTemAliadoProximo(listaDeCorredores, pegaCorredor(listaDeCorredores, corredor.nome))
-        const temInimigo = verificaSeTemInimigoProximo(listaDeCorredores, pegaCorredor(listaDeCorredores, corredor.nome))
-        if (!(corredor.nome === 'Dick Vigarista' && corredor.posicao === (pista.tamanho - 1))) {
-            if (!(temAliado && temInimigo)) {
-                if (temAliado) {
-                    corredor.posicao += 1
-                }
-                if (temInimigo && corredor.posicao >= 1) {
-                    corredor.posicao -= 1
-                }
-            }
-            if (corredor.drift + pista.debuff > 0) {
-                corredor.posicao += (corredor.drift + pista.debuff)
-            }
-            adicionaBuffDePosicao(pegaCorredor(listaDeCorredores, corredor.nome), posicoesComBuff)
-        }
-    })
-    atualizarDicionarioDePosicoesComBuff(posicoesComBuff, listaDeCorredores)
-    return listaDeCorredores
-}
-
-// funcionando
-export const executaRodadaComVelocidade = (listaDeCorredores, pista, posicoesComBuff) => {
-    listaDeCorredores.forEach(corredor => {
-        const temAliado = verificaSeTemAliadoProximo(listaDeCorredores, pegaCorredor(listaDeCorredores, corredor.nome))
-        const temInimigo = verificaSeTemInimigoProximo(listaDeCorredores, pegaCorredor(listaDeCorredores, corredor.nome))
-        if (!(corredor.nome === 'Dick Vigarista' && corredor.posicao === (pista.tamanho - 1))){
-            if (!(temAliado && temInimigo)) {
-                if (temAliado) {
-                    corredor.posicao += 1
-                }
-                if (temInimigo && corredor.posicao >= 1) {
-                    corredor.posicao -= 1
-                }
-            }
-            if (corredor.velocidade + pista.debuff > 0) {
-                corredor.posicao += (corredor.velocidade + pista.debuff)
+            switch(atributo){
+                case 'aceleração':
+                    if (corredor.aceleracao + pista.debuff > 0) {
+                        corredor.posicao += (corredor.aceleracao + pista.debuff)
+                    }
+                    break;
+                case 'velocidade':
+                    if (corredor.velocidade + pista.debuff > 0) {
+                        corredor.posicao += (corredor.velocidade + pista.debuff)
+                    }
+                    break
+                case 'drift':
+                    if (corredor.drift + pista.debuff > 0) {
+                        corredor.posicao += (corredor.drift + pista.debuff)
+                    }
+                    break;
             }
             adicionaBuffDePosicao(pegaCorredor(listaDeCorredores, corredor.nome), posicoesComBuff)
         }
@@ -206,9 +172,8 @@ export const iniciarPreparosDaCorrida = (listaDeCorredores, pista) =>{
 // funcionando
 export const começaCorrida = (listaDeCorredores, pista, posicoesComBuff) =>{
     for(let i = 0; i < 3; i++){
-        executaRodadaComAceleracao(listaDeCorredores, pista, posicoesComBuff)
+        executaRodada(listaDeCorredores, pista, posicoesComBuff, 'aceleração')
         const temGanhador = verificaSeHaGanhador(listaDeCorredores, pista)
-        i
         if ( temGanhador[0] === true){
             return temGanhador[1]
         }
@@ -219,9 +184,9 @@ export const começaCorrida = (listaDeCorredores, pista, posicoesComBuff) =>{
 // funcionando
 export const restoDaCorrida = (listaDeCorredores, pista, posicoesComBuff) => {
     while(true){
-        executaRodadaComDrift(listaDeCorredores, pista, posicoesComBuff)
+        executaRodada(listaDeCorredores, pista, posicoesComBuff,'drift')
         for(let i = 0; i < 4; i++){
-            executaRodadaComVelocidade(listaDeCorredores, pista, posicoesComBuff)
+            executaRodada(listaDeCorredores, pista, posicoesComBuff, 'velocidade')
         }
         const temGanhador = verificaSeHaGanhador(listaDeCorredores, pista)
         if (temGanhador[0] === true) {
@@ -229,14 +194,6 @@ export const restoDaCorrida = (listaDeCorredores, pista, posicoesComBuff) => {
         }
     }
 }
-
-
-// const temp = iniciarPreparosDaCorrida(corredores, pista)
-// const temGanhador = começaCorrida(corredores, pista, temp)
-
-// if (temGanhador === false){
-//     console.log(restoDaCorrida(corredores, pista, temp))
-// }
 
 
 

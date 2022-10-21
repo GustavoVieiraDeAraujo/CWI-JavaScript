@@ -6,9 +6,7 @@ import {
 import {
   aplicarBuffDeVantagemDeTerreno,
   iniciarPreparosDaCorrida,
-  executaRodadaComVelocidade,
-  executaRodadaComDrift,
-  executaRodadaComAceleracao,
+  executaRodada,
   começaCorrida,
   restoDaCorrida,
 
@@ -88,7 +86,7 @@ describe('Testes', () => {
       inimigo: ''
     }]
 
-    expect(executaRodadaComAceleracao(listaDeCorredores, pista, dicionarioDePosicoes)).toEqual(esperado)
+    expect(executaRodada(listaDeCorredores, pista, dicionarioDePosicoes,'aceleração')).toEqual(esperado)
   })
 
   // ok
@@ -111,7 +109,7 @@ describe('Testes', () => {
       inimigo: ''
     }]
 
-    expect(executaRodadaComVelocidade(listaDeCorredores, pista, dicionarioDePosicoes)).toEqual(esperado)
+    expect(executaRodada(listaDeCorredores, pista, dicionarioDePosicoes, 'velocidade')).toEqual(esperado)
   })
 
   // ok
@@ -149,7 +147,7 @@ describe('Testes', () => {
     }
   ]
 
-    expect(executaRodadaComDrift(listaDeCorredores, pista, dicionarioDePosicoes)).toEqual(esperado)
+    expect(executaRodada(listaDeCorredores, pista, dicionarioDePosicoes, 'drift')).toEqual(esperado)
   })
 
   // ok
@@ -187,7 +185,7 @@ describe('Testes', () => {
       }
     ]
 
-    expect(executaRodadaComDrift(listaDeCorredores, pista, dicionarioDePosicoes)).toEqual(esperado)
+    expect(executaRodada(listaDeCorredores, pista, dicionarioDePosicoes, 'drift')).toEqual(esperado)
   })
 
   // ok
@@ -297,7 +295,7 @@ describe('Testes', () => {
       }
     ]
 
-    expect(executaRodadaComDrift(listaDeCorredores, pista, dicionarioDePosicoes)).toEqual(esperado)
+    expect(executaRodada(listaDeCorredores, pista, dicionarioDePosicoes, 'drift')).toEqual(esperado)
   })
 
   // ok
@@ -324,7 +322,7 @@ describe('Testes', () => {
       }
     ]
 
-    expect(executaRodadaComVelocidade(listaDeCorredores, pista, dicionarioDePosicoes)).toEqual(esperado)
+    expect(executaRodada(listaDeCorredores, pista, dicionarioDePosicoes, 'velocidade')).toEqual(esperado)
   })
 
   // ok 
