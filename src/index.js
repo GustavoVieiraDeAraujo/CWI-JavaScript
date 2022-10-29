@@ -1,16 +1,18 @@
-import { useQuestion } from './src/services/question/use-question'
-import { useLocalStorage } from './src/services/local-storage/use-local-storage'
+
+import { useQuestion } from './services/question/use-question'
+
 import {
   criaPersonagem,
   retornaTamanhoDaLista
-} from './src/funcoes'
+} from './funcoes'
 import chalk from 'chalk';
 
 
+
 const main = async () => {
-  const localStorage = useLocalStorage()
   let jogoRodando = true;
   let personagens = localStorage.getObject('lista-de-personagens');
+
 
   while (jogoRodando) {
     // //console.clear();
