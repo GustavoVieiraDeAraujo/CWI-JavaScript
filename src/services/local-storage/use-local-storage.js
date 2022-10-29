@@ -1,36 +1,58 @@
 import { LocalStorage } from "node-localstorage"
 
-export const useLocalStorage = () => {
-  const localStorage = new LocalStorage('./db')
+export const useLocalStorage = (pathDoArmazenamento) => {
+  const localStorage = new LocalStorage(pathDoArmazenamento)
 
-  const setString = (key, value) => {
-    localStorage.setItem(key, value)
+  const criaString = (chave, valor) => {
+    localStorage.setItem(chave, valor)
   }
 
-  const setObject = (key, obj) => {
-    const objString = JSON.stringify(obj)
-
-    localStorage.setItem(key, objString)
+  const criaObjeto = (chave, objeto) => {
+    const objetoFormatadoEmString = JSON.stringify(objeto)
+    localStorage.setItem(chave, objetoFormatadoEmString)
   }
 
-  const getString = (key) => {
-    return localStorage.getItem(key)
+  const adicionarNaLista = (chave, valor) => {
+    criaObjeto(chave, [...pegaObjeto(chave), valor])
+  }
+
+  const removerDaListaPorPosicao = (chave, posicao) => {
+    if (posicao > -1){
+      let lista = pegaObjeto(chave)
+      lista.splice(posicao, 1)
+      criaObjeto(chave, lista)
+    }
+  }
+
+  const retornaTamanhoDaLista= (chave) =>{
+    const lista = pegaObjeto(chave)
+    return lista.length
+  }
+
+  const apagar = (chave) =>{
+    localStorage.removeItem(chave)
+  }
+
+  const pegaString = (chave) => {
+    return localStorage.getItem(chave)
   } 
 
-  const getObject = (key) => {
-    const json = localStorage.getItem(key)
-
+  const pegaObjeto = (chave) => {
+    const json = localStorage.getItem(chave)
     if (json) {
       return JSON.parse(json)
     }
-
     return null
   }
 
   return {
-    setString,
-    setObject,
-    getString,
-    getObject
+    criaString,
+    criaObjeto,
+    adicionarNaLista,
+    removerDaListaPorPosicao,
+    retornaTamanhoDaLista,
+    apagar,
+    pegaString,
+    pegaObjeto
   }
 }
