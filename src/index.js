@@ -1,22 +1,34 @@
-
-import { useQuestion } from './services/question/use-question.js'
-import { useLocalStorage } from "./services/local-storage/use-local-storage.js"
-import {
-  criaPersonagem,
-  retornaTamanhoDaLista
-} from './funcoes.js'
 import chalk from 'chalk';
 
+import { get } from "./services/requests/requests.js"
+import { useQuestion } from './services/question/use-question.js'
+import { useLocalStorage } from "./services/local-storage/use-local-storage.js"
+import { criaPersonagem } from './character-creation/character-creation.js'
 
+// Funções para usar ação de interagir
+// import {
+//   definiORelacionamento,
+//   retornaUmaListaDeTodasAsInteracoesComBaseNoNivelDeInteracao,
+//   interagiComPersonagem
+// } from "./relationships/relationships.js"
 
 const main = async () => {
+
+  // local storage
   const localStorage = useLocalStorage();
+
+  // requisições
+  const jsonCheats = await get("cheats")
+  const jsonEmpregos = await get("empregos")
+  const jsonInteracoes = await get("interacoes")
+  const jsonItensHabilidades = await get("itens-habilidades")
+
   let jogoRodando = true;
   let personagens = localStorage.getObject('lista-de-personagens');
 
 
   while (jogoRodando) {
-    // //console.clear();
+    // console.clear();
     console.log(chalk.yellow('  _______ _             _____               _           '))
     console.log(chalk.yellow(' |__   __| |           / ____|             (_)          '))
     console.log(chalk.yellow('    | |  | |__   ___  | |     _ __ ___  ___ _ _ __ ___  '))
@@ -85,7 +97,7 @@ const main = async () => {
               chamarCriacao = false;
           }
           if (chamarCriacao) {
-            criaPersonagem(nome, aspiracao);
+            criaPersonagem(nome, aspiracao, localStorage);
             criacaoPersonagem = false;
           }
         }
@@ -96,7 +108,7 @@ const main = async () => {
         console.clear();
         console.log(chalk.blue("___________________"));
         console.log(chalk.blue("|") + chalk.yellow("   PERSONAGENS   ") + chalk.blue("|"));
-        for (let i = 0; i < retornaTamanhoDaLista(personagens); i++) {
+        for (let i = 0; i < localStorage.returnListSize('lista-de-personagens'); i++) {
           console.log(personagens[i].id + " - " + personagens[i].nome);
         }
         let personagemSelecionado = await useQuestion('Digite o ID do personagem desejado ou 0 para voltar:')
@@ -115,3 +127,15 @@ const main = async () => {
 }
 
 main()
+
+
+// Exemplo de como usar interação
+// const jsonInteracoes = await get("interacoes")
+// const localStorage = useLocalStorage();
+// let personagemQueEstaUsando = localStorage.getObject("lista-de-personagens")[2]
+// let personagemAlvoDaInteracao = localStorage.getObject("lista-de-personagens")[1]
+
+// const relacionamento = definiORelacionamento(personagemQueEstaUsando,personagemAlvoDaInteracao)
+// const listaDeInteracoesDisponiveisDesseRelacionamento = retornaUmaListaDeTodasAsInteracoesComBaseNoNivelDeInteracao(relacionamento[1][0], jsonInteracoes)
+// const interacaoEscolhida = listaDeInteracoesDisponiveisDesseRelacionamento[3]
+// interagiComPersonagem(personagemQueEstaUsando, personagemAlvoDaInteracao, relacionamento, interacaoEscolhida, localStorage)
