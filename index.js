@@ -1,11 +1,26 @@
 import { useQuestion } from './src/services/question/use-question'
 import { useLocalStorage } from './src/services/local-storage/use-local-storage'
+import {
+  criaPersonagem,
+  retornaTamanhoDaLista
+} from './src/funcoes'
+import chalk from 'chalk';
+
 
 const main = async () => {
   const localStorage = useLocalStorage()
   let jogoRodando = true;
+  let personagens = localStorage.getObject('lista-de-personagens');
 
   while (jogoRodando) {
+    // //console.clear();
+    console.log(chalk.yellow('  _______ _             _____               _           '))
+    console.log(chalk.yellow(' |__   __| |           / ____|             (_)          '))
+    console.log(chalk.yellow('    | |  | |__   ___  | |     _ __ ___  ___ _ _ __ ___  '))
+    console.log(chalk.yellow("    | |  | '_ \\ / _ \\ | |    | '__/ _ \\/ __| | '_ ` _ \\ "))
+    console.log(chalk.yellow('    | |  | | | |  __/ | |____| | |  __/\\__ \\ | | | | | |'))
+    console.log(chalk.yellow('    |_|  |_| |_|\\___|  \\_____|_|  \\___||___/_|_| |_| |_|'))
+
     console.log('-------------------')
     console.log('O QUE DESEJA FAZER?');
     console.log('1 - Criar novo personagem');
@@ -19,10 +34,15 @@ const main = async () => {
       case '1':
         let criacaoPersonagem = true
         let chamarCriacao;
+
+
         while (criacaoPersonagem) {
+          personagens = localStorage.getObject('lista-de-personagens')
+
           chamarCriacao = true;
           console.log('-------------------');
           const nome = await useQuestion('QUAL É O NOME DO(A) PERSONAGEM?');
+
           console.clear()
           console.log('QUAL É A ASPIRAÇÃO DE ' + nome.toUpperCase() + '?');
           console.log('-------------------');
@@ -62,14 +82,24 @@ const main = async () => {
               chamarCriacao = false;
           }
           if (chamarCriacao) {
-            //criarPersonagem(nome, aspiracao);
+            criaPersonagem(nome, aspiracao);
             criacaoPersonagem = false;
           }
         }
         break;
 
       case '2':
-        //selecionarPersonagem
+        personagens = localStorage.getObject('lista-de-personagens');
+        console.clear();
+        console.log(chalk.blue("___________________"));
+        console.log(chalk.blue("|") + chalk.yellow("   PERSONAGENS   ") + chalk.blue("|"));
+        for (let i = 0; i < retornaTamanhoDaLista(personagens); i++) {
+          console.log(personagens[i].id + " - " + personagens[i].nome);
+        }
+        let personagemSelecionado = await useQuestion('Digite o ID do personagem desejado ou 0 para voltar:')
+        if (personagemSelecionado === '0') {
+          break;
+        }
         break;
       case '3':
         jogoRodando = false;
@@ -78,8 +108,6 @@ const main = async () => {
         console.log('Opção inválida, por favor escolha dentre uma das opções disponibilizadas');
         break;
     }
-
-
   }
 }
 
