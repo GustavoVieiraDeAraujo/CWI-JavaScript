@@ -18,13 +18,14 @@ const main = async () => {
     switch (respostaUsuario) {
       case '1':
         let criacaoPersonagem = true
-        let chamarCriacao = true;
+        let chamarCriacao;
         while (criacaoPersonagem) {
+          chamarCriacao = true;
           console.log('-------------------');
           const nome = await useQuestion('QUAL É O NOME DO(A) PERSONAGEM?');
           console.clear()
-          console.log('-------------------');
           console.log('QUAL É A ASPIRAÇÃO DE ' + nome.toUpperCase() + '?');
+          console.log('-------------------');
           console.log('1 - Gastronomia');
           console.log('2 - Pintura');
           console.log('3 - Jogos');
@@ -58,14 +59,13 @@ const main = async () => {
               break;
             default:
               console.log('Opção inválida, tente novamente.')
+              chamarCriacao = false;
           }
           if (chamarCriacao) {
             //criarPersonagem(nome, aspiracao);
             criacaoPersonagem = false;
           }
         }
-
-
         break;
 
       case '2':
