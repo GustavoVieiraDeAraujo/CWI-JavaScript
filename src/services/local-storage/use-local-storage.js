@@ -1,7 +1,7 @@
 import { LocalStorage } from "node-localstorage"
 
-export const useLocalStorage = (pathDoArmazenamento) => {
-  const localStorage = new LocalStorage(pathDoArmazenamento)
+export const useLocalStorage = () => {
+  const localStorage = new LocalStorage("./src/db")
 
   const criaString = (chave, valor) => {
     localStorage.setItem(chave, valor)
@@ -29,6 +29,10 @@ export const useLocalStorage = (pathDoArmazenamento) => {
     return lista.length
   }
 
+  const retornaTamanhoDoArmazenamento = () =>{
+    return localStorage.length
+  }
+
   const apagar = (chave) =>{
     localStorage.removeItem(chave)
   }
@@ -51,6 +55,7 @@ export const useLocalStorage = (pathDoArmazenamento) => {
     adicionarNaLista,
     removerDaListaPorPosicao,
     retornaTamanhoDaLista,
+    retornaTamanhoDoArmazenamento,
     apagar,
     pegaString,
     pegaObjeto
