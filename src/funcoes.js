@@ -1,5 +1,12 @@
 import { useLocalStorage } from "./services/local-storage/use-local-storage.js"
+import axios from "axios";
 
+
+
+export async function getItens() {
+    const itens = await axios.get('https://emilyspecht.github.io/the-cresim/itens-habilidades.json')
+    return itens.data
+}
 
 export const criaPersonagem = (nomePersonagem, aspiracaoPersonagem) => {
     const localStorage = useLocalStorage();
@@ -19,7 +26,8 @@ export const criaPersonagem = (nomePersonagem, aspiracaoPersonagem) => {
             jardinagem: ["JUNIOR", 0],
             musica: ["JUNIOR", 0]
         },
-        relacionamentos: {}
+        relacionamentos: {},
+        inventario: {}
     }
 
     if (localStorage.getObject('lista-de-personagens') === null) {
@@ -35,8 +43,52 @@ export function retornaTamanhoDaLista(lista) {
     } else {
         return lista.length;
     }
-
 }
+
+export function retornaItensPorCategoria(categoria, itens) {
+    let itensSelecionados = []
+    let categoriaRecebida = categoria.toUpperCase()
+    for (let i = 0; i < itens[categoriaRecebida].length; i++) {
+        itensSelecionados.push(itens[categoriaRecebida][i])
+    }
+    return itensSelecionados
+}
+
+export function mostraItem(item) {
+    console.log("-------------------------------------")
+    console.log("   ID: " + item.id)
+    console.log("   Nome: " + item.nome)
+    console.log("   Pontos: " + item.pontos)
+    console.log("   Preço: $" + item.preco)
+}
+
+export function loja(categoria, personagem, itens) {
+    let itensRecebidos
+    itensRecebidos = retornaItensPorCategoria(categoria, itens)
+    for (let i = 0; i < itensRecebidos.length; i++) {
+        mostraItem(itensRecebidos[i])
+    }
+    console.log("")
+    console.log("                         $" + personagem.saldo)
+    console.log("")
+}
+
+
+// O que dá para requisitar:
+// "itens-habilidades"
+// "empregos"
+// "interacoes"
+// "cheats"
+// export const get = async (OQueEstaRequisitando) => {
+//     try {
+//         const request = await axios.get(`https://emilyspecht.github.io/the-cresim/${OQueEstaRequisitando}.json`)
+//         return request.data
+//     } catch (e) {
+//         console.log(e)
+//     }
+// }
+
+
 
 // export const pegaUmCheatPeloCodigo = async (codigoCheat) => {
 //     try {
