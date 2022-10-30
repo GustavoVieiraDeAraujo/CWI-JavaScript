@@ -1,32 +1,48 @@
-
-import { useQuestion } from './services/question/use-question.js'
-import { useLocalStorage } from "./services/local-storage/use-local-storage.js"
 import {
-  criaPersonagem,
   retornaTamanhoDaLista,
   retornaItensPorCategoria,
-  mostraItem,
+  compraItem,
   loja,
-  getItens
+  getItens,
+  getPersonagemById,
+  montaLojaDaCategoria
 } from './funcoes.js'
 import chalk from 'chalk';
-import axios from 'axios';
+
+import { get } from "./services/requests/requests.js"
+import { useQuestion } from './services/question/use-question.js'
+import { useLocalStorage } from "./services/local-storage/use-local-storage.js"
+import { criaPersonagem } from './character-creation/character-creation.js'
 
 
+// Funções para usar ação de interagir
+// import {
+//   definiORelacionamento,
+//   retornaUmaListaDeTodasAsInteracoesComBaseNoNivelDeInteracao,
+//   interagiComPersonagem
+// } from "./relationships/relationships.js"
 
 const main = async () => {
+
   const itens = await getItens()
-  const empregos = await axios.get('https://emilyspecht.github.io/the-cresim/empregos.json').data
-  const interacoes = await axios.get('https://emilyspecht.github.io/the-cresim/interacoes.json').data
-  const cheats = await axios.get('https://emilyspecht.github.io/the-cresim/empregos.json').data
+  // const empregos = await get('https://emilyspecht.github.io/the-cresim/empregos.json').data
+  // const interacoes = await get('https://emilyspecht.github.io/the-cresim/interacoes.json').data
+  // const cheats = await get('https://emilyspecht.github.io/the-cresim/empregos.json').data
 
   const localStorage = useLocalStorage();
+
+  // requisições
+  // const jsonCheats = await get("cheats")
+  // const jsonEmpregos = await get("empregos")
+  // const jsonInteracoes = await get("interacoes")
+  // const jsonItensHabilidades = await get("itens-habilidades")
+
   let jogoRodando = true;
   let personagens = localStorage.getObject('lista-de-personagens');
 
 
   while (jogoRodando) {
-    // //console.clear();
+    // console.clear();
     console.log(chalk.yellow('  _______ _             _____               _           '))
     console.log(chalk.yellow(' |__   __| |           / ____|             (_)          '))
     console.log(chalk.yellow('    | |  | |__   ___  | |     _ __ ___  ___ _ _ __ ___  '))
@@ -95,7 +111,7 @@ const main = async () => {
               chamarCriacao = false;
           }
           if (chamarCriacao) {
-            criaPersonagem(nome, aspiracao);
+            criaPersonagem(nome, aspiracao, localStorage);
             criacaoPersonagem = false;
           }
         }
@@ -187,34 +203,85 @@ const main = async () => {
 
                         switch (opcaoAcaoLoja) {
                           case '1':
+                            montaLojaDaCategoria(personagemSelecionado, 'Gastronomia', itens)
                             console.clear()
                             while (loopLojaCategoria) {
+
                               loja('Gastronomia', personagemSelecionado, itens)
                               opcaoAcao = await useQuestion('Digite o ID do produto desejado ou "0" para voltar')
+
                               if (opcaoAcao === '0') {
                                 console.clear()
                                 loopLojaCategoria = false
                                 break
                               } else if (opcaoAcao >= 1 && opcaoAcao <= 3) {
-                                console.log('blz')
+                                const itensCategoria = retornaItensPorCategoria('Gastronomia', itens)
+
+                                for (let i = 0; i < itensCategoria.length; i++) {
+                                  if (itensCategoria[i].id == opcaoAcao) {
+                                    const realizouCompra = compraItem(personagemSelecionado, itensCategoria[i])
+                                    switch (realizouCompra) {
+                                      case 1:
+                                        console.clear()
+                                        console.log("Compra bem sucedida")
+                                        personagemSelecionado = getPersonagemById(personagemSelecionado.id)
+                                        break
+                                      case -1:
+                                        console.clear()
+                                        console.log(personagemSelecionado.nome + " já tem " + itensCategoria[i].nome)
+                                        break
+                                      case -2:
+                                        console.clear()
+                                        console.log(personagemSelecionado.nome + " não tem saldo suficiente.")
+                                    }
+                                  }
+                                }
+
                               } else {
                                 console.clear()
                                 console.log(chalk.redBright("Opção inválida, tente novamente."))
                               }
-                              //loopLojaCategoria = false
+                              loopLojaCategoria = false
                             }
+
                             break
                           case '2':
                             console.clear()
                             while (loopLojaCategoria) {
+
                               loja('Pintura', personagemSelecionado, itens)
                               opcaoAcao = await useQuestion('Digite o ID do produto desejado ou "0" para voltar')
+
                               if (opcaoAcao === '0') {
                                 console.clear()
                                 loopLojaCategoria = false
                                 break
                               } else if (opcaoAcao >= 1 && opcaoAcao <= 3) {
-                                console.log('blz')
+                                const itensCategoria = retornaItensPorCategoria('Pintura', itens)
+
+                                for (let i = 0; i < itensCategoria.length; i++) {
+                                  if (itensCategoria[i].id == opcaoAcao) {
+                                    const realizouCompra = compraItem(personagemSelecionado, itensCategoria[i])
+                                    switch (realizouCompra) {
+                                      case 1:
+                                        console.clear()
+                                        console.log("Compra bem sucedida")
+                                        personagemSelecionado = getPersonagemById(personagemSelecionado.id)
+                                        break
+                                      case -1:
+                                        console.clear()
+                                        console.log(personagemSelecionado.nome + " já tem " + itensCategoria[i].nome)
+                                        break
+                                      case -2:
+                                        console.clear()
+                                        console.log(personagemSelecionado.nome + " não tem saldo suficiente.")
+                                    }
+                                  }
+                                }
+
+                              } else {
+                                console.clear()
+                                console.log(chalk.redBright("Opção inválida, tente novamente."))
                               }
                               loopLojaCategoria = false
                             }
@@ -222,14 +289,40 @@ const main = async () => {
                           case '3':
                             console.clear()
                             while (loopLojaCategoria) {
+
                               loja('Jogos', personagemSelecionado, itens)
                               opcaoAcao = await useQuestion('Digite o ID do produto desejado ou "0" para voltar')
+
                               if (opcaoAcao === '0') {
                                 console.clear()
                                 loopLojaCategoria = false
                                 break
                               } else if (opcaoAcao >= 1 && opcaoAcao <= 3) {
-                                console.log('blz')
+                                const itensCategoria = retornaItensPorCategoria('Jogos', itens)
+
+                                for (let i = 0; i < itensCategoria.length; i++) {
+                                  if (itensCategoria[i].id == opcaoAcao) {
+                                    const realizouCompra = compraItem(personagemSelecionado, itensCategoria[i])
+                                    switch (realizouCompra) {
+                                      case 1:
+                                        console.clear()
+                                        console.log("Compra bem sucedida")
+                                        personagemSelecionado = getPersonagemById(personagemSelecionado.id)
+                                        break
+                                      case -1:
+                                        console.clear()
+                                        console.log(personagemSelecionado.nome + " já tem " + itensCategoria[i].nome)
+                                        break
+                                      case -2:
+                                        console.clear()
+                                        console.log(personagemSelecionado.nome + " não tem saldo suficiente.")
+                                    }
+                                  }
+                                }
+
+                              } else {
+                                console.clear()
+                                console.log(chalk.redBright("Opção inválida, tente novamente."))
                               }
                               loopLojaCategoria = false
                             }
@@ -237,14 +330,40 @@ const main = async () => {
                           case '4':
                             console.clear()
                             while (loopLojaCategoria) {
+
                               loja('Jardinagem', personagemSelecionado, itens)
                               opcaoAcao = await useQuestion('Digite o ID do produto desejado ou "0" para voltar')
+
                               if (opcaoAcao === '0') {
                                 console.clear()
                                 loopLojaCategoria = false
                                 break
                               } else if (opcaoAcao >= 1 && opcaoAcao <= 3) {
-                                console.log('blz')
+                                const itensCategoria = retornaItensPorCategoria('Jardinagem', itens)
+
+                                for (let i = 0; i < itensCategoria.length; i++) {
+                                  if (itensCategoria[i].id == opcaoAcao) {
+                                    const realizouCompra = compraItem(personagemSelecionado, itensCategoria[i])
+                                    switch (realizouCompra) {
+                                      case 1:
+                                        console.clear()
+                                        console.log("Compra bem sucedida")
+                                        personagemSelecionado = getPersonagemById(personagemSelecionado.id)
+                                        break
+                                      case -1:
+                                        console.clear()
+                                        console.log(personagemSelecionado.nome + " já tem " + itensCategoria[i].nome)
+                                        break
+                                      case -2:
+                                        console.clear()
+                                        console.log(personagemSelecionado.nome + " não tem saldo suficiente.")
+                                    }
+                                  }
+                                }
+
+                              } else {
+                                console.clear()
+                                console.log(chalk.redBright("Opção inválida, tente novamente."))
                               }
                               loopLojaCategoria = false
                             }
@@ -252,14 +371,40 @@ const main = async () => {
                           case '5':
                             console.clear()
                             while (loopLojaCategoria) {
+
                               loja('Musica', personagemSelecionado, itens)
                               opcaoAcao = await useQuestion('Digite o ID do produto desejado ou "0" para voltar')
+
                               if (opcaoAcao === '0') {
                                 console.clear()
                                 loopLojaCategoria = false
                                 break
                               } else if (opcaoAcao >= 1 && opcaoAcao <= 3) {
-                                console.log('blz')
+                                const itensCategoria = retornaItensPorCategoria('Musica', itens)
+
+                                for (let i = 0; i < itensCategoria.length; i++) {
+                                  if (itensCategoria[i].id == opcaoAcao) {
+                                    const realizouCompra = compraItem(personagemSelecionado, itensCategoria[i])
+                                    switch (realizouCompra) {
+                                      case 1:
+                                        console.clear()
+                                        console.log("Compra bem sucedida")
+                                        personagemSelecionado = getPersonagemById(personagemSelecionado.id)
+                                        break
+                                      case -1:
+                                        console.clear()
+                                        console.log(personagemSelecionado.nome + " já tem " + itensCategoria[i].nome)
+                                        break
+                                      case -2:
+                                        console.clear()
+                                        console.log(personagemSelecionado.nome + " não tem saldo suficiente.")
+                                    }
+                                  }
+                                }
+
+                              } else {
+                                console.clear()
+                                console.log(chalk.redBright("Opção inválida, tente novamente."))
                               }
                               loopLojaCategoria = false
                             }
@@ -324,3 +469,15 @@ const main = async () => {
 }
 
 main()
+
+
+// Exemplo de como usar interação
+// const jsonInteracoes = await get("interacoes")
+// const localStorage = useLocalStorage();
+// let personagemQueEstaUsando = localStorage.getObject("lista-de-personagens")[2]
+// let personagemAlvoDaInteracao = localStorage.getObject("lista-de-personagens")[1]
+
+// const relacionamento = definiORelacionamento(personagemQueEstaUsando,personagemAlvoDaInteracao)
+// const listaDeInteracoesDisponiveisDesseRelacionamento = retornaUmaListaDeTodasAsInteracoesComBaseNoNivelDeInteracao(relacionamento[1][0], jsonInteracoes)
+// const interacaoEscolhida = listaDeInteracoesDisponiveisDesseRelacionamento[3]
+// interagiComPersonagem(personagemQueEstaUsando, personagemAlvoDaInteracao, relacionamento, interacaoEscolhida, localStorage)
