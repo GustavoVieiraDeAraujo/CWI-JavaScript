@@ -144,8 +144,8 @@ export function loja(categoria, personagem, itens) {
 //             console.log(chalk.redBright("Opção inválida, tente novamente."))
 //         }
 //         loopLojaCategoria = false
-    }
-}
+//     }
+// }
 
 
 
