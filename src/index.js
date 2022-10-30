@@ -5,7 +5,7 @@ import {
   loja,
   getItens,
   getPersonagemById,
-  montaLojaDaCategoria
+  // montaLojaDaCategoria
 } from './funcoes.js'
 import chalk from 'chalk';
 
