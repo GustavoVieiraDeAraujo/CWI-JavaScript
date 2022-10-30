@@ -173,6 +173,7 @@ const main = async () => {
                       let itensRecebidos = [];
                       let loopLojaCategoria = true
                       while (loopLoja) {
+                        loopLoja = true
                         console.log("LOJA")
                         console.log("-----")
                         console.log("1 - Gastronomia")
@@ -181,9 +182,10 @@ const main = async () => {
                         console.log("4 - Jardinagem")
                         console.log("5 - Música")
                         console.log("0 - Voltar")
-                        opcaoAcao = await useQuestion('Qual categoria gostaria de dar uma olhadinha?')
+                        let opcaoAcaoLoja = await useQuestion('Qual categoria gostaria de dar uma olhadinha?')
+                        loopLojaCategoria = true
 
-                        switch (opcaoAcao) {
+                        switch (opcaoAcaoLoja) {
                           case '1':
                             console.clear()
                             while (loopLojaCategoria) {
@@ -195,21 +197,72 @@ const main = async () => {
                                 break
                               } else if (opcaoAcao >= 1 && opcaoAcao <= 3) {
                                 console.log('blz')
+                              } else {
+                                console.clear()
+                                console.log(chalk.redBright("Opção inválida, tente novamente."))
+                              }
+                              //loopLojaCategoria = false
+                            }
+                            break
+                          case '2':
+                            console.clear()
+                            while (loopLojaCategoria) {
+                              loja('Pintura', personagemSelecionado, itens)
+                              opcaoAcao = await useQuestion('Digite o ID do produto desejado ou "0" para voltar')
+                              if (opcaoAcao === '0') {
+                                console.clear()
+                                loopLojaCategoria = false
+                                break
+                              } else if (opcaoAcao >= 1 && opcaoAcao <= 3) {
+                                console.log('blz')
                               }
                               loopLojaCategoria = false
                             }
                             break
-                          case '2':
-                            itensRecebidos = retornaItensPorCategoria("Pintura")
-                            break
                           case '3':
-                            itensRecebidos = retornaItensPorCategoria("Jogos")
+                            console.clear()
+                            while (loopLojaCategoria) {
+                              loja('Jogos', personagemSelecionado, itens)
+                              opcaoAcao = await useQuestion('Digite o ID do produto desejado ou "0" para voltar')
+                              if (opcaoAcao === '0') {
+                                console.clear()
+                                loopLojaCategoria = false
+                                break
+                              } else if (opcaoAcao >= 1 && opcaoAcao <= 3) {
+                                console.log('blz')
+                              }
+                              loopLojaCategoria = false
+                            }
                             break
                           case '4':
-                            itensRecebidos = retornaItensPorCategoria("Jardinagem")
+                            console.clear()
+                            while (loopLojaCategoria) {
+                              loja('Jardinagem', personagemSelecionado, itens)
+                              opcaoAcao = await useQuestion('Digite o ID do produto desejado ou "0" para voltar')
+                              if (opcaoAcao === '0') {
+                                console.clear()
+                                loopLojaCategoria = false
+                                break
+                              } else if (opcaoAcao >= 1 && opcaoAcao <= 3) {
+                                console.log('blz')
+                              }
+                              loopLojaCategoria = false
+                            }
                             break
                           case '5':
-                            itensRecebidos = retornaItensPorCategoria("Musica")
+                            console.clear()
+                            while (loopLojaCategoria) {
+                              loja('Musica', personagemSelecionado, itens)
+                              opcaoAcao = await useQuestion('Digite o ID do produto desejado ou "0" para voltar')
+                              if (opcaoAcao === '0') {
+                                console.clear()
+                                loopLojaCategoria = false
+                                break
+                              } else if (opcaoAcao >= 1 && opcaoAcao <= 3) {
+                                console.log('blz')
+                              }
+                              loopLojaCategoria = false
+                            }
                             break
                           case '0':
                             console.clear()
@@ -217,6 +270,7 @@ const main = async () => {
                             opcaoValida = false
                             break
                           default:
+                            console.clear()
                             console.log(chalk.redBright("Opção inválida, tente novamente."))
                             opcaoValida = false
                             break
