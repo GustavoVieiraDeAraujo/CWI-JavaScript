@@ -1,6 +1,7 @@
 import { useLocalStorage } from "./services/local-storage/use-local-storage.js"
 import { useQuestion } from './services/question/use-question.js'
 import axios from "axios";
+import chalk from 'chalk';
 
 
 
@@ -69,11 +70,19 @@ export function mostraItem(item) {
     console.log("   Nome: " + item.nome)
     console.log("   Pontos: " + item.pontos)
     console.log("   Preço: $" + item.preco)
+    console.log("-------------------------------------")
+}
+
+export function mostraItensDoPersonagem(personagem) {
+    for (let item of personagem.inventario) {
+        console.log('')
+        mostraItem(item)
+    }
 }
 
 export function compraItem(personagem, item) {
     for (let i = 0; i < personagem.inventario.length; i++) {
-        if (personagem.inventario[i].id === item.id) {
+        if (personagem.inventario[i].nome === item.nome) {
             return -1;
         }
     }
@@ -104,46 +113,37 @@ export function loja(categoria, personagem, itens) {
     console.log("")
 }
 
-// export async function montaLojaDaCategoria(personagemSelecionado, categoria, itens) {
-//     console.clear()
-//     let loopLojaCategoria = true
-//     while (loopLojaCategoria) {
+export function acaoCompra(opcaoAcao, itens, personagem, categoria) {
+    if (opcaoAcao === '0') {
+        console.clear()
+        console.log("caiu aqui")
+        return 0
+    } else if (opcaoAcao >= 1 && opcaoAcao <= 3) {
+        const itensCategoria = retornaItensPorCategoria(categoria, itens)
 
-//         loja(categoria, personagemSelecionado, itens)
-//         let opcaoAcao = await useQuestion('Digite o ID do produto desejado ou "0" para voltar')
-
-//         if (opcaoAcao === '0') {
-//             console.clear()
-//             loopLojaCategoria = false
-//             break
-//         } else if (opcaoAcao >= 1 && opcaoAcao <= 3) {
-//             const itensCategoria = retornaItensPorCategoria(categoria, itens)
-
-//             for (let i = 0; i < itensCategoria.length; i++) {
-//                 if (itensCategoria[i].id == opcaoAcao) {
-//                     const realizouCompra = compraItem(personagemSelecionado, itensCategoria[i])
-//                     switch (realizouCompra) {
-//                         case 1:
-//                             console.clear()
-//                             console.log("Compra bem sucedida")
-//                             personagemSelecionado = getPersonagemById(personagemSelecionado.id)
-//                             break
-//                         case -1:
-//                             console.clear()
-//                             console.log(personagemSelecionado.nome + " já tem " + itensCategoria[i].nome)
-//                             break
-//                         case -2:
-//                             console.clear()
-//                             console.log(personagemSelecionado.nome + " não tem saldo suficiente.")
-//                     }
-//                 }
-//             }
-
-//         } else {
-//             console.clear()
-//             console.log(chalk.redBright("Opção inválida, tente novamente."))
-//         }
-//         loopLojaCategoria = false
+        for (let i = 0; i < itensCategoria.length; i++) {
+            if (itensCategoria[i].id == opcaoAcao) {
+                const realizouCompra = compraItem(personagem, itensCategoria[i])
+                switch (realizouCompra) {
+                    case 1:
+                        console.clear()
+                        console.log("Compra bem sucedida")
+                        return 1
+                    case -1:
+                        console.clear()
+                        console.log(personagem.nome + " já tem " + itensCategoria[i].nome)
+                        return 2
+                    case -2:
+                        console.clear()
+                        console.log(personagem.nome + " não tem saldo suficiente.")
+                        return 3
+                }
+            }
+        }
+    } else if (opcaoAcao < 1 || opcaoAcao > 3) {
+        console.clear()
+        console.log(chalk.redBright("Opção inválida, tente novamente."))
+        return 4
     }
 }
 
