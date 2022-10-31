@@ -147,6 +147,45 @@ export function acaoCompra(opcaoAcao, itens, personagem, categoria) {
     }
 }
 
+//         loja(categoria, personagemSelecionado, itens)
+//         let opcaoAcao = await useQuestion('Digite o ID do produto desejado ou "0" para voltar')
+
+//         if (opcaoAcao === '0') {
+//             console.clear()
+//             loopLojaCategoria = false
+//             break
+//         } else if (opcaoAcao >= 1 && opcaoAcao <= 3) {
+//             const itensCategoria = retornaItensPorCategoria(categoria, itens)
+
+//             for (let i = 0; i < itensCategoria.length; i++) {
+//                 if (itensCategoria[i].id == opcaoAcao) {
+//                     const realizouCompra = compraItem(personagemSelecionado, itensCategoria[i])
+//                     switch (realizouCompra) {
+//                         case 1:
+//                             console.clear()
+//                             console.log("Compra bem sucedida")
+//                             personagemSelecionado = getPersonagemById(personagemSelecionado.id)
+//                             break
+//                         case -1:
+//                             console.clear()
+//                             console.log(personagemSelecionado.nome + " já tem " + itensCategoria[i].nome)
+//                             break
+//                         case -2:
+//                             console.clear()
+//                             console.log(personagemSelecionado.nome + " não tem saldo suficiente.")
+//                     }
+//                 }
+//             }
+
+//         } else {
+//             console.clear()
+//             console.log(chalk.redBright("Opção inválida, tente novamente."))
+//         }
+//         loopLojaCategoria = false
+//     }
+// }
+
+
 
 
 
