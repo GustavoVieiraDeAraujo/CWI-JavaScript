@@ -2,7 +2,7 @@ export const criaPersonagem = (nomePersonagem, aspiracaoPersonagem, localStorage
     let novoPersonagem = {
         id: localStorage.returnListSize('lista-de-personagens') + 1,
         nome: nomePersonagem,
-        tempoDeVida: 3600,
+        tempoDeVida: 3600000,
         saldo: 1500,
         aspiracao: aspiracaoPersonagem,
         higiene: 28,

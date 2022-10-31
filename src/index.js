@@ -5,11 +5,16 @@ import { useQuestion } from './services/question/use-question.js'
 import { useLocalStorage } from "./services/local-storage/use-local-storage.js"
 import { criaPersonagem } from './character-creation/character-creation.js'
 
-// Funções para usar ação de interagir
+
+// Função para usar ação de 'trabalhar'
+// import { personagemTrabalha } from "./work/work.js"
+
+
+// Funções para usar ação de 'interagir'
 // import {
 //   definiORelacionamento,
 //   retornaUmaListaDeTodasAsInteracoesComBaseNoNivelDeInteracao,
-//   interagiComPersonagem
+//   personagemInteragi
 // } from "./relationships/relationships.js"
 
 const main = async () => {
@@ -129,13 +134,21 @@ const main = async () => {
 main()
 
 
-// Exemplo de como usar interação
+// Exemplo de como usar ação 'trabalhar'
+// const localStorage = useLocalStorage();
+// let personagemQueEstaSendoUsado = localStorage.getObject("lista-de-personagens")[0]
+// const mensagemSeNaoTiverEnergia = personagemTrabalha(personagemQueEstaSendoUsado, "JogadorDeDota", localStorage)
+// if (mensagemSeNaoTiverEnergia !== undefined){
+//   console.log(mensagemSeNaoTiverEnergia)
+// }
+
+
+// Exemplo de como usar ação 'interagir'
 // const jsonInteracoes = await get("interacoes")
 // const localStorage = useLocalStorage();
 // let personagemQueEstaUsando = localStorage.getObject("lista-de-personagens")[2]
 // let personagemAlvoDaInteracao = localStorage.getObject("lista-de-personagens")[1]
-
 // const relacionamento = definiORelacionamento(personagemQueEstaUsando,personagemAlvoDaInteracao)
 // const listaDeInteracoesDisponiveisDesseRelacionamento = retornaUmaListaDeTodasAsInteracoesComBaseNoNivelDeInteracao(relacionamento[1][0], jsonInteracoes)
 // const interacaoEscolhida = listaDeInteracoesDisponiveisDesseRelacionamento[3]
-// interagiComPersonagem(personagemQueEstaUsando, personagemAlvoDaInteracao, relacionamento, interacaoEscolhida, localStorage)
+// personagemInteragi(personagemQueEstaUsando, personagemAlvoDaInteracao, relacionamento, interacaoEscolhida, localStorage)
