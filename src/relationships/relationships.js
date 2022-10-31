@@ -38,8 +38,8 @@ const atualizaPontosDeEnergia = ( personagemQueInterage, personagemQueSofreInter
 }
 
 const atualizaTempoDeVida = (personagemQueInterage, personagemQueSofreInteracao, quantidadeDeEnergia ,valorAntigo) => {
-    personagemQueInterage.tempoDeVida -= (quantidadeDeEnergia * 2)
-    personagemQueSofreInteracao.tempoDeVida -= ((valorAntigo - personagemQueSofreInteracao.energia) * 2)
+    personagemQueInterage.tempoDeVida -= (quantidadeDeEnergia * 2000)
+    personagemQueSofreInteracao.tempoDeVida -= ((valorAntigo - personagemQueSofreInteracao.energia) * 2000)
 }
 
 export const definiORelacionamento = (personagemQueInterage, personagemQueSofreInteracao) =>{
@@ -65,7 +65,7 @@ export const retornaUmaListaDeTodasAsInteracoesComBaseNoNivelDeInteracao = (nive
     }
 }
 
-export const interagiComPersonagem = (personagemQueInterage, personagemQueSofreInteracao, relacionamento, interacaoEscolhida, localStorage) => {
+export const personagemInteragi = (personagemQueInterage, personagemQueSofreInteracao, relacionamento, interacaoEscolhida, localStorage) => {
     if(relacionamento[0] === personagemQueInterage.id){
         atualizaOsPontosDeInteracaoDoPersonagem(personagemQueInterage, personagemQueSofreInteracao, interacaoEscolhida.pontos)
         atualizaONivelDeInteracao(personagemQueInterage, personagemQueSofreInteracao)
