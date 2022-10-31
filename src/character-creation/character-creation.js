@@ -7,7 +7,7 @@ export const criaPersonagem = (nomePersonagem, aspiracaoPersonagem, localStorage
         aspiracao: aspiracaoPersonagem,
         higiene: 28,
         energia: 32,
-        inventario:[],
+        inventario: [],
         trabalho: {
             JogadorDeDota: ["JUNIOR", 160],
             AssistenteDoJacquin: ["JUNIOR", 130],
@@ -25,7 +25,7 @@ export const criaPersonagem = (nomePersonagem, aspiracaoPersonagem, localStorage
         relacionamentos: {}
     }
 
-    
+
     if (localStorage.getObject('lista-de-personagens') === null) {
         localStorage.setObject('lista-de-personagens', [novoPersonagem])
     } else {
