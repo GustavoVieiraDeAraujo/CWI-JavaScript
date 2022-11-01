@@ -9,11 +9,11 @@ export const criaPersonagem = (nomePersonagem, aspiracaoPersonagem, localStorage
         energia: 32,
         inventario: [],
         trabalho: {
-            JogadorDeDota: ["JUNIOR", 160],
-            AssistenteDoJacquin: ["JUNIOR", 130],
-            SeguradorDePinceis: ["JUNIOR", 110],
+            JogadordeDota: ["JUNIOR", 160],
+            AssistentedoJacquin: ["JUNIOR", 130],
+            Seguradordepinceis: ["JUNIOR", 110],
             Desafinador: ["JUNIOR", 210],
-            LadrãoDePlanta: ["JUNIOR", 160]
+            Ladraodeplanta: ["JUNIOR", 160]
         },
         habilidades: {
             gastronomia: ["JUNIOR", 0],

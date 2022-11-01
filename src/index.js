@@ -10,13 +10,21 @@ import {
   compraItem,
   loja,
   getItens,
+  getInteracoes,
   getPersonagemById,
   acaoCompra,
   mostraItensDoPersonagem,
   atualizaPersonagemNaLista,
+  getEmpregos,
   // montaLojaDaCategoria
 } from './funcoes.js'
 import { alteraHigiene, } from "./hygiene/hygiene.js"
+import {
+  definiORelacionamento,
+  retornaUmaListaDeTodasAsInteracoesComBaseNoNivelDeInteracao,
+  personagemInteragi
+} from "./relationships/relationships.js"
+import { personagemTrabalha } from './work/work.js';
 
 
 // Função para usar ação de 'trabalhar'
@@ -34,8 +42,8 @@ import { alteraHigiene, } from "./hygiene/hygiene.js"
 const main = async () => {
 
   const itens = await getItens()
-  // const empregos = await get('https://emilyspecht.github.io/the-cresim/empregos.json').data
-  // const interacoes = await get('https://emilyspecht.github.io/the-cresim/interacoes.json').data
+  const empregos = await getEmpregos()
+  const interacoes = await getInteracoes()
   // const cheats = await get('https://emilyspecht.github.io/the-cresim/empregos.json').data
 
   const localStorage = useLocalStorage();
@@ -242,141 +250,23 @@ const main = async () => {
                         let opcaoAcaoLoja = await useQuestion('Qual categoria gostaria de dar uma olhadinha?')
                         loopLojaCategoria = true
 
+
+                        let categoriaSelecionada
                         switch (opcaoAcaoLoja) {
                           case '1':
-                            // montaLojaDaCategoria(personagemSelecionado, 'Gastronomia', itens)
-                            console.clear()
-                            // let categoriaSelecionada = 'Gastronomia'
-                            while (loopLojaCategoria) {
-
-                              loja('Gastronomia', personagemSelecionado, itens)
-                              opcaoAcao = await useQuestion('Digite o ID do produto desejado ou "0" para voltar')
-
-                              const resultado = acaoCompra(opcaoAcao, itens, personagemSelecionado, 'Gastronomia')
-
-                              switch (resultado) {
-                                case 0:
-                                  loopLojaCategoria = false
-                                  break
-                                case 1:
-                                  personagemSelecionado = getPersonagemById(personagemSelecionado.id)
-                                  break
-                                case 2:
-                                  break
-                                case 3:
-                                  break
-                                case 4:
-                                  break
-                              }
-
-                            }
-
+                            categoriaSelecionada = 'Gastronomia'
                             break
                           case '2':
-                            console.clear()
-                            while (loopLojaCategoria) {
-
-                              loja('Pintura', personagemSelecionado, itens)
-                              opcaoAcao = await useQuestion('Digite o ID do produto desejado ou "0" para voltar')
-
-                              const resultado = acaoCompra(opcaoAcao, itens, personagemSelecionado, 'Pintura')
-
-                              switch (resultado) {
-                                case 0:
-                                  loopLojaCategoria = false
-                                  break
-                                case 1:
-                                  personagemSelecionado = getPersonagemById(personagemSelecionado.id)
-                                  break
-                                case 2:
-                                  break
-                                case 3:
-                                  break
-                                case 4:
-                                  break
-                              }
-
-                            }
+                            categoriaSelecionada = 'Pintura'
                             break
                           case '3':
-                            console.clear()
-                            while (loopLojaCategoria) {
-
-                              loja('Jogos', personagemSelecionado, itens)
-                              opcaoAcao = await useQuestion('Digite o ID do produto desejado ou "0" para voltar')
-
-                              const resultado = acaoCompra(opcaoAcao, itens, personagemSelecionado, 'Jogos')
-
-                              switch (resultado) {
-                                case 0:
-                                  loopLojaCategoria = false
-                                  break
-                                case 1:
-                                  personagemSelecionado = getPersonagemById(personagemSelecionado.id)
-                                  break
-                                case 2:
-                                  break
-                                case 3:
-                                  break
-                                case 4:
-                                  break
-                              }
-
-                            }
+                            categoriaSelecionada = 'Jogos'
                             break
                           case '4':
-                            console.clear()
-                            while (loopLojaCategoria) {
-
-                              loja('Jardinagem', personagemSelecionado, itens)
-                              opcaoAcao = await useQuestion('Digite o ID do produto desejado ou "0" para voltar')
-
-                              const resultadoCompra = acaoCompra(opcaoAcao, itens, personagemSelecionado, 'Jardinagem')
-
-                              switch (resultadoCompra) {
-                                case 0:
-                                  //console.log("caiu aqui")
-                                  loopLojaCategoria = false
-                                  break
-                                case 1:
-                                  personagemSelecionado = getPersonagemById(personagemSelecionado.id)
-                                  break
-                                case 2:
-                                  break
-                                case 3:
-                                  break
-                                case 4:
-                                  console.log("aaaa")
-                                  break
-                              }
-
-                            }
+                            categoriaSelecionada = 'Jardinagem'
                             break
                           case '5':
-                            console.clear()
-                            while (loopLojaCategoria) {
-
-                              loja('Musica', personagemSelecionado, itens)
-                              opcaoAcao = await useQuestion('Digite o ID do produto desejado ou "0" para voltar')
-
-                              const resultado = acaoCompra(opcaoAcao, itens, personagemSelecionado, 'Musica')
-
-                              switch (resultado) {
-                                case 0:
-                                  loopLojaCategoria = false
-                                  break
-                                case 1:
-                                  personagemSelecionado = getPersonagemById(personagemSelecionado.id)
-                                  break
-                                case 2:
-                                  break
-                                case 3:
-                                  break
-                                case 4:
-                                  break
-                              }
-
-                            }
+                            categoriaSelecionada = 'Musica'
                             break
                           case '0':
                             console.clear()
@@ -388,6 +278,29 @@ const main = async () => {
                             console.log(chalk.redBright("Opção inválida, tente novamente."))
                             opcaoValida = false
                             break
+                        }
+                        if (opcaoValida) {
+                          console.clear()
+                          while (loopLojaCategoria) {
+                            loja(categoriaSelecionada, personagemSelecionado, itens)
+                            opcaoAcao = await useQuestion('Digite o ID do produto desejado ou "0" para voltar')
+                            const resultado = acaoCompra(opcaoAcao, itens, personagemSelecionado, categoriaSelecionada)
+
+                            switch (resultado) {
+                              case 0:
+                                loopLojaCategoria = false
+                                break
+                              case 1:
+                                personagemSelecionado = getPersonagemById(personagemSelecionado.id)
+                                break
+                              case 2:
+                                break
+                              case 3:
+                                break
+                              case 4:
+                                break
+                            }
+                          }
                         }
                       }
                       break;
@@ -402,13 +315,125 @@ const main = async () => {
                 }
                 break;
               case '2':
-                //trabalhar
+                console.clear()
+                let loopTrabalho = true
+                let salario
+                let cargoJoin
+                let trabalhoSelecionado
+                while (loopTrabalho) {
+                  console.log("")
+                  console.log("Energia de " + personagemSelecionado.nome + ": " + personagemSelecionado.energia)
+                  console.log("")
+                  for (let i = 0; i < 5; i++) {
+                    cargoJoin = empregos[i].cargo.split(" ").join("")
+                    cargoJoin = cargoJoin.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                    salario = personagemSelecionado.trabalho[cargoJoin][1]
+                    console.log(empregos[i].id + " - " + empregos[i].cargo)
+                    console.log("Salário: $" + salario)
+                    console.log("")
+                  }
+                  opcaoAcao = await useQuestion("Digite o ID do trabalho desejado ou 0 para voltar")
+                  if (opcaoAcao === '0') {
+                    console.clear()
+                    break;
+                  } else if (opcaoAcao >= 1 && opcaoAcao <= 5) {
+                    for (let i = 0; i < empregos.length; i++) {
+                      if (empregos[i].id == opcaoAcao) {
+                        trabalhoSelecionado = empregos[i].cargo.split(" ").join("")
+                        trabalhoSelecionado = trabalhoSelecionado.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                      }
+                    }
+                    const mensagemSeNaoTiverEnergia = personagemTrabalha(personagemSelecionado, trabalhoSelecionado, localStorage)
+                    if (mensagemSeNaoTiverEnergia !== undefined) {
+                      console.log(mensagemSeNaoTiverEnergia)
+                    } else {
+                      console.clear()
+                      console.log("Trabalhou")
+                      personagemSelecionado = getPersonagemById(personagemSelecionado.id)
+                    }
+                  } else {
+                    console.clear()
+                    console.log(chalk.redBright("Opção inválida, tente novamente."))
+                  }
+
+                }
                 break;
               case '3':
-                //dormir
+                // console.clear()
+                // let loopDormir = true
+                // while (loopDormir) {
+                //   opcaoAcao = await useQuestion("Quantos ciclos gostaria de dormir?")
+
+
+                // }
                 break;
               case '4':
-                //interagir
+                let loopInteracao = true
+                console.clear()
+                while (loopInteracao) {
+                  if (retornaTamanhoDaLista(personagens) <= 1) {
+                    console.log("Desculpe, você não tem ninguém para interagir... Que tistreza")
+                    opcaoAcao = await useQuestion("Aperte ENTER para voltar")
+                    break
+                  } else {
+                    for (let i = 0; i < retornaTamanhoDaLista(personagens); i++) {
+                      if (personagens[i].id == personagemSelecionado.id) {
+                        i++
+                      }
+                      if (personagens[i] != undefined) {
+                        console.log(personagens[i].id + " - " + personagens[i].nome);
+                      }
+                    }
+                    opcaoAcao = await useQuestion("Digite o ID do personagem com quem " + personagemSelecionado.nome + " gostaria de interagir:")
+                    if (opcaoAcao === '0') {
+                      console.clear()
+                      break;
+                    } else if (opcaoAcao == personagemSelecionado.id) {
+                      console.clear()
+                      console.log(chalk.redBright("Opção inválida, tente novamente."))
+                    } else if (opcaoAcao >= 1 && opcaoAcao <= retornaTamanhoDaLista(personagens)) {
+                      let menuInteracoes = true;
+                      console.clear()
+                      while (menuInteracoes) {
+
+                        let personagemInteracao
+                        for (let personagem of personagens) {
+                          if (personagem.id.toString() === opcaoAcao) {
+                            personagemInteracao = personagem;
+                          }
+                        }
+                        const relacionamentoDosDois = definiORelacionamento(personagemSelecionado, personagemInteracao)
+                        const interacoesDisponiveis = retornaUmaListaDeTodasAsInteracoesComBaseNoNivelDeInteracao(relacionamentoDosDois[1][0], interacoes)
+
+
+                        //console.clear()
+                        let i = 1
+                        for (let interacao of interacoesDisponiveis) {
+                          console.log(i + " - " + interacao.interacao)
+                          i++
+                        }
+                        console.log(retornaTamanhoDaLista(interacoesDisponiveis))
+                        const opcaoAcao2 = await useQuestion("Digite o ID da interação desejada ou 0 para voltar")
+                        if (opcaoAcao2 === '0') {
+                          console.clear()
+                          console.log("caiuAqui")
+                          //menuInteracoes = false
+                          break;
+                        } else if (opcaoAcao2 >= 1 && opcaoAcao2 <= retornaTamanhoDaLista(interacoesDisponiveis)) {
+                          console.clear()
+                          const interacaoEscolhida = interacoesDisponiveis[opcaoAcao2 - 1]
+                          console.log(interacaoEscolhida)
+                          personagemInteragi(personagemSelecionado, personagemInteracao, relacionamentoDosDois, interacaoEscolhida, localStorage)
+                        } else {
+                          console.clear()
+                          console.log(chalk.redBright("Opção inválida, tente novamente."));
+                        }
+
+                      }
+                    }
+
+                  }
+                }
                 break;
               case '5':
                 if (personagemSelecionado.saldo >= 10) {
@@ -442,6 +467,7 @@ const main = async () => {
                 }
                 break;
               case '6':
+                console.clear()
                 console.log("Nome: " + personagemSelecionado.nome)
                 console.log("")
                 console.log("Tempo de vida: " + personagemSelecionado.tempoDeVida)
@@ -456,20 +482,37 @@ const main = async () => {
                 console.log("")
                 console.log("Trabalhos: ")
                 console.log("      Jogador de Dota: ")
-                console.log("            Nivel: " + personagemSelecionado.trabalho.JogadorDeDota[0])
-                console.log("            Salário: " + personagemSelecionado.trabalho.JogadorDeDota[1])
+                console.log("            Nivel: " + personagemSelecionado.trabalho.JogadordeDota[0])
+                console.log("            Salário: " + personagemSelecionado.trabalho.JogadordeDota[1])
                 console.log("      Assistente Do Jacquin: ")
-                console.log("            Nivel: " + personagemSelecionado.trabalho.AssistenteDoJacquin[0])
-                console.log("            Salário: " + personagemSelecionado.trabalho.AssistenteDoJacquin[1])
+                console.log("            Nivel: " + personagemSelecionado.trabalho.AssistentedoJacquin[0])
+                console.log("            Salário: " + personagemSelecionado.trabalho.AssistentedoJacquin[1])
                 console.log("      Segurador De Pinceis: ")
-                console.log("            Nivel: " + personagemSelecionado.trabalho.SeguradorDePinceis[0])
-                console.log("            Salário: " + personagemSelecionado.trabalho.SeguradorDePinceis[1])
+                console.log("            Nivel: " + personagemSelecionado.trabalho.Seguradordepinceis[0])
+                console.log("            Salário: " + personagemSelecionado.trabalho.Seguradordepinceis[1])
                 console.log("      Desafinador: ")
                 console.log("            Nivel: " + personagemSelecionado.trabalho.Desafinador[0])
                 console.log("            Salário: " + personagemSelecionado.trabalho.Desafinador[1])
                 console.log("      Ladrão De Planta: ")
-                console.log("            Nivel: " + personagemSelecionado.trabalho.LadrãoDePlanta[0])
-                console.log("            Salário: " + personagemSelecionado.trabalho.LadrãoDePlanta[1])
+                console.log("            Nivel: " + personagemSelecionado.trabalho.Ladraodeplanta[0])
+                console.log("            Salário: " + personagemSelecionado.trabalho.Ladraodeplanta[1])
+                console.log("Habilidades: ")
+                console.log("      Gastronomia: ")
+                console.log("            Nivel: " + personagemSelecionado.habilidades.gastronomia[0])
+                console.log("            Salário: " + personagemSelecionado.habilidades.gastronomia[1])
+                console.log("      Pintura: ")
+                console.log("            Nivel: " + personagemSelecionado.habilidades.pintura[0])
+                console.log("            Salário: " + personagemSelecionado.habilidades.pintura[1])
+                console.log("      Jogos: ")
+                console.log("            Nivel: " + personagemSelecionado.habilidades.jogos[0])
+                console.log("            Salário: " + personagemSelecionado.habilidades.jogos[1])
+                console.log("      Jardinagem: ")
+                console.log("            Nivel: " + personagemSelecionado.habilidades.jardinagem[0])
+                console.log("            Salário: " + personagemSelecionado.habilidades.jardinagem[1])
+                console.log("      Música: ")
+                console.log("            Nivel: " + personagemSelecionado.habilidades.musica[0])
+                console.log("            Salário: " + personagemSelecionado.habilidades.musica[1])
+                opcaoAcao = await useQuestion("Aperte ENTER para voltar")
                 break;
               case '0':
                 console.clear()

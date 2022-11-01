@@ -11,41 +11,22 @@ export async function getItens() {
     return itens.data
 }
 
+export async function getInteracoes() {
+    const interacoes = await axios.get('https://emilyspecht.github.io/the-cresim/interacoes.json')
+    return interacoes.data
+}
+
+export async function getEmpregos() {
+    const empregos = await axios.get('https://emilyspecht.github.io/the-cresim/empregos.json')
+    return empregos.data
+}
+
 export function getPersonagemById(id) {
     const localStorage = useLocalStorage();
     const personagens = localStorage.getObject('lista-de-personagens')
     const posicao = localStorage.returnObjectPositionInListById('lista-de-personagens', id)
     return personagens[posicao]
 }
-
-// export const criaPersonagem = (nomePersonagem, aspiracaoPersonagem) => {
-//     const localStorage = useLocalStorage();
-
-//     let objetoPersonagem = {
-//         id: retornaTamanhoDaLista(localStorage.getObject('lista-de-personagens')) + 1,
-//         nome: nomePersonagem,
-//         tempoDeVida: 3600,
-//         saldo: 4000,
-//         aspiracao: aspiracaoPersonagem,
-//         higiene: 28,
-//         energia: 32,
-//         habilidades: {
-//             gastronomia: ["JUNIOR", 0],
-//             pintura: ["JUNIOR", 0],
-//             jogos: ["JUNIOR", 0],
-//             jardinagem: ["JUNIOR", 0],
-//             musica: ["JUNIOR", 0]
-//         },
-//         relacionamentos: {},
-//         inventario: []
-//     }
-
-//     if (localStorage.getObject('lista-de-personagens') === null) {
-//         localStorage.setObject('lista-de-personagens', [{ ...objetoPersonagem }])
-//     } else {
-//         localStorage.setObject('lista-de-personagens', [...localStorage.getObject('lista-de-personagens'), { ...objetoPersonagem }])
-//     }
-// }
 
 export function retornaTamanhoDaLista(lista) {
     if (lista === null) {
@@ -116,7 +97,6 @@ export function loja(categoria, personagem, itens) {
 export function acaoCompra(opcaoAcao, itens, personagem, categoria) {
     if (opcaoAcao === '0') {
         console.clear()
-        console.log("caiu aqui")
         return 0
     } else if (opcaoAcao >= 1 && opcaoAcao <= 3) {
         const itensCategoria = retornaItensPorCategoria(categoria, itens)
@@ -147,43 +127,7 @@ export function acaoCompra(opcaoAcao, itens, personagem, categoria) {
     }
 }
 
-//         loja(categoria, personagemSelecionado, itens)
-//         let opcaoAcao = await useQuestion('Digite o ID do produto desejado ou "0" para voltar')
-
-//         if (opcaoAcao === '0') {
-//             console.clear()
-//             loopLojaCategoria = false
-//             break
-//         } else if (opcaoAcao >= 1 && opcaoAcao <= 3) {
-//             const itensCategoria = retornaItensPorCategoria(categoria, itens)
-
-//             for (let i = 0; i < itensCategoria.length; i++) {
-//                 if (itensCategoria[i].id == opcaoAcao) {
-//                     const realizouCompra = compraItem(personagemSelecionado, itensCategoria[i])
-//                     switch (realizouCompra) {
-//                         case 1:
-//                             console.clear()
-//                             console.log("Compra bem sucedida")
-//                             personagemSelecionado = getPersonagemById(personagemSelecionado.id)
-//                             break
-//                         case -1:
-//                             console.clear()
-//                             console.log(personagemSelecionado.nome + " já tem " + itensCategoria[i].nome)
-//                             break
-//                         case -2:
-//                             console.clear()
-//                             console.log(personagemSelecionado.nome + " não tem saldo suficiente.")
-//                     }
-//                 }
-//             }
-
-//         } else {
-//             console.clear()
-//             console.log(chalk.redBright("Opção inválida, tente novamente."))
-//         }
-//         loopLojaCategoria = false
-//     }
-// }
+// export function montaLoja(){}
 
 
 
