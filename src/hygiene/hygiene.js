@@ -6,8 +6,6 @@ let PERDA_HIGIENE_TREINO = - 2
 export function alteraHigiene(personagem, atividade) {
     let novaHigiene = 0
     let permissao
-    console.log(atividade)
-    console.log(personagem)
 
     switch(atividade) {
         case "Tomar banho":

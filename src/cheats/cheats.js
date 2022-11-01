@@ -1,4 +1,5 @@
 import { alteraEnergia } from '../energy/energy.js'
+import { alteraTempo } from '../time/time.js'
 
 export function verificaCheat( listaCheat, inputPassado) {
 
@@ -23,16 +24,18 @@ export function realizaCheat(personagem, listaCheat, cheatEscolhido) {
             return personagem
 
         case "JUNIM":
-
+            personagem = alteraNivelHabilidade(personagem, false, personagem.aspiracao, "cheat")
+            personagem = verificaPromocaoHabilidade(personagem)
+            return personagem
 
             break
     
         case "CAROLINAS":
-            personagem.tempoDeVida  = personagem.tempoDeVida + 100000
+            personagem = alteraTempo(personagem, cheatEscolhido, 0)
             return personagem
     
         case "SINUSITE":
-            personagem.tempoDeVida  = 0
+            personagem = alteraTempo(personagem, cheatEscolhido, 0)
             return personagem
 
     }
