@@ -11,6 +11,11 @@ export async function getItens() {
     return itens.data
 }
 
+export async function getCheats() {
+    const itens = await axios.get('https://emilyspecht.github.io/the-cresim/cheats.json')
+    return itens.data
+}
+
 export function getPersonagemById(id) {
     const localStorage = useLocalStorage();
     const personagens = localStorage.getObject('lista-de-personagens')
