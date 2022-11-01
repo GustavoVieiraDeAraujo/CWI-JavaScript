@@ -4,7 +4,6 @@ import chalk from 'chalk';
 import { useQuestion } from './services/question/use-question.js'
 import { useLocalStorage } from "./services/local-storage/use-local-storage.js"
 import { criaPersonagem } from './character-creation/character-creation.js'
-
 import {
   retornaTamanhoDaLista,
   retornaItensPorCategoria,
@@ -12,11 +11,17 @@ import {
   loja,
   getItens,
   getPersonagemById,
+  acaoCompra,
+  mostraItensDoPersonagem,
+  atualizaPersonagemNaLista,
   // montaLojaDaCategoria
 } from './funcoes.js'
+import { alteraHigiene, } from "./hygiene/hygiene.js"
+
 
 // Função para usar ação de 'trabalhar'
 // import { personagemTrabalha } from "./work/work.js"
+
 
 
 // Funções para usar ação de 'interagir'
@@ -44,7 +49,7 @@ const main = async () => {
   let jogoRodando = true;
   let personagens = localStorage.getObject('lista-de-personagens');
 
-
+  console.clear()
   while (jogoRodando) {
     // console.clear();
     console.log(chalk.yellow('  _______ _             _____               _           '))
@@ -54,13 +59,13 @@ const main = async () => {
     console.log(chalk.yellow('    | |  | | | |  __/ | |____| | |  __/\\__ \\ | | | | | |'))
     console.log(chalk.yellow('    |_|  |_| |_|\\___|  \\_____|_|  \\___||___/_|_| |_| |_|'))
 
-    console.log('-------------------')
+    console.log('--------------------')
     console.log('O QUE DESEJA FAZER?');
     console.log('1 - Criar novo personagem');
     console.log('2 - Selecionar personagem');
     console.log('0 - Sair')
-    console.log('-------------------')
-    let respostaUsuario = await useQuestion('SELECIONE UMA OPÇÃO')
+    console.log('--------------------')
+    let respostaUsuario = await useQuestion('      SELECIONE UMA OPÇÃO')
     console.clear();
 
     switch (respostaUsuario) {
@@ -127,16 +132,16 @@ const main = async () => {
         while (selecaoPersonagem) {
           let menuAcoes = false;
           personagens = localStorage.getObject('lista-de-personagens');
-          console.log(chalk.blue("___________________________________________________________________"))
-          console.log(chalk.blue("|  ") + chalk.yellow('  _____                                                     ') + chalk.blue("   |"))
-          console.log(chalk.blue("|  ") + chalk.yellow(' |  __ \\                                                    ') + chalk.blue("   |"))
-          console.log(chalk.blue("|  ") + chalk.yellow(' | |__) |__ _ __ ___  ___  _ __   __ _  __ _  ___ _ __  ___ ') + chalk.blue("   |"))
-          console.log(chalk.blue("|  ") + chalk.yellow(" |  ___/ _ \\ '__/ __|/ _ \\| '_ \\ / _` |/ _` |/ _ \\ '_ \\/ __|") + chalk.blue("   |"))
-          console.log(chalk.blue("|  ") + chalk.yellow(" | |  |  __/ |  \\__ \\ (_) | | | | (_| | (_| |  __/ | | \\__ \\") + chalk.blue("   |"))
-          console.log(chalk.blue("|  ") + chalk.yellow(' |_|   \\___|_|  |___/\\___/|_| |_|\\__,_|\\__, |\\___|_| |_|___/') + chalk.blue("   |"))
-          console.log(chalk.blue("|  ") + chalk.yellow('                                        __/ |               ') + chalk.blue("   |"))
-          console.log(chalk.blue("|  ") + chalk.yellow('                                       |___/                ') + chalk.blue("   |"))
-          console.log(chalk.blue("|_________________________________________________________________|"))
+          console.log(chalk.blue("   ___________________________________________________________________"))
+          console.log(chalk.blue("   |  ") + chalk.yellow('  _____                                                     ') + chalk.blue("   |"))
+          console.log(chalk.blue("   |  ") + chalk.yellow(' |  __ \\                                                    ') + chalk.blue("   |"))
+          console.log(chalk.blue("   |  ") + chalk.yellow(' | |__) |__ _ __ ___  ___  _ __   __ _  __ _  ___ _ __  ___ ') + chalk.blue("   |"))
+          console.log(chalk.blue("   |  ") + chalk.yellow(" |  ___/ _ \\ '__/ __|/ _ \\| '_ \\ / _` |/ _` |/ _ \\ '_ \\/ __|") + chalk.blue("   |"))
+          console.log(chalk.blue("   |  ") + chalk.yellow(" | |  |  __/ |  \\__ \\ (_) | | | | (_| | (_| |  __/ | | \\__ \\") + chalk.blue("   |"))
+          console.log(chalk.blue("   |  ") + chalk.yellow(' |_|   \\___|_|  |___/\\___/|_| |_|\\__,_|\\__, |\\___|_| |_|___/') + chalk.blue("   |"))
+          console.log(chalk.blue("   |  ") + chalk.yellow('                                        __/ |               ') + chalk.blue("   |"))
+          console.log(chalk.blue("   |  ") + chalk.yellow('                                       |___/                ') + chalk.blue("   |"))
+          console.log(chalk.blue("   |_________________________________________________________________|"))
           for (let i = 0; i < retornaTamanhoDaLista(personagens); i++) {
             console.log(personagens[i].id + " - " + personagens[i].nome);
           }
@@ -157,15 +162,25 @@ const main = async () => {
             console.log("Personagem Inválido, tente novamente")
           }
 
-          console.clear();
+          //console.clear();
           while (menuAcoes) {
+            console.clear()
+            console.log(chalk.yellowBright("___       ___     __   __   ___  __          "))
+            console.log(chalk.yellowBright(" |  |__| |__     /  ` |__) |__  /__` |  |\\/| "))
+            console.log(chalk.yellowBright(" |  |  | |___    \\__, |  \\ |___ .__/ |  |  | "))
+            console.log("")
             console.log('O QUE ' + personagemSelecionado.nome.toUpperCase() + ' DESEJA FAZER?')
+            console.log("")
             console.log("1 - Praticar");
             console.log("2 - Trabalhar");
             console.log("3 - Dormir");
             console.log("4 - Interagir com outro Cresim");
+            console.log("5 - Tomar banho");
+            console.log("6 - Ver Stats de " + personagemSelecionado.nome);
             console.log("0 - Voltar")
+            console.log("")
             let opcaoAcao = await useQuestion('SELECIONE UMA OPÇÃO');
+            //personagemSelecionado = verificaCheat(personagemSelecionado, cheats, opcaoAcao)
 
             switch (opcaoAcao) {
               case '1':
@@ -184,7 +199,20 @@ const main = async () => {
                       //escolher item
                       break;
                     case '2':
-                      //ver itens
+                      console.clear()
+                      console.log(chalk.green("###########################################################"))
+                      console.log(chalk.green("#   ") + chalk.blueBright("  _____                      _    __       _       ") + chalk.green("   #"))
+                      console.log(chalk.green("#   ") + chalk.blueBright(" |_   _|                    | |  /_/      (_)      ") + chalk.green("   #"))
+                      console.log(chalk.green("#   ") + chalk.blueBright("   | |  _ ____   _____ _ __ | |_ __ _ _ __ _  ___  ") + chalk.green("   #"))
+                      console.log(chalk.green("#   ") + chalk.blueBright("   | | | '_ \\ \\ / / _ \\ '_ \\| __/ _` | '__| |/ _ \\ ") + chalk.green("   #"))
+                      console.log(chalk.green("#   ") + chalk.blueBright("  _| |_| | | \\ V /  __/ | | | || (_| | |  | | (_) |") + chalk.green("   #"))
+                      console.log(chalk.green("#   ") + chalk.blueBright(" |_____|_| |_|\\_/ \\___|_| |_|\\__\\__,_|_|  |_|\\___/ ") + chalk.green("   #"))
+                      console.log(chalk.green("#                                                         #"))
+                      console.log(chalk.green("###########################################################"))
+                      mostraItensDoPersonagem(personagemSelecionado)
+                      console.log("")
+                      opcaoAcao = await useQuestion('Aperte ENTER para voltar')
+                      console.clear()
                       break;
                     case '3':
                       console.clear()
@@ -194,7 +222,16 @@ const main = async () => {
                       let loopLojaCategoria = true
                       while (loopLoja) {
                         loopLoja = true
-                        console.log("LOJA")
+                        console.log(chalk.yellowBright("##############################"))
+                        console.log(chalk.yellowBright("#   ") + chalk.green("  _           _       ") + chalk.yellowBright("   #"))
+                        console.log(chalk.yellowBright("#   ") + chalk.green(" | |         (_)      ") + chalk.yellowBright("   #"))
+                        console.log(chalk.yellowBright("#   ") + chalk.green(" | |     ___  _  __ _ ") + chalk.yellowBright("   #"))
+                        console.log(chalk.yellowBright("#   ") + chalk.green(" | |    / _ \\| |/ _` |") + chalk.yellowBright("   #"))
+                        console.log(chalk.yellowBright("#   ") + chalk.green(" | |___| (_) | | (_| |") + chalk.yellowBright("   #"))
+                        console.log(chalk.yellowBright("#   ") + chalk.green(" |______\\___/| |\\__,_|") + chalk.yellowBright("   #"))
+                        console.log(chalk.yellowBright("#   ") + chalk.green("            _/ |      ") + chalk.yellowBright("   #"))
+                        console.log(chalk.yellowBright("#   ") + chalk.green("           |__/       ") + chalk.yellowBright("   #"))
+                        console.log(chalk.yellowBright("##############################"))
                         console.log("-----")
                         console.log("1 - Gastronomia")
                         console.log("2 - Pintura")
@@ -207,45 +244,31 @@ const main = async () => {
 
                         switch (opcaoAcaoLoja) {
                           case '1':
-                            montaLojaDaCategoria(personagemSelecionado, 'Gastronomia', itens)
+                            // montaLojaDaCategoria(personagemSelecionado, 'Gastronomia', itens)
                             console.clear()
+                            // let categoriaSelecionada = 'Gastronomia'
                             while (loopLojaCategoria) {
 
                               loja('Gastronomia', personagemSelecionado, itens)
                               opcaoAcao = await useQuestion('Digite o ID do produto desejado ou "0" para voltar')
 
-                              if (opcaoAcao === '0') {
-                                console.clear()
-                                loopLojaCategoria = false
-                                break
-                              } else if (opcaoAcao >= 1 && opcaoAcao <= 3) {
-                                const itensCategoria = retornaItensPorCategoria('Gastronomia', itens)
+                              const resultado = acaoCompra(opcaoAcao, itens, personagemSelecionado, 'Gastronomia')
 
-                                for (let i = 0; i < itensCategoria.length; i++) {
-                                  if (itensCategoria[i].id == opcaoAcao) {
-                                    const realizouCompra = compraItem(personagemSelecionado, itensCategoria[i])
-                                    switch (realizouCompra) {
-                                      case 1:
-                                        console.clear()
-                                        console.log("Compra bem sucedida")
-                                        personagemSelecionado = getPersonagemById(personagemSelecionado.id)
-                                        break
-                                      case -1:
-                                        console.clear()
-                                        console.log(personagemSelecionado.nome + " já tem " + itensCategoria[i].nome)
-                                        break
-                                      case -2:
-                                        console.clear()
-                                        console.log(personagemSelecionado.nome + " não tem saldo suficiente.")
-                                    }
-                                  }
-                                }
-
-                              } else {
-                                console.clear()
-                                console.log(chalk.redBright("Opção inválida, tente novamente."))
+                              switch (resultado) {
+                                case 0:
+                                  loopLojaCategoria = false
+                                  break
+                                case 1:
+                                  personagemSelecionado = getPersonagemById(personagemSelecionado.id)
+                                  break
+                                case 2:
+                                  break
+                                case 3:
+                                  break
+                                case 4:
+                                  break
                               }
-                              loopLojaCategoria = false
+
                             }
 
                             break
@@ -256,38 +279,23 @@ const main = async () => {
                               loja('Pintura', personagemSelecionado, itens)
                               opcaoAcao = await useQuestion('Digite o ID do produto desejado ou "0" para voltar')
 
-                              if (opcaoAcao === '0') {
-                                console.clear()
-                                loopLojaCategoria = false
-                                break
-                              } else if (opcaoAcao >= 1 && opcaoAcao <= 3) {
-                                const itensCategoria = retornaItensPorCategoria('Pintura', itens)
+                              const resultado = acaoCompra(opcaoAcao, itens, personagemSelecionado, 'Pintura')
 
-                                for (let i = 0; i < itensCategoria.length; i++) {
-                                  if (itensCategoria[i].id == opcaoAcao) {
-                                    const realizouCompra = compraItem(personagemSelecionado, itensCategoria[i])
-                                    switch (realizouCompra) {
-                                      case 1:
-                                        console.clear()
-                                        console.log("Compra bem sucedida")
-                                        personagemSelecionado = getPersonagemById(personagemSelecionado.id)
-                                        break
-                                      case -1:
-                                        console.clear()
-                                        console.log(personagemSelecionado.nome + " já tem " + itensCategoria[i].nome)
-                                        break
-                                      case -2:
-                                        console.clear()
-                                        console.log(personagemSelecionado.nome + " não tem saldo suficiente.")
-                                    }
-                                  }
-                                }
-
-                              } else {
-                                console.clear()
-                                console.log(chalk.redBright("Opção inválida, tente novamente."))
+                              switch (resultado) {
+                                case 0:
+                                  loopLojaCategoria = false
+                                  break
+                                case 1:
+                                  personagemSelecionado = getPersonagemById(personagemSelecionado.id)
+                                  break
+                                case 2:
+                                  break
+                                case 3:
+                                  break
+                                case 4:
+                                  break
                               }
-                              loopLojaCategoria = false
+
                             }
                             break
                           case '3':
@@ -297,38 +305,23 @@ const main = async () => {
                               loja('Jogos', personagemSelecionado, itens)
                               opcaoAcao = await useQuestion('Digite o ID do produto desejado ou "0" para voltar')
 
-                              if (opcaoAcao === '0') {
-                                console.clear()
-                                loopLojaCategoria = false
-                                break
-                              } else if (opcaoAcao >= 1 && opcaoAcao <= 3) {
-                                const itensCategoria = retornaItensPorCategoria('Jogos', itens)
+                              const resultado = acaoCompra(opcaoAcao, itens, personagemSelecionado, 'Jogos')
 
-                                for (let i = 0; i < itensCategoria.length; i++) {
-                                  if (itensCategoria[i].id == opcaoAcao) {
-                                    const realizouCompra = compraItem(personagemSelecionado, itensCategoria[i])
-                                    switch (realizouCompra) {
-                                      case 1:
-                                        console.clear()
-                                        console.log("Compra bem sucedida")
-                                        personagemSelecionado = getPersonagemById(personagemSelecionado.id)
-                                        break
-                                      case -1:
-                                        console.clear()
-                                        console.log(personagemSelecionado.nome + " já tem " + itensCategoria[i].nome)
-                                        break
-                                      case -2:
-                                        console.clear()
-                                        console.log(personagemSelecionado.nome + " não tem saldo suficiente.")
-                                    }
-                                  }
-                                }
-
-                              } else {
-                                console.clear()
-                                console.log(chalk.redBright("Opção inválida, tente novamente."))
+                              switch (resultado) {
+                                case 0:
+                                  loopLojaCategoria = false
+                                  break
+                                case 1:
+                                  personagemSelecionado = getPersonagemById(personagemSelecionado.id)
+                                  break
+                                case 2:
+                                  break
+                                case 3:
+                                  break
+                                case 4:
+                                  break
                               }
-                              loopLojaCategoria = false
+
                             }
                             break
                           case '4':
@@ -338,38 +331,25 @@ const main = async () => {
                               loja('Jardinagem', personagemSelecionado, itens)
                               opcaoAcao = await useQuestion('Digite o ID do produto desejado ou "0" para voltar')
 
-                              if (opcaoAcao === '0') {
-                                console.clear()
-                                loopLojaCategoria = false
-                                break
-                              } else if (opcaoAcao >= 1 && opcaoAcao <= 3) {
-                                const itensCategoria = retornaItensPorCategoria('Jardinagem', itens)
+                              const resultadoCompra = acaoCompra(opcaoAcao, itens, personagemSelecionado, 'Jardinagem')
 
-                                for (let i = 0; i < itensCategoria.length; i++) {
-                                  if (itensCategoria[i].id == opcaoAcao) {
-                                    const realizouCompra = compraItem(personagemSelecionado, itensCategoria[i])
-                                    switch (realizouCompra) {
-                                      case 1:
-                                        console.clear()
-                                        console.log("Compra bem sucedida")
-                                        personagemSelecionado = getPersonagemById(personagemSelecionado.id)
-                                        break
-                                      case -1:
-                                        console.clear()
-                                        console.log(personagemSelecionado.nome + " já tem " + itensCategoria[i].nome)
-                                        break
-                                      case -2:
-                                        console.clear()
-                                        console.log(personagemSelecionado.nome + " não tem saldo suficiente.")
-                                    }
-                                  }
-                                }
-
-                              } else {
-                                console.clear()
-                                console.log(chalk.redBright("Opção inválida, tente novamente."))
+                              switch (resultadoCompra) {
+                                case 0:
+                                  //console.log("caiu aqui")
+                                  loopLojaCategoria = false
+                                  break
+                                case 1:
+                                  personagemSelecionado = getPersonagemById(personagemSelecionado.id)
+                                  break
+                                case 2:
+                                  break
+                                case 3:
+                                  break
+                                case 4:
+                                  console.log("aaaa")
+                                  break
                               }
-                              loopLojaCategoria = false
+
                             }
                             break
                           case '5':
@@ -379,38 +359,23 @@ const main = async () => {
                               loja('Musica', personagemSelecionado, itens)
                               opcaoAcao = await useQuestion('Digite o ID do produto desejado ou "0" para voltar')
 
-                              if (opcaoAcao === '0') {
-                                console.clear()
-                                loopLojaCategoria = false
-                                break
-                              } else if (opcaoAcao >= 1 && opcaoAcao <= 3) {
-                                const itensCategoria = retornaItensPorCategoria('Musica', itens)
+                              const resultado = acaoCompra(opcaoAcao, itens, personagemSelecionado, 'Musica')
 
-                                for (let i = 0; i < itensCategoria.length; i++) {
-                                  if (itensCategoria[i].id == opcaoAcao) {
-                                    const realizouCompra = compraItem(personagemSelecionado, itensCategoria[i])
-                                    switch (realizouCompra) {
-                                      case 1:
-                                        console.clear()
-                                        console.log("Compra bem sucedida")
-                                        personagemSelecionado = getPersonagemById(personagemSelecionado.id)
-                                        break
-                                      case -1:
-                                        console.clear()
-                                        console.log(personagemSelecionado.nome + " já tem " + itensCategoria[i].nome)
-                                        break
-                                      case -2:
-                                        console.clear()
-                                        console.log(personagemSelecionado.nome + " não tem saldo suficiente.")
-                                    }
-                                  }
-                                }
-
-                              } else {
-                                console.clear()
-                                console.log(chalk.redBright("Opção inválida, tente novamente."))
+                              switch (resultado) {
+                                case 0:
+                                  loopLojaCategoria = false
+                                  break
+                                case 1:
+                                  personagemSelecionado = getPersonagemById(personagemSelecionado.id)
+                                  break
+                                case 2:
+                                  break
+                                case 3:
+                                  break
+                                case 4:
+                                  break
                               }
-                              loopLojaCategoria = false
+
                             }
                             break
                           case '0':
@@ -424,12 +389,6 @@ const main = async () => {
                             opcaoValida = false
                             break
                         }
-
-                        if (opcaoValida) {
-
-                        }
-
-
                       }
                       break;
                     case '0':
@@ -450,6 +409,67 @@ const main = async () => {
                 break;
               case '4':
                 //interagir
+                break;
+              case '5':
+                if (personagemSelecionado.saldo >= 10) {
+                  console.clear()
+                  console.log(chalk.blueBright("          .    (      )"))
+                  console.log(chalk.blueBright("        '   . (  (  )"))
+                  console.log(chalk.blueBright("       ,___________."))
+                  console.log(chalk.blueBright("       | _________ |"))
+                  console.log(chalk.blueBright("       ||  ,###   ||"))
+                  console.log(chalk.blueBright("       ||  ####' %||"))
+                  console.log(chalk.blueBright("       ||   ##`  #||"))
+                  console.log(chalk.blueBright("       ||  :### # ||"))
+                  console.log(chalk.blueBright("       ||  '####/ ||"))
+                  console.log(chalk.blueBright("       ||   ##`   ||"))
+                  console.log(chalk.blueBright("       ||  ###;   ||"))
+                  console.log(chalk.blueBright("       ||-_-_-_-_-||"))
+                  console.log(chalk.blueBright("       ||  '###;  ||"))
+                  console.log(chalk.blueBright("       ||   '6#'  ||"))
+                  console.log(chalk.blueBright("       ||    ;#'  ||"))
+                  console.log(chalk.blueBright("       ||  ;#`#;  ||"))
+                  console.log(chalk.blueBright("       || #!' #   ||"))
+                  console.log(chalk.blueBright("       ||%____#___||"))
+                  console.log(chalk.blueBright("       |___________|"))
+                  console.log(chalk.whiteBright("BANHO TOMADO"))
+                  personagemSelecionado = alteraHigiene(personagemSelecionado, "Tomar banho")
+                  personagemSelecionado.saldo -= 10
+                  atualizaPersonagemNaLista(personagemSelecionado)
+                  opcaoAcao = await useQuestion('Aperte ENTER para voltar');
+                } else {
+
+                }
+                break;
+              case '6':
+                console.log("Nome: " + personagemSelecionado.nome)
+                console.log("")
+                console.log("Tempo de vida: " + personagemSelecionado.tempoDeVida)
+                console.log("")
+                console.log("Saldo: $" + personagemSelecionado.saldo)
+                console.log("")
+                console.log("Aspiração: " + personagemSelecionado.aspiracao)
+                console.log("")
+                console.log("Pontos de higiene: " + personagemSelecionado.higiene)
+                console.log("")
+                console.log("Pontos de energia: " + personagemSelecionado.energia)
+                console.log("")
+                console.log("Trabalhos: ")
+                console.log("      Jogador de Dota: ")
+                console.log("            Nivel: " + personagemSelecionado.trabalho.JogadorDeDota[0])
+                console.log("            Salário: " + personagemSelecionado.trabalho.JogadorDeDota[1])
+                console.log("      Assistente Do Jacquin: ")
+                console.log("            Nivel: " + personagemSelecionado.trabalho.AssistenteDoJacquin[0])
+                console.log("            Salário: " + personagemSelecionado.trabalho.AssistenteDoJacquin[1])
+                console.log("      Segurador De Pinceis: ")
+                console.log("            Nivel: " + personagemSelecionado.trabalho.SeguradorDePinceis[0])
+                console.log("            Salário: " + personagemSelecionado.trabalho.SeguradorDePinceis[1])
+                console.log("      Desafinador: ")
+                console.log("            Nivel: " + personagemSelecionado.trabalho.Desafinador[0])
+                console.log("            Salário: " + personagemSelecionado.trabalho.Desafinador[1])
+                console.log("      Ladrão De Planta: ")
+                console.log("            Nivel: " + personagemSelecionado.trabalho.LadrãoDePlanta[0])
+                console.log("            Salário: " + personagemSelecionado.trabalho.LadrãoDePlanta[1])
                 break;
               case '0':
                 console.clear()

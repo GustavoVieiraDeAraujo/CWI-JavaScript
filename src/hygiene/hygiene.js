@@ -6,8 +6,10 @@ let PERDA_HIGIENE_TREINO = - 2
 export function alteraHigiene(personagem, atividade) {
     let novaHigiene = 0
     let permissao
+    // console.log(atividade)
+    // console.log(personagem)
 
-    switch(atividade) {
+    switch (atividade) {
         case "Tomar banho":
             novaHigiene = alteraHigieneTomarBanho()
             personagem.higiene = novaHigiene
@@ -21,7 +23,7 @@ export function alteraHigiene(personagem, atividade) {
                     personagem.higiene = novaHigiene
                     return personagem
                 }
-                
+
             }
             else {
                 novaHigiene = alteraHigieneTrabalhoIncompleto() //alterar
@@ -30,13 +32,13 @@ export function alteraHigiene(personagem, atividade) {
                     personagem.higiene = novaHigiene
                     return personagem
                 }
-            
+
                 break
             }
-        
+
         case "Treino":
             novaHigiene = personagem.higiene +
-             alteraHigieneTreino()
+                alteraHigieneTreino()
             permissao = verificaHigieneNegativa(personagem, novaHigiene)
             if (permissao) {
                 personagem.higiene = novaHigiene
@@ -53,7 +55,7 @@ export function alteraHigieneTomarBanho() {
 }
 
 export function alteraHigieneTrabalhoCompleto() {
-    return PERDA_HIGIENE_ATIVIDADE_INTEIRA 
+    return PERDA_HIGIENE_ATIVIDADE_INTEIRA
 }
 
 export function alteraHigieneTreino() {
