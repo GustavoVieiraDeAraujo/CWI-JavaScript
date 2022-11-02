@@ -33,6 +33,10 @@ export const useLocalStorage = () => {
     setObject(key, lista)
   }
 
+  const deleteStorageByKey = (key) => {
+    localStorage.removeItem(key)
+  }
+
   // até agora não foi usado
   const removeFromListByPosition = (key, posicao) => {
     if (posicao > -1) {
@@ -65,14 +69,15 @@ export const useLocalStorage = () => {
   }
 
   return {
+    getString,
     setString,
+    getObject,
     setObject,
     addToList,
     updateList,
     returnListSize,
-    returnObjectPositionInListById ,
+    deleteStorageByKey,
     removeFromListByPosition,
-    getString,
-    getObject
+    returnObjectPositionInListById ,
   }
 }
