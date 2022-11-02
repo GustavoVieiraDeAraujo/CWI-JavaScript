@@ -1,3 +1,4 @@
+import { alteraNivelHabilidade, verificaPromocaoHabilidade } from '../train/train.js'
 import { alteraEnergia } from '../energy/energy.js'
 import { alteraTempo } from '../time/time.js'
 
