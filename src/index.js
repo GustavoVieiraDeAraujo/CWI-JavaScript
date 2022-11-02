@@ -459,7 +459,6 @@ const main = async () => {
                   console.log(chalk.blueBright("       |___________|"))
                   console.log(chalk.whiteBright("BANHO TOMADO"))
                   personagemSelecionado = alteraHigiene(personagemSelecionado, "Tomar banho")
-                  personagemSelecionado.saldo -= 10
                   atualizaPersonagemNaLista(personagemSelecionado)
                   opcaoAcao = await useQuestion('Aperte ENTER para voltar');
                 } else {

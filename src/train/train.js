@@ -21,7 +21,7 @@ export function personagemTreinar(personagem, categoria, objeto) {
         personagem = alteraHigiene(personagem, "Treino")
         personagem = alteraTempo(personagem, "Treino", 0)
         personagem = alteraNivelHabilidade(personagem, bonusAspiracao, categoria, objeto)
-        personagem = verificaPromocaoHabilidade(personagem)
+        personagem = verificaPromocaoHabilidade(personagem, categoria)
         return [personagem, true]
     }
     else {
@@ -42,12 +42,12 @@ export function alteraNivelHabilidade(personagem, bonusAspiracao, categoria, obj
     }
 
     switch(categoria) {
-        case "GASTRONOMIA":
-            personagem.habilidades.gastronomia[1] = personagem.habilidades.categoria[1] + pontosGanhos + pontoBonus
+        case "Gastronomia":
+            personagem.habilidades.gastronomia[1] = personagem.habilidades.gastronomia[1] + pontosGanhos + pontoBonus
             return personagem
 
-        case "PINTURA":
-            personagem.habilidades.pintura[1] = personagem.habilidades.categoria[1] + pontosGanhos + pontoBonus
+        case "Pintura":
+            personagem.habilidades.pintura[1] = personagem.habilidades.pintura[1] + pontosGanhos + pontoBonus
             return personagem
             
 
@@ -69,9 +69,9 @@ export function alteraNivelHabilidade(personagem, bonusAspiracao, categoria, obj
     }
 }
 
-export function verificaPromocaoHabilidade(personagem) {
+export function verificaPromocaoHabilidade(personagem, categoria) {
     switch(categoria) {
-        case "GASTRONOMIA":
+        case "Gastronomia":
             if (personagem.habilidades.gastronomia[1] > 27) {
                 personagem.habilidades.gastronomia[0] = "SENIOR"
             }
@@ -85,7 +85,7 @@ export function verificaPromocaoHabilidade(personagem) {
             }
             return personagem
 
-        case "PINTURA":
+        case "Pintura":
             if (personagem.habilidades.pintura[1] > 27) {
                 personagem.habilidades.pintura[0] = "SENIOR"
             }
