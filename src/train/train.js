@@ -71,7 +71,7 @@ export function alteraNivelHabilidade(personagem, bonusAspiracao, categoria, obj
 
 export function verificaPromocaoHabilidade(personagem, categoria) {
     switch(categoria) {
-        case "GASTRONOMIA":
+        case "Gastronomia":
             if (personagem.habilidades.gastronomia[1] > 27) {
                 personagem.habilidades.gastronomia[0] = "SENIOR"
             }
@@ -85,7 +85,7 @@ export function verificaPromocaoHabilidade(personagem, categoria) {
             }
             return personagem
 
-        case "PINTURA":
+        case "Pintura":
             if (personagem.habilidades.pintura[1] > 27) {
                 personagem.habilidades.pintura[0] = "SENIOR"
             }
@@ -99,7 +99,7 @@ export function verificaPromocaoHabilidade(personagem, categoria) {
             }
             return personagem
 
-        case "JOGOS":
+        case "Jogos":
             if (personagem.habilidades.jogos[1] > 27) {
                 personagem.habilidades.jogos[0] = "SENIOR"
             }
@@ -113,7 +113,7 @@ export function verificaPromocaoHabilidade(personagem, categoria) {
             }
             return personagem
             
-        case "JARDINAGEM":
+        case "Jardinagem":
             if (personagem.habilidades.jardinagem[1] > 27) {
                 personagem.habilidades.jardinagem[0] = "SENIOR"
             }
@@ -127,7 +127,7 @@ export function verificaPromocaoHabilidade(personagem, categoria) {
             }
             return personagem      
     
-        case "MUSICA":
+        case "Musica":
             if (personagem.habilidades.musica[1] > 27) {
                 personagem.habilidades.musica[0] = "SENIOR"
             }
