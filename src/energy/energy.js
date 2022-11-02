@@ -3,6 +3,7 @@ let PERDA_ENERGIA_ATIVIDADE_INTEIRA = - 10
 let PERDA_ENERGIA_TREINO = - 4
 let GANHO_ENERGIA_DORMIR_1 = 4
 let GANHO_ENERGIA_DORMIR_SEGUINTES = 6
+let GANHO_ENERGIA_CHEAT_DEITADONAREDE = 5
 
 
 export function alteraEnergia(personagem, atividade, ciclos) {
@@ -58,6 +59,20 @@ export function alteraEnergia(personagem, atividade, ciclos) {
                 return [personagem, finalizadaCorretamente, atividadesRealizadas]
             }
             break
+
+        case "DEITADONAREDE":
+            novaEnergia = alteraEnergiaCheat()
+            permissao = verificaEnergia(personagem, novaEnergia)
+            if (!permissao) {
+                finalizadaCorretamente = false
+                atividadesRealizadas = 0
+                
+            }
+            else {
+                personagem.energia = personagem.energia + novaEnergia
+                return personagem
+            }
+            break
     }
 
 }
@@ -98,6 +113,10 @@ export function alteraEnergiaTrabalhoIncompleto(personagem) {
 
     let perdaEnergiaIncompleta = - trabalhoTotal
     return [perdaEnergiaIncompleta, trabalhaCansado]
+}
+
+export function alteraEnergiaCheat() {
+    return GANHO_ENERGIA_CHEAT_DEITADONAREDE
 }
 
 export function verificaEnergia(personagem, alteracao) {

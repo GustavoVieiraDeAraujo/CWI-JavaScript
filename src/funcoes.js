@@ -11,6 +11,7 @@ export async function getItens() {
     return itens.data
 }
 
+
 export async function getInteracoes() {
     const interacoes = await axios.get('https://emilyspecht.github.io/the-cresim/interacoes.json')
     return interacoes.data
@@ -19,6 +20,11 @@ export async function getInteracoes() {
 export async function getEmpregos() {
     const empregos = await axios.get('https://emilyspecht.github.io/the-cresim/empregos.json')
     return empregos.data
+}
+
+export async function getCheats() {
+    const itens = await axios.get('https://emilyspecht.github.io/the-cresim/cheats.json')
+    return itens.data
 }
 
 export function getPersonagemById(id) {
