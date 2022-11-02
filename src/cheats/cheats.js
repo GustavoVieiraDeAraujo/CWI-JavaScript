@@ -12,11 +12,12 @@ export function verificaCheat( listaCheat, inputPassado) {
     return [false, "nada"]
 }
 
-export function realizaCheat(personagem, listaCheat, cheatEscolhido) {
+export function realizaCheat(personagem, cheatEscolhido) {
     switch (cheatEscolhido) {
         case "SORTENAVIDA":
-
-
+            for (const trabalho in personagem.trabalho){
+                personagem.trabalho[trabalho][1] = Math.round(personagem.trabalho[trabalho][1] * 1.1)
+            }
             break
 
         case "DEITADONAREDE":
@@ -27,8 +28,6 @@ export function realizaCheat(personagem, listaCheat, cheatEscolhido) {
             personagem = alteraNivelHabilidade(personagem, false, personagem.aspiracao, "cheat")
             personagem = verificaPromocaoHabilidade(personagem)
             return personagem
-
-            break
     
         case "CAROLINAS":
             personagem = alteraTempo(personagem, cheatEscolhido, 0)
