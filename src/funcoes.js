@@ -67,6 +67,14 @@ export function mostraItensDoPersonagem(personagem) {
     }
 }
 
+
+export function mostraItensDoPersonagemPorCategoria(personagem) {
+    for (let item of personagem.inventario) {
+        console.log('')
+        mostraItem(item)
+    }
+}
+
 export function compraItem(personagem, item) {
     for (let i = 0; i < personagem.inventario.length; i++) {
         if (personagem.inventario[i].nome === item.nome) {

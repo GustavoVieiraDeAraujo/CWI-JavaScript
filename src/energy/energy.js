@@ -13,14 +13,16 @@ export function alteraEnergia(personagem, atividade, ciclos) {
     let atividadesRealizadas = 1
 
 
-    switch(atividade) {
+    switch (atividade) {
         case "Dormir":
-            novaEnergia = alteraEnergiaDormir(personagem,ciclos)[0]
-            atividadesRealizadas = alteraEnergiaDormir(personagem,ciclos)[1]
+            console.log("1")
+            novaEnergia = alteraEnergiaDormir(personagem, ciclos)[0]
+            atividadesRealizadas = alteraEnergiaDormir(personagem, ciclos)[1]
             if (atividadesRealizadas != ciclos) {
                 finalizadaCorretamente = false
             }
-            personagem.Energia = personagem.Energia + novaEnergia
+            personagem.energia = personagem.energia + novaEnergia
+            console.log(personagem.energia)
             return [personagem, finalizadaCorretamente, atividadesRealizadas]
 
         case "Trabalho":
@@ -32,7 +34,7 @@ export function alteraEnergia(personagem, atividade, ciclos) {
             else {
                 if (verificaEnergia(personagem, (PERDA_ENERGIA_ATIVIDADE_INTEIRA - 5))) {
                     novaEnergia = alteraEnergiaTrabalhoCompleto()
-                    personagem.Energia = personagem.Energia + novaEnergia
+                    personagem.energia = personagem.energia + novaEnergia
                     return [personagem, finalizadaCorretamente, atividadesRealizadas]
                 }
                 else {
@@ -44,15 +46,15 @@ export function alteraEnergia(personagem, atividade, ciclos) {
                 }
 
             }
-            
-        
+
+
         case "Treino":
             novaEnergia = alteraEnergiaTreino()
             permissao = verificaEnergia(personagem, novaEnergia)
             if (!permissao) {
                 finalizadaCorretamente = false
                 atividadesRealizadas = 0
-                
+
             }
             else {
                 personagem.energia = personagem.energia + novaEnergia
@@ -66,7 +68,7 @@ export function alteraEnergia(personagem, atividade, ciclos) {
             if (!permissao) {
                 finalizadaCorretamente = false
                 atividadesRealizadas = 0
-                
+
             }
             else {
                 personagem.energia = personagem.energia + novaEnergia
@@ -77,17 +79,19 @@ export function alteraEnergia(personagem, atividade, ciclos) {
 
 }
 
-export function alteraEnergiaDormir(personagem,ciclos) {
+export function alteraEnergiaDormir(personagem, ciclos) {
     let energiaGanha = 0
     let ciclosCompletos = 0
 
     if ((verificaEnergia(personagem, GANHO_ENERGIA_DORMIR_1))) {
+        console.log("2")
         ciclosCompletos = ciclosCompletos + 1
         energiaGanha = energiaGanha + GANHO_ENERGIA_DORMIR_1
     }
-    
+
     for (let i = 1; i < ciclos; i++) {
         if ((verificaEnergia(personagem, (energiaGanha + GANHO_ENERGIA_DORMIR_SEGUINTES)))) {
+            console.log("3")
             ciclosCompletos = ciclosCompletos + 1
             energiaGanha = energiaGanha + GANHO_ENERGIA_DORMIR_SEGUINTES
         }
@@ -97,7 +101,7 @@ export function alteraEnergiaDormir(personagem,ciclos) {
 }
 
 export function alteraEnergiaTrabalhoCompleto() {
-    return PERDA_ENERGIA_ATIVIDADE_INTEIRA 
+    return PERDA_ENERGIA_ATIVIDADE_INTEIRA
 }
 
 export function alteraEnergiaTreino() {
@@ -108,7 +112,7 @@ export function alteraEnergiaTrabalhoIncompleto(personagem) {
     let energiaAtual = personagem.energia
     let trabalhoPartes = 10
     let trabalhaNormal = energiaAtual - 5
-    let trabalhaCansado =  Math.min(trabalhoPartes - trabalhaNormal, 3) 
+    let trabalhaCansado = Math.min(trabalhoPartes - trabalhaNormal, 3)
     let trabalhoTotal = trabalhaNormal + trabalhaCansado
 
     let perdaEnergiaIncompleta = - trabalhoTotal
