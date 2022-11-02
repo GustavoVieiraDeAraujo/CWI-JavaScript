@@ -25,6 +25,8 @@ import {
   personagemInteragi
 } from "./relationships/relationships.js"
 import { personagemTrabalha } from './work/work.js';
+import { alteraEnergia } from './energy/energy.js';
+import { personagemTreinar } from './train/train.js';
 
 
 // Função para usar ação de 'trabalhar'
@@ -133,7 +135,6 @@ const main = async () => {
           }
         }
         break;
-
       case '2':
         let selecaoPersonagem = true;
         console.clear();
@@ -151,7 +152,11 @@ const main = async () => {
           console.log(chalk.blue("   |  ") + chalk.yellow('                                       |___/                ') + chalk.blue("   |"))
           console.log(chalk.blue("   |_________________________________________________________________|"))
           for (let i = 0; i < retornaTamanhoDaLista(personagens); i++) {
-            console.log(personagens[i].id + " - " + personagens[i].nome);
+            if (personagens[i].tempoDeVida <= 0) {
+              console.log(chalk.redBright(personagens[i].id + " - " + personagens[i].nome));
+            } else {
+              console.log(personagens[i].id + " - " + personagens[i].nome);
+            }
           }
           let personagemSelecionado = await useQuestion('Digite o ID do personagem desejado ou 0 para voltar:')
 
@@ -162,7 +167,11 @@ const main = async () => {
             menuAcoes = true;
             for (let personagem of personagens) {
               if (personagem.id.toString() === personagemSelecionado) {
-                personagemSelecionado = personagem;
+                if (personagem.tempoDeVida > 0) {
+                  personagemSelecionado = personagem;
+                } else {
+                  console.log(chalk.redBright("Este personagem já morreu, escolha outro"))
+                }
               }
             }
           } else {
@@ -188,7 +197,6 @@ const main = async () => {
             console.log("0 - Voltar")
             console.log("")
             let opcaoAcao = await useQuestion('SELECIONE UMA OPÇÃO');
-            //personagemSelecionado = verificaCheat(personagemSelecionado, cheats, opcaoAcao)
 
             switch (opcaoAcao) {
               case '1':
@@ -197,14 +205,85 @@ const main = async () => {
                 while (loopPraticar) {
                   console.log("PRATICAR");
                   console.log("-------")
-                  console.log("1 - Escolher item")
+                  console.log("1 - Escolher categoria para praticar")
                   console.log("2 - Ver itens")
                   console.log("3 - Comprar itens")
                   console.log("0 - Voltar")
                   opcaoAcao = await useQuestion('SELECIONE UMA OPÇÃO');
                   switch (opcaoAcao) {
                     case '1':
-                      //escolher item
+                      console.clear()
+                      let categoriaTreinada
+                      let loopEscolherCategoriaTreino = true
+                      let loopEscolherObjetoTreino = true
+                      let itensCategoriaTreinada = []
+                      while (loopEscolherCategoriaTreino) {
+                        loopEscolherObjetoTreino = true
+                        console.log("PRATICAR")
+                        console.log("1 - Gastronomia")
+                        console.log("2 - Pintura")
+                        console.log("3 - Jogos")
+                        console.log("4 - Jardinagem")
+                        console.log("5 - Música")
+                        console.log("0 - Voltar")
+                        opcaoAcao = await useQuestion("Digite o ID da categoria desejada: ")
+                        switch (opcaoAcao) {
+                          case '1': categoriaTreinada = "gastronomia"; break
+                          case '2': categoriaTreinada = "pintura"; break
+                          case '3': categoriaTreinada = "jogos"; break
+                          case '4': categoriaTreinada = "JARDINAGEM"; break
+                          case '5': categoriaTreinada = "musica"; break
+                          case '0': loopEscolherCategoriaTreino = false; break
+                          default:
+                            console.clear()
+                            console.log(chalk.redBright("Opção inválida, tente novamente."))
+                            loopEscolherObjetoTreino = false
+                        }
+                        if (loopEscolherObjetoTreino) {
+                          for (let i = 0; i < 3; i++) {
+                            itensCategoriaTreinada.push(itens[categoriaTreinada][i])
+                          }
+                        }
+
+                        while (loopEscolherObjetoTreino) {
+                          let contaItensDaCategoria = 0
+                          let itemEscolhidoPraTreinar
+                          for (let i = 0; i < personagemSelecionado.inventario.length; i++) {
+                            for (let j = 0; j < 3; j++) {
+                              if (personagemSelecionado.inventario[i].nome == itensCategoriaTreinada[j].nome) {
+                                console.log(itensCategoriaTreinada[j].id + " - " + itensCategoriaTreinada[j].nome)
+                                contaItensDaCategoria++
+                              }
+                            }
+                          }
+                          if (contaItensDaCategoria === 0) {
+                            console.clear()
+                            console.log("Desculpe, " + personagemSelecionado.nome + " não tem nenhum item desta categoria")
+                            opcaoAcao = await useQuestion("Aperte ENTER para voltar")
+                            loopEscolherObjetoTreino = false
+                            break
+                          } else {
+                            opcaoAcao = await useQuestion("Digite o ID do item com o qual deseja treinar")
+                            if (opcaoAcao === '0') {
+                              console.clear()
+                              loopEscolherObjetoTreino = false
+                              break
+                            } else if ((opcaoAcao < 1 && opcaoAcao !== '0') || opcaoAcao > contaItensDaCategoria) {
+                              console.clear()
+                              console.log(chalk.redBright("Opção inválida, tente novamente."))
+                            } else {
+                              for (let item of itensCategoriaTreinada) {
+                                if (opcaoAcao == item.id) {
+                                  itemEscolhidoPraTreinar = item
+                                }
+                              }
+                              console.log(itemEscolhidoPraTreinar)
+                              // personagemSelecionado = personagemTreinar(personagemSelecionado, categoriaTreinada, itemEscolhidoPraTreinar)
+                            }
+                          }
+                        }
+
+                      }
                       break;
                     case '2':
                       console.clear()
@@ -253,21 +332,11 @@ const main = async () => {
 
                         let categoriaSelecionada
                         switch (opcaoAcaoLoja) {
-                          case '1':
-                            categoriaSelecionada = 'Gastronomia'
-                            break
-                          case '2':
-                            categoriaSelecionada = 'Pintura'
-                            break
-                          case '3':
-                            categoriaSelecionada = 'Jogos'
-                            break
-                          case '4':
-                            categoriaSelecionada = 'Jardinagem'
-                            break
-                          case '5':
-                            categoriaSelecionada = 'Musica'
-                            break
+                          case '1': categoriaSelecionada = 'Gastronomia'; break
+                          case '2': categoriaSelecionada = 'Pintura'; break
+                          case '3': categoriaSelecionada = 'Jogos'; break
+                          case '4': categoriaSelecionada = 'Jardinagem'; break
+                          case '5': categoriaSelecionada = 'Musica'; break
                           case '0':
                             console.clear()
                             loopLoja = false
@@ -359,13 +428,19 @@ const main = async () => {
                 }
                 break;
               case '3':
-                // console.clear()
-                // let loopDormir = true
-                // while (loopDormir) {
-                //   opcaoAcao = await useQuestion("Quantos ciclos gostaria de dormir?")
+                console.clear()
+                opcaoAcao = await useQuestion("Quantos ciclos gostaria de dormir?")
 
+                if (opcaoAcao === '0') {
+                  break
+                } else {
+                  opcaoAcao = Number(opcaoAcao)
+                  // console.log(opcaoAcao)
+                  personagemSelecionado = alteraEnergia(personagemSelecionado, "Dormir", opcaoAcao)[0]
+                  atualizaPersonagemNaLista(personagemSelecionado)
+                  opcaoAcao = await useQuestion("Aperte ENTER para voltar")
+                }
 
-                // }
                 break;
               case '4':
                 let loopInteracao = true

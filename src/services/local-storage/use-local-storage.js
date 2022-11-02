@@ -19,8 +19,8 @@ export const useLocalStorage = () => {
 
   const returnObjectPositionInListById = (key, id) => {
     const lista = getObject(key)
-    for(let i = 0; i < lista.length; i++){
-      if(lista[i].id === id){
+    for (let i = 0; i < lista.length; i++) {
+      if (lista[i].id === id) {
         return i
       }
     }
@@ -40,6 +40,10 @@ export const useLocalStorage = () => {
       lista.splice(posicao, 1)
       setObject(key, lista)
     }
+  }
+
+  const deleteStorageByKey = (key) => {
+    localStorage.removeItem(key)
   }
 
   const returnListSize = (key) => {
@@ -70,9 +74,10 @@ export const useLocalStorage = () => {
     addToList,
     updateList,
     returnListSize,
-    returnObjectPositionInListById ,
+    returnObjectPositionInListById,
     removeFromListByPosition,
     getString,
-    getObject
+    getObject,
+    deleteStorageByKey
   }
 }
