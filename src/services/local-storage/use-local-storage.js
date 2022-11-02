@@ -33,6 +33,10 @@ export const useLocalStorage = () => {
     setObject(key, lista)
   }
 
+  const deleteStorageByKey = (key) => {
+    localStorage.removeItem(key)
+  }
+
   // até agora não foi usado
   const removeFromListByPosition = (key, posicao) => {
     if (posicao > -1) {
@@ -40,10 +44,6 @@ export const useLocalStorage = () => {
       lista.splice(posicao, 1)
       setObject(key, lista)
     }
-  }
-
-  const deleteStorageByKey = (key) => {
-    localStorage.removeItem(key)
   }
 
   const returnListSize = (key) => {
@@ -69,7 +69,9 @@ export const useLocalStorage = () => {
   }
 
   return {
+    getString,
     setString,
+    getObject,
     setObject,
     addToList,
     updateList,

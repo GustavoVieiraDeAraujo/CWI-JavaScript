@@ -228,11 +228,11 @@ const main = async () => {
                         console.log("0 - Voltar")
                         opcaoAcao = await useQuestion("Digite o ID da categoria desejada: ")
                         switch (opcaoAcao) {
-                          case '1': categoriaTreinada = "gastronomia"; break
-                          case '2': categoriaTreinada = "pintura"; break
-                          case '3': categoriaTreinada = "jogos"; break
+                          case '1': categoriaTreinada = "GASTRONOMIA"; break
+                          case '2': categoriaTreinada = "PINTURA"; break
+                          case '3': categoriaTreinada = "JOGOS"; break
                           case '4': categoriaTreinada = "JARDINAGEM"; break
-                          case '5': categoriaTreinada = "musica"; break
+                          case '5': categoriaTreinada = "MUSICA"; break
                           case '0': loopEscolherCategoriaTreino = false; break
                           default:
                             console.clear()
@@ -534,7 +534,6 @@ const main = async () => {
                   console.log(chalk.blueBright("       |___________|"))
                   console.log(chalk.whiteBright("BANHO TOMADO"))
                   personagemSelecionado = alteraHigiene(personagemSelecionado, "Tomar banho")
-                  personagemSelecionado.saldo -= 10
                   atualizaPersonagemNaLista(personagemSelecionado)
                   opcaoAcao = await useQuestion('Aperte ENTER para voltar');
                 } else {

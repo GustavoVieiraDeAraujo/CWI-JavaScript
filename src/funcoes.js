@@ -1,5 +1,5 @@
 import { useLocalStorage } from "./services/local-storage/use-local-storage.js"
-import { useQuestion } from './services/question/use-question.js'
+// import { useQuestion } from './services/question/use-question.js'
 import axios from "axios";
 import chalk from 'chalk';
 
@@ -142,38 +142,4 @@ export function acaoCompra(opcaoAcao, itens, personagem, categoria) {
 }
 
 // export function montaLoja(){}
-
-
-
-
-
-// O que dá para requisitar:
-// "itens-habilidades"
-// "empregos"
-// "interacoes"
-// "cheats"
-// export const get = async (OQueEstaRequisitando) => {
-//     try {
-//         const request = await axios.get(`https://emilyspecht.github.io/the-cresim/${OQueEstaRequisitando}.json`)
-//         return request.data
-//     } catch (e) {
-//         console.log(e)
-//     }
-// }
-
-
-
-// export const pegaUmCheatPeloCodigo = async (codigoCheat) => {
-//     try {
-//         const jsonCheats = await retornaUmJsonDoQueEstaRequisitando("cheats")
-//         for (let i = 0; i < jsonCheats.length; i++) {
-//             if (jsonCheats[i].codigo === codigoCheat) {
-//                 return jsonCheats[i]
-//             }
-//         }
-//         return `Cheat ${codigoCheat} não existe`
-//     } catch (e) {
-//         console.log(e)
-//     }
-// }
 

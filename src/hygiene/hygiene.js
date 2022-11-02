@@ -12,6 +12,7 @@ export function alteraHigiene(personagem, atividade) {
     switch (atividade) {
         case "Tomar banho":
             novaHigiene = alteraHigieneTomarBanho()
+            personagem.saldo -= 10
             personagem.higiene = novaHigiene
             return personagem
 
