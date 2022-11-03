@@ -1,8 +1,8 @@
 import { realizaCheat } from '../src/cheats/cheats.js'
 import { alteraEnergia } from '../src/energy/energy.js'
 import { personagemTrabalha } from '../src/work/work.js'
-import { personagemTreinar } from '../src/train/train.js'
 import { alteraHigiene } from '../src/hygiene/hygiene.js'
+import { personagemTreinar } from '../src/training/training.js'
 import { compraItem , getPersonagemById} from '../src/funcoes.js'
 import { criaPersonagem } from '../src/character-creation/character-creation.js';
 import { useLocalStorage } from '../src/services/local-storage/use-local-storage.js';
@@ -102,9 +102,9 @@ describe("Testes de Energia", ()=>{
 
   it('Deve conseguir dormir e receber seus pontos de energia ', () => {
     personagemTeste.energia = 0
-    alteraEnergia(personagemTeste, "Dormir", 10)
+    personagemTeste = alteraEnergia(personagemTeste, "Dormir", 2)[0]
 
-    expect(personagemTeste.energia).toBe(32)
+    expect(personagemTeste.energia).toBe(10)
   })
 })
 
@@ -221,7 +221,7 @@ describe("Teste de Treino", () => {
       preco: 3800
     }
     personagemTeste.habilidades.pintura[1] = 9
-    personagemTreinar(personagemTeste, "Pintura", item)
+    const temp = personagemTreinar(personagemTeste, "Pintura", item)[0]
 
     expect(personagemTeste.habilidades["pintura"][0]).toBe("PLENO")
   })
@@ -380,4 +380,3 @@ describe("Testes dos Cheats", ()=>{
     expect(personagemTeste.tempoDeVida).toBe(0)
   })
 })
-

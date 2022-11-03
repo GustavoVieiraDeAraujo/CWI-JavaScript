@@ -24,7 +24,6 @@ export const criaPersonagem = (nomePersonagem, aspiracaoPersonagem, localStorage
         },
         relacionamentos: {}
     }
-
     if (localStorage.getObject('lista-de-personagens') === null) {
         localStorage.setObject('lista-de-personagens', [novoPersonagem])
     } else {
