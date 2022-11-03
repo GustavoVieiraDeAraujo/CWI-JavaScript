@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const get = async (OQueEstaRequisitando) => {
+export async function get(OQueEstaRequisitando){
     try {
         const request = await axios.get(`https://emilyspecht.github.io/the-cresim/${OQueEstaRequisitando}.json`)
         return request.data

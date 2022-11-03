@@ -1,4 +1,4 @@
-export const criaPersonagem = (nomePersonagem, aspiracaoPersonagem, localStorage) => {
+export function criaPersonagem (nomePersonagem, aspiracaoPersonagem, localStorage){
     let novoPersonagem = {
         id: localStorage.returnListSize('lista-de-personagens') + 1,
         nome: nomePersonagem,
@@ -23,10 +23,10 @@ export const criaPersonagem = (nomePersonagem, aspiracaoPersonagem, localStorage
             musica: ["JUNIOR", 0]
         },
         relacionamentos: {}
-    }
+    };
     if (localStorage.getObject('lista-de-personagens') === null) {
-        localStorage.setObject('lista-de-personagens', [novoPersonagem])
+        localStorage.setObject('lista-de-personagens', [novoPersonagem]);
     } else {
-        localStorage.addToList('lista-de-personagens', novoPersonagem)
-    }
+        localStorage.addToList('lista-de-personagens', novoPersonagem);
+    };
 }
