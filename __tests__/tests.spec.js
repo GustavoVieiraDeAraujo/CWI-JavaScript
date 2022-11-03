@@ -102,9 +102,9 @@ describe("Testes de Energia", ()=>{
 
   it('Deve conseguir dormir e receber seus pontos de energia ', () => {
     personagemTeste.energia = 0
-    alteraEnergia(personagemTeste, "Dormir", 10)
+    personagemTeste = alteraEnergia(personagemTeste, "Dormir", 2)[0]
 
-    expect(personagemTeste.energia).toBe(32)
+    expect(personagemTeste.energia).toBe(10)
   })
 })
 
@@ -221,7 +221,7 @@ describe("Teste de Treino", () => {
       preco: 3800
     }
     personagemTeste.habilidades.pintura[1] = 9
-    personagemTreinar(personagemTeste, "Pintura", item)
+    const temp = personagemTreinar(personagemTeste, "Pintura", item)[0]
 
     expect(personagemTeste.habilidades["pintura"][0]).toBe("PLENO")
   })
@@ -380,4 +380,3 @@ describe("Testes dos Cheats", ()=>{
     expect(personagemTeste.tempoDeVida).toBe(0)
   })
 })
-
