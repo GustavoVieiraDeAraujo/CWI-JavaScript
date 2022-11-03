@@ -15,14 +15,12 @@ export function alteraEnergia(personagem, atividade, ciclos) {
 
     switch (atividade) {
         case "Dormir":
-            console.log("1")
             novaEnergia = alteraEnergiaDormir(personagem, ciclos)[0]
             atividadesRealizadas = alteraEnergiaDormir(personagem, ciclos)[1]
             if (atividadesRealizadas != ciclos) {
                 finalizadaCorretamente = false
             }
             personagem.energia = personagem.energia + novaEnergia
-            console.log(personagem.energia)
             return [personagem, finalizadaCorretamente, atividadesRealizadas]
 
         case "Trabalho":
@@ -63,12 +61,14 @@ export function alteraEnergia(personagem, atividade, ciclos) {
             break
 
         case "DEITADONAREDE":
+            console.log('caiu aqui')
             novaEnergia = alteraEnergiaCheat()
             permissao = verificaEnergia(personagem, novaEnergia)
+            console.log(permissao)
             if (!permissao) {
                 finalizadaCorretamente = false
                 atividadesRealizadas = 0
-
+                return personagem
             }
             else {
                 personagem.energia = personagem.energia + novaEnergia
