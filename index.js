@@ -26,8 +26,8 @@ import {
 import { personagemTrabalha } from './src/work/work.js';
 import { alteraEnergia } from './src/energy/energy.js';
 import { personagemTreinar } from './src/training/training.js'
-import { cheatOuMensagemDeErro, cheatWrapper, realizaCheat, verificaCheat, } from './src/cheats/cheats.js';
-import { arteDormir, arteInventario, arteLoja, artePersonagens, artePraticar, artePraticarConcluido, artePraticarFalhou, arteCansadoDemaisParaTrabalhar, logoPrincipal, arteSujoDemaisParaTrabalhar } from './ascii-arts/arts.js'
+import { cheatWrapper, realizaCheat, verificaCheat, } from './src/cheats/cheats.js';
+import { arteDormir, arteInventario, arteLoja, artePersonagens, artePraticar, artePraticarConcluido, artePraticarFalhou, arteCansadoDemaisParaTrabalhar, logoPrincipal, arteSujoDemaisParaTrabalhar, arteTrabalhoConcluido, arteInteracao, arteInteracaoConcluida, arteBanho, arteEstatisticas } from './ascii-arts/arts.js'
 
 const main = async () => {
 
@@ -447,7 +447,7 @@ const main = async () => {
                       }
                     } else {
                       console.clear()
-                      console.log("Trabalhou")
+                      arteTrabalhoConcluido()
                       personagemSelecionado = getPersonagemById(personagemSelecionado.id)
                     }
                   } else {
@@ -492,7 +492,9 @@ const main = async () => {
                 let loopInteracao = true
                 console.clear()
                 while (loopInteracao) {
+                  arteInteracao()
                   if (retornaTamanhoDaLista(personagens) <= 1) {
+                    console.clear()
                     console.log("Desculpe, você não tem ninguém para interagir... Que tistreza")
                     opcaoAcao = await useQuestion("Aperte ENTER para voltar")
                     break
@@ -505,7 +507,8 @@ const main = async () => {
                         console.log(personagens[i].id + " - " + personagens[i].nome);
                       }
                     }
-                    opcaoAcao = await useQuestion("Digite o ID do personagem com quem " + personagemSelecionado.nome + " gostaria de interagir:")
+                    console.log("")
+                    opcaoAcao = await useQuestion("Digite o ID do personagem com quem " + personagemSelecionado.nome + " gostaria de interagir ou '0' para voltar:")
                     if (opcaoAcao === '0') {
                       console.clear()
                       break;
@@ -516,7 +519,7 @@ const main = async () => {
                       let menuInteracoes = true;
                       console.clear()
                       while (menuInteracoes) {
-
+                        arteInteracao()
                         let personagemInteracao
                         for (let personagem of personagens) {
                           if (personagem.id.toString() === opcaoAcao) {
@@ -533,18 +536,20 @@ const main = async () => {
                           console.log(i + " - " + interacao.interacao)
                           i++
                         }
-                        console.log(retornaTamanhoDaLista(interacoesDisponiveis))
+                        console.log("")
                         const opcaoAcao2 = await useQuestion("Digite o ID da interação desejada ou 0 para voltar")
                         if (opcaoAcao2 === '0') {
                           console.clear()
-                          console.log("caiuAqui")
                           //menuInteracoes = false
                           break;
                         } else if (opcaoAcao2 >= 1 && opcaoAcao2 <= retornaTamanhoDaLista(interacoesDisponiveis)) {
                           console.clear()
                           const interacaoEscolhida = interacoesDisponiveis[opcaoAcao2 - 1]
-                          console.log(interacaoEscolhida)
                           personagemInteragi(personagemSelecionado, personagemInteracao, relacionamentoDosDois, interacaoEscolhida, localStorage)
+                          arteInteracaoConcluida()
+                          opcaoAcao = await useQuestion('Aperte ENTER para continuar')
+                          console.clear()
+                          menuInteracoes = false
                         } else {
                           cheatInserido = verificaCheat(cheats, opcaoAcao)
                           if (cheatInserido[0]) {
@@ -566,35 +571,18 @@ const main = async () => {
               case '5':
                 if (personagemSelecionado.saldo >= 10) {
                   console.clear()
-                  console.log(chalk.blueBright("          .    (      )"))
-                  console.log(chalk.blueBright("        '   . (  (  )"))
-                  console.log(chalk.blueBright("       ,___________."))
-                  console.log(chalk.blueBright("       | _________ |"))
-                  console.log(chalk.blueBright("       ||  ,###   ||"))
-                  console.log(chalk.blueBright("       ||  ####' %||"))
-                  console.log(chalk.blueBright("       ||   ##`  #||"))
-                  console.log(chalk.blueBright("       ||  :### # ||"))
-                  console.log(chalk.blueBright("       ||  '####/ ||"))
-                  console.log(chalk.blueBright("       ||   ##`   ||"))
-                  console.log(chalk.blueBright("       ||  ###;   ||"))
-                  console.log(chalk.blueBright("       ||-_-_-_-_-||"))
-                  console.log(chalk.blueBright("       ||  '###;  ||"))
-                  console.log(chalk.blueBright("       ||   '6#'  ||"))
-                  console.log(chalk.blueBright("       ||    ;#'  ||"))
-                  console.log(chalk.blueBright("       ||  ;#`#;  ||"))
-                  console.log(chalk.blueBright("       || #!' #   ||"))
-                  console.log(chalk.blueBright("       ||%____#___||"))
-                  console.log(chalk.blueBright("       |___________|"))
-                  console.log(chalk.whiteBright("BANHO TOMADO"))
+                  arteBanho()
                   personagemSelecionado = alteraHigiene(personagemSelecionado, "Tomar banho")
                   atualizaPersonagemNaLista(personagemSelecionado)
                   opcaoAcao = await useQuestion('Aperte ENTER para voltar');
+                  console.clear()
                 } else {
 
                 }
                 break;
               case '6':
                 console.clear()
+                arteEstatisticas()
                 console.log("Nome: " + personagemSelecionado.nome)
                 console.log("")
                 console.log("Tempo de vida: " + personagemSelecionado.tempoDeVida)
@@ -640,6 +628,7 @@ const main = async () => {
                 console.log("            Nivel: " + personagemSelecionado.habilidades.musica[0])
                 console.log("            Salário: " + personagemSelecionado.habilidades.musica[1])
                 opcaoAcao = await useQuestion("Aperte ENTER para voltar")
+                console.clear()
                 break;
               case '0':
                 console.clear()
