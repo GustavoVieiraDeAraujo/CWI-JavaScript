@@ -5,7 +5,7 @@ import { alteraHigiene } from '../src/hygiene/hygiene.js'
 import { personagemTreinar } from '../src/training/training.js'
 import { compraItem, getPersonagemById } from '../src/funcoes.js'
 import { criaPersonagem } from '../src/character-creation/character-creation.js';
-import { useLocalStorage } from '../src/services/local-storage/use-local-storage.js';
+import { useLocalStorage } from '../services/local-storage/use-local-storage.js';
 import { definiORelacionamento, personagemInteragi } from '../src/relationships/relationships.js'
 
 describe("Testes de Criação de Personagem", () => {

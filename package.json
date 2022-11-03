@@ -2,7 +2,7 @@
   "type": "module",
   "name": "the-cresim",
   "scripts": {
-    "start": "babel-node ./src/index.js",
+    "start": "babel-node ./index.js",
     "test": "jest"
   },
   "devDependencies": {
