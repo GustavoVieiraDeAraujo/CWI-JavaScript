@@ -1,6 +1,6 @@
 import readline from 'readline'
 
-export async function useQuestion (str){
+export async function useQuestion (str){ 
   return new Promise(
     resolve => {
       const rl = readline.createInterface({

@@ -2,8 +2,8 @@ import { alteraTempo } from '../time/time.js';
 import { alteraEnergia } from '../energy/energy.js';
 import { alteraNivelHabilidade, verificaPromocaoHabilidade } from '../training/training.js';
 
-export function verificaCheat( listaCheat, inputPassado) {
-    for (let i = 0; i < listaCheat.length; i ++) {
+export function verificaCheat(listaCheat, inputPassado) {
+    for (let i = 0; i < listaCheat.length; i++) {
         if (inputPassado === listaCheat[i].codigo) {
             return [true, listaCheat[i].codigo]
         };
@@ -17,13 +17,13 @@ export function realizaCheat(personagem, cheatEscolhido) {
             for (const trabalho in personagem.trabalho){
                 personagem.trabalho[trabalho][1] = Math.round(personagem.trabalho[trabalho][1] * 1.1);
             };
-            break
+            return personagem
         case "DEITADONAREDE":
             personagem = alteraEnergia(personagem, cheatEscolhido, 0);
             return personagem
         case "JUNIM":
-            personagem = alteraNivelHabilidade(personagem, false, personagem.aspiracao, "cheat");
-            personagem = verificaPromocaoHabilidade(personagem);
+            personagem = alteraNivelHabilidade(personagem, false, personagem.aspiracao.toUpperCase(), "cheat");
+            personagem = verificaPromocaoHabilidade(personagem, personagem.aspiracao.toUpperCase());
             return personagem
         case "CAROLINAS":
             personagem = alteraTempo(personagem, cheatEscolhido, 0);
@@ -35,3 +35,13 @@ export function realizaCheat(personagem, cheatEscolhido) {
             return "Cheat não existe"
     };
 };
+
+export function cheatWrapper(opcaoAcao, personagemSelecionado) {
+    personagemSelecionado = realizaCheat(personagemSelecionado, opcaoAcao)
+    atualizaPersonagemNaLista(personagemSelecionado)
+    console.clear()
+    console.log(chalk.red('█─▄▄▄─█─█─█▄─▄▄─██▀▄─██─▄─▄─████▀▄─██─▄─▄─█▄─▄█▄─█─▄██▀▄─██▄─▄▄▀█─▄▄─█'))
+    console.log(chalk.red('█─███▀█─▄─██─▄█▀██─▀─████─██████─▀─████─████─███▄▀▄███─▀─███─██─█─██─█'))
+    console.log(chalk.red('▀▄▄▄▄▄▀▄▀▄▀▄▄▄▄▄▀▄▄▀▄▄▀▀▄▄▄▀▀▀▀▄▄▀▄▄▀▀▄▄▄▀▀▄▄▄▀▀▀▄▀▀▀▄▄▀▄▄▀▄▄▄▄▀▀▄▄▄▄▀'))
+    return personagemSelecionado
+}

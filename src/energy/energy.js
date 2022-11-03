@@ -54,13 +54,12 @@ export function alteraEnergia(personagem, atividade, ciclos) {
             if (!permissao) {
                 finalizadaCorretamente = false;
                 atividadesRealizadas = 0;
-
+                return personagem
             } else {
                 personagem.energia = personagem.energia + novaEnergia;
                 return personagem
-            }
-            break
-    }
+            };
+    };
 };
 
 export function alteraEnergiaDormir(personagem, ciclos) {
@@ -90,7 +89,7 @@ export function alteraEnergiaCheat() {
 export function verificaEnergia(personagem, alteracao) {
     if (personagem.energia + alteracao >= 0 && personagem.energia + alteracao <= ENERGIA_MAXIMA) {
         return true
-    }else {
+    } else {
         return false
     };
 };

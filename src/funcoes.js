@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import { arteCompraBemSucedida, arteItemJaPossuido, arteSaldoInsuficiente } from "../ascii-arts/arts.js";
 
 export function retornaItensPorCategoria(categoria, itens) {
     let itensSelecionados = [];
@@ -71,16 +72,16 @@ export function acaoCompra(opcaoAcao, itens, personagem, categoria) {
                 const realizouCompra = compraItem(personagem, itensCategoria[i]);
                 switch (realizouCompra) {
                     case 1:
-                        console.clear();
-                        console.log("Compra bem sucedida");
+                        console.clear()
+                        arteCompraBemSucedida()
                         return 1
                     case -1:
-                        console.clear();
-                        console.log(personagem.nome + " já tem " + itensCategoria[i].nome);
+                        console.clear()
+                        arteItemJaPossuido()
                         return 2
                     case -2:
-                        console.clear();
-                        console.log(personagem.nome + " não tem saldo suficiente.");
+                        console.clear()
+                        arteSaldoInsuficiente()
                         return 3
                 };
             };
