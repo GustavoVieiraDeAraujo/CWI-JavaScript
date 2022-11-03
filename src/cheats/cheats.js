@@ -53,19 +53,3 @@ export function cheatWrapper(opcaoAcao, personagemSelecionado) {
     return personagemSelecionado
 }
 
-export async function cheatOuMensagemDeErro(cheats, opcaoAcao, personagemSelecionado) {
-    const cheatInserido = verificaCheat(cheats, opcaoAcao)
-    if (cheatInserido[0]) {
-        personagemSelecionado = realizaCheat(personagemSelecionado, opcaoAcao)
-        atualizaPersonagemNaLista(personagemSelecionado)
-        console.clear()
-        console.log(chalk.red('█─▄▄▄─█─█─█▄─▄▄─██▀▄─██─▄─▄─████▀▄─██─▄─▄─█▄─▄█▄─█─▄██▀▄─██▄─▄▄▀█─▄▄─█'))
-        console.log(chalk.red('█─███▀█─▄─██─▄█▀██─▀─████─██████─▀─████─████─███▄▀▄███─▀─███─██─█─██─█'))
-        console.log(chalk.red('▀▄▄▄▄▄▀▄▀▄▀▄▄▄▄▄▀▄▄▀▄▄▀▀▄▄▄▀▀▀▀▄▄▀▄▄▀▀▄▄▄▀▀▄▄▄▀▀▀▄▀▀▀▄▄▀▄▄▀▄▄▄▄▀▀▄▄▄▄▀'))
-        return [personagemSelecionado, "cheat"]
-    } else {
-        console.clear();
-        console.log(chalk.redBright("Opção inválida, tente novamente."));
-        return [personagemSelecionado, "erro"]
-    }
-}
