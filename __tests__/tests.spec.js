@@ -3,11 +3,12 @@ import { alteraEnergia } from '../src/energy/energy.js'
 import { personagemTrabalha } from '../src/work/work.js'
 import { alteraHigiene } from '../src/hygiene/hygiene.js'
 import { personagemTreinar } from '../src/training/training.js'
-import { compraItem , getPersonagemById} from '../src/funcoes.js'
+import { compraItem, getPersonagemById } from '../src/funcoes.js'
 import { criaPersonagem } from '../src/character-creation/character-creation.js';
 import { useLocalStorage } from '../src/services/local-storage/use-local-storage.js';
+import { definiORelacionamento, personagemInteragi } from '../src/relationships/relationships.js'
 
-describe("Testes de Criação de Personagem", ()=>{
+describe("Testes de Criação de Personagem", () => {
   let personagemEsperado;
   let localStorage;
 
@@ -56,7 +57,7 @@ describe("Testes de Criação de Personagem", ()=>{
   })
 })
 
-describe("Testes de Energia", ()=>{
+describe("Testes de Energia", () => {
   let personagemTeste;
 
   beforeEach(() => {
@@ -180,7 +181,7 @@ describe("Teste de Treino", () => {
       pontos: 3,
       preco: 1200
     }
-    personagemTreinar(personagemTeste, "Pintura", item)
+    personagemTreinar(personagemTeste, "PINTURA", item)
 
     expect(personagemTeste.habilidades["pintura"][1]).toBe(3)
   })
@@ -192,13 +193,13 @@ describe("Teste de Treino", () => {
       pontos: 3,
       preco: 1800
     }
-    personagemTreinar(personagemTeste, "Gastronomia", item)
+    personagemTreinar(personagemTeste, "GASTRONOMIA", item)
 
     expect(personagemTeste.habilidades["gastronomia"][1]).toBe(4)
   })
 
   it('Deve perder pontos de energia ao terminar um ciclo de treino', () => {
-    for(let i = 0; i <3; i++){
+    for (let i = 0; i < 3; i++) {
       alteraEnergia(personagemTeste, "Treino")
     }
 
@@ -221,7 +222,7 @@ describe("Teste de Treino", () => {
       preco: 3800
     }
     personagemTeste.habilidades.pintura[1] = 9
-    const temp = personagemTreinar(personagemTeste, "Pintura", item)[0]
+    const temp = personagemTreinar(personagemTeste, "PINTURA", item)[0]
 
     expect(personagemTeste.habilidades["pintura"][0]).toBe("PLENO")
   })
@@ -254,19 +255,61 @@ describe("Testes de Trabalho", () => {
   })
 
   it('Deve receber o salario equivalente quando começar a trabalhar com os pontos de energia menores que 10 ', () => {
-    expect().toBe()
+    criaPersonagem('teste1', 'Pintura', localStorage);
+    let personagem = localStorage.getObject('lista-de-personagens')[0]
+
+    personagem = alteraEnergia(personagem, "Treino", 2)[0]
+    personagem = alteraEnergia(personagem, "Treino", 2)[0]
+    personagem = alteraEnergia(personagem, "Treino", 2)[0]
+    personagem = alteraEnergia(personagem, "Treino", 2)[0]
+    personagem = alteraEnergia(personagem, "Treino", 2)[0]
+    personagem = alteraEnergia(personagem, "Treino", 2)[0]
+    personagemTrabalha(personagem, 'Seguradordepinceis', localStorage)
+    personagem = getPersonagemById(personagem.id)
+    expect(personagem.saldo).toBe(1580)
   })
 
   it('Deve receber o salario equivalente quando começar a trabalhar com os pontos de energia menores que 10 e pontos de higiene menores que 4 ', () => {
-    expect().toBe()
+    criaPersonagem('teste1', 'Pintura', localStorage);
+    let personagem = localStorage.getObject('lista-de-personagens')[0]
+
+    personagem = alteraEnergia(personagem, "Treino", 2)[0]
+    personagem = alteraEnergia(personagem, "Treino", 2)[0]
+    personagem = alteraEnergia(personagem, "Treino", 2)[0]
+    personagem = alteraEnergia(personagem, "Treino", 2)[0]
+    personagem = alteraEnergia(personagem, "Treino", 2)[0]
+    personagem = alteraEnergia(personagem, "Treino", 2)[0]
+    for (let x = 0; x < 13; x++) {
+      personagem = alteraHigiene(personagem, 'Treino')
+    }
+    personagemTrabalha(personagem, 'Seguradordepinceis', localStorage)
+    personagem = getPersonagemById(personagem.id)
+    expect(personagem.saldo).toBe(1572)
   })
 
   it('Deve validar para que o Cresim não consiga começar a trabalhar com os pontos de energia menores que 4', () => {
-    expect().toBe()
+    criaPersonagem('teste1', 'Pintura', localStorage);
+    let personagem = localStorage.getObject('lista-de-personagens')[0]
+
+    personagem = alteraEnergia(personagem, "Treino", 2)[0]
+    personagem = alteraEnergia(personagem, "Treino", 2)[0]
+    personagem = alteraEnergia(personagem, "Treino", 2)[0]
+    personagem = alteraEnergia(personagem, "Treino", 2)[0]
+    personagem = alteraEnergia(personagem, "Treino", 2)[0]
+    personagem = alteraEnergia(personagem, "Treino", 2)[0]
+    personagem = alteraEnergia(personagem, "Treino", 2)[0]
+    personagem = alteraEnergia(personagem, "Treino", 2)[0]
+
+    for (let x = 0; x < 13; x++) {
+      personagem = alteraHigiene(personagem, 'Treino')
+    }
+    const resultado = personagemTrabalha(personagem, 'Seguradordepinceis', localStorage)
+
+    expect(resultado).toBe('Personagem atual não possui a energia minima para trabalhar')
   })
 })
 
-describe("Teste de Tomar Banho", ()=>{
+describe("Teste de Tomar Banho", () => {
   it('Deve descontar 10 Cresceleons ao tomar banho', () => {
     const personagemTeste = {
       id: 1,
@@ -299,20 +342,69 @@ describe("Teste de Tomar Banho", ()=>{
 })
 
 describe("Testes do Relacionamento", () => {
+  let localStorage = useLocalStorage()
+
+  beforeEach(() => {
+    localStorage = useLocalStorage();
+    localStorage.deleteStorageByKey("lista-de-personagens");
+  })
+
   it('Deve evoluir o relacionamento de dois Cresims para AMIZADE', () => {
-    expect().toBe()
+    criaPersonagem('teste1', 'Gastronomia', localStorage);
+    let personagem1 = localStorage.getObject('lista-de-personagens')[0];
+    criaPersonagem('teste2', 'Gastronomia', localStorage);
+    let personagem2 = localStorage.getObject('lista-de-personagens')[1];
+    let relacionamentoDosDois = definiORelacionamento(personagem1, personagem2)
+    const interacao = {
+      "id": 5,
+      "interacao": "Piada",
+      "pontos": 2,
+      "energia": 1
+    }
+    personagemInteragi(personagem1, personagem2, relacionamentoDosDois, interacao, localStorage)
+    personagemInteragi(personagem1, personagem2, relacionamentoDosDois, interacao, localStorage)
+    personagemInteragi(personagem1, personagem2, relacionamentoDosDois, interacao, localStorage)
+    personagemInteragi(personagem1, personagem2, relacionamentoDosDois, interacao, localStorage)
+    personagemInteragi(personagem1, personagem2, relacionamentoDosDois, interacao, localStorage)
+    personagemInteragi(personagem1, personagem2, relacionamentoDosDois, interacao, localStorage)
+
+    expect(personagem1.relacionamentos[2][0]).toBe('AMIZADE')
   })
 
   it('Deve recuar o relacionamento de dois Cresims para INIMIZADE', () => {
-    expect().toBe()
+    criaPersonagem('teste1', 'Gastronomia', localStorage);
+    let personagem1 = localStorage.getObject('lista-de-personagens')[0];
+    criaPersonagem('teste2', 'Gastronomia', localStorage);
+    let personagem2 = localStorage.getObject('lista-de-personagens')[1];
+    let relacionamentoDosDois = definiORelacionamento(personagem1, personagem2)
+    const interacao = {
+      "id": 1,
+      "interacao": "Gritar",
+      "pontos": -4,
+      "energia": 2
+    }
+    personagemInteragi(personagem1, personagem2, relacionamentoDosDois, interacao, localStorage)
+    expect(personagem1.relacionamentos[2][0]).toBe('INIMIZADE')
   })
 
   it('Deve descontar os pontos de energia em uma interação entre dois Cresims', () => {
-    expect().toBe()
+    criaPersonagem('teste1', 'Gastronomia', localStorage);
+    let personagem1 = localStorage.getObject('lista-de-personagens')[0];
+    criaPersonagem('teste2', 'Gastronomia', localStorage);
+    let personagem2 = localStorage.getObject('lista-de-personagens')[1];
+    let relacionamentoDosDois = definiORelacionamento(personagem1, personagem2)
+    const interacao = {
+      "id": 1,
+      "interacao": "Gritar",
+      "pontos": -4,
+      "energia": 2
+    }
+    personagemInteragi(personagem1, personagem2, relacionamentoDosDois, interacao, localStorage)
+    expect(personagem1.energia).toBe(30)
   })
 })
 
-describe("Testes dos Cheats", ()=>{
+describe("Testes dos Cheats", () => {
   let personagemTeste;
 
   beforeEach(() => {

@@ -45,7 +45,7 @@ export function verificaPromocaoHabilidade(personagem, categoria) {
 }
 export function personagemTreinar(personagem, categoria, objeto) {
 
-    let personagemAspiracao = personagem.aspiracao
+    let personagemAspiracao = personagem.aspiracao.toUpperCase()
     let bonusAspiracao
     if (categoria === personagemAspiracao) {
         bonusAspiracao = true
