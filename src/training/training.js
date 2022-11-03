@@ -4,7 +4,7 @@ import { alteraHigiene, verificaHigieneNegativa } from '../hygiene/hygiene.js'
 
 export function verificaPromocaoHabilidade(personagem, categoria) {
     switch (categoria) {
-        case "Gastronomia":
+        case "GASTRONOMIA":
             if (personagem.habilidades.gastronomia[1] > 27) {
                 personagem.habilidades.gastronomia[0] = "SENIOR"
                 personagem.trabalho.AssistentedoJacquin = ["SENIOR", 280]
@@ -13,7 +13,7 @@ export function verificaPromocaoHabilidade(personagem, categoria) {
                 personagem.trabalho.AssistentedoJacquin = ["PLENO", 220]
             }
             return personagem
-        case "Pintura":
+        case "PINTURA":
             if (personagem.habilidades.pintura[1] > 27) {
                 personagem.habilidades.pintura[0] = "SENIOR"
                 personagem.trabalho.Seguradordepinceis = ["SENIOR", 270]
@@ -22,7 +22,7 @@ export function verificaPromocaoHabilidade(personagem, categoria) {
                 personagem.trabalho.Seguradordepinceis = ["PLENO", 230]
             }
             return personagem
-        case "Jogos":
+        case "JOGOS":
             if (personagem.habilidades.jogos[1] > 27) {
                 personagem.habilidades.jogos[0] = "SENIOR"
                 personagem.trabalho.JogadordeDota = ["SENIOR", 340]
@@ -31,7 +31,7 @@ export function verificaPromocaoHabilidade(personagem, categoria) {
                 personagem.trabalho.JogadordeDota = ["PLENO", 250]
             }
             return personagem
-        case "Jardinagem":
+        case "JARDINAGEM":
             if (personagem.habilidades.jardinagem[1] > 27) {
                 personagem.habilidades.jardinagem[0] = "SENIOR"
                 personagem.trabalho.Ladraodeplanta = ["SENIOR", 340]
@@ -40,7 +40,7 @@ export function verificaPromocaoHabilidade(personagem, categoria) {
                 personagem.trabalho.Ladraodeplanta = ["PLENO", 250]
             }
             return personagem
-        case "Musica":
+        case "MUSICA":
             if (personagem.habilidades.musica[1] > 27) {
                 personagem.habilidades.musica[0] = "SENIOR"
                 personagem.trabalho.Desafinador = ["SENIOR", 410]
@@ -131,79 +131,5 @@ export function alteraNivelHabilidade(personagem, bonusAspiracao, categoria, obj
 }
 
 
-// export function verificaPromocaoHabilidade(personagem, categoria) {
-//     console.log(categoria)
 
-//     switch (categoria) {
-//         case "GASTRONOMIA":
-//             if (personagem.habilidades.gastronomia[1] > 27) {
-//                 personagem.habilidades.gastronomia[0] = "SENIOR"
-//             }
-//             else {
-//                 if (personagem.habilidades.gastronomia[1] > 16) {
-//                     personagem.habilidades.gastronomia[0] = "PLENO"
-//                 }
-//                 else {
-//                     personagem.habilidades.gastronomia[0] = "JUNIOR"
-//                 }
-//             }
-//             return personagem
-
-//         case "PINTURA":
-//             if (personagem.habilidades.pintura[1] > 27) {
-//                 personagem.habilidades.pintura[0] = "SENIOR"
-//             }
-//             else {
-//                 if (personagem.habilidades.pintura[1] > 16) {
-//                     personagem.habilidades.pintura[0] = "PLENO"
-//                 }
-//                 else {
-//                     personagem.habilidades.pintura[0] = "JUNIOR"
-//                 }
-//             }
-//             return personagem
-
-//         case "JOGOS":
-//             if (personagem.habilidades.jogos[1] > 27) {
-//                 personagem.habilidades.jogos[0] = "SENIOR"
-//             }
-//             else {
-//                 if (personagem.habilidades.jogos[1] > 16) {
-//                     personagem.habilidades.jogos[0] = "PLENO"
-//                 }
-//                 else {
-//                     personagem.habilidades.jogos[0] = "JUNIOR"
-//                 }
-//             }
-//             return personagem
-
-//         case "JARDINAGEM":
-//             if (personagem.habilidades.jardinagem[1] > 27) {
-//                 personagem.habilidades.jardinagem[0] = "SENIOR"
-//             }
-//             else {
-//                 if (personagem.habilidades.jardinagem[1] > 16) {
-//                     personagem.habilidades.jardinagem[0] = "PLENO"
-//                 }
-//                 else {
-//                     personagem.habilidades.jardinagem[0] = "JUNIOR"
-//                 }
-//             }
-//             return personagem
-
-//         case "MUSICA":
-//             if (personagem.habilidades.musica[1] > 27) {
-//                 personagem.habilidades.musica[0] = "SENIOR"
-//             }
-//             else {
-//                 if (personagem.habilidades.musica[1] > 16) {
-//                     personagem.habilidades.musica[0] = "PLENO"
-//                 }
-//                 else {
-//                     personagem.habilidades.musica[0] = "JUNIOR"
-//                 }
-//             }
-//             return personagem
-//     }
-// }
 
