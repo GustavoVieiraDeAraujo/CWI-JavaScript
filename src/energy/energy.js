@@ -66,7 +66,6 @@ export function alteraEnergia(personagem, atividade, ciclos) {
                 personagem.energia = personagem.energia + novaEnergia
                 return personagem
             }
-            break
     }
 }
 export function alteraEnergiaDormir(personagem, ciclos) {
