@@ -1,74 +1,44 @@
 import chalk from 'chalk';
-
-// import { get } from "./services/requests/requests.js"
-import { useQuestion } from './services/question/use-question.js'
-import { useLocalStorage } from "./services/local-storage/use-local-storage.js"
-import { criaPersonagem } from './character-creation/character-creation.js'
-import {
-  retornaTamanhoDaLista,
-  retornaItensPorCategoria,
-  compraItem,
-  loja,
-  getItens,
-  getInteracoes,
-  getPersonagemById,
-  acaoCompra,
-  mostraItensDoPersonagem,
-  atualizaPersonagemNaLista,
-  getEmpregos,
-  // montaLojaDaCategoria
-} from './funcoes.js'
-import { alteraHigiene, } from "./hygiene/hygiene.js"
+import { get } from "./services/request/request.js";
+import { alteraEnergia } from './src/energy/energy.js';
+import { personagemTrabalha } from './src/work/work.js';
+import { alteraHigiene, } from "./src/hygiene/hygiene.js";
+import { personagemTreinar } from './src/training/training.js';
+import { useQuestion } from './services/question/use-question.js';
+import { criaPersonagem } from './src/character-creation/character-creation.js';
+import { useLocalStorage } from "./services/local-storage/use-local-storage.js";
 import {
   definiORelacionamento,
   retornaUmaListaDeTodasAsInteracoesComBaseNoNivelDeInteracao,
   personagemInteragi
-} from "./relationships/relationships.js"
-import { personagemTrabalha } from './work/work.js';
-import { alteraEnergia } from './energy/energy.js';
-import { personagemTreinar } from './train/train.js';
+} from "./src/relationships/relationships.js"
+import {
+  retornaItensPorCategoria,
+  compraItem,
+  loja,
+  acaoCompra,
+  mostraItensDoPersonagem,
+} from './src/funcoes.js'
 
-
-// Função para usar ação de 'trabalhar'
-// import { personagemTrabalha } from "./work/work.js"
-
-
-
-// Funções para usar ação de 'interagir'
-// import {
-//   definiORelacionamento,
-//   retornaUmaListaDeTodasAsInteracoesComBaseNoNivelDeInteracao,
-//   personagemInteragi
-// } from "./relationships/relationships.js"
 
 const main = async () => {
-
-  const itens = await getItens()
-  const empregos = await getEmpregos()
-  const interacoes = await getInteracoes()
-  // const cheats = await get('https://emilyspecht.github.io/the-cresim/empregos.json').data
-
+  // const cheats =  await get("cheats");
+  const empregos = await get("empregos");
+  // const interacoes = await get("interacoes");
+  // const itens = await get("itens-habilidades");
   const localStorage = useLocalStorage();
-
-  // requisições
-  // const jsonCheats = await get("cheats")
-  // const jsonEmpregos = await get("empregos")
-  // const jsonInteracoes = await get("interacoes")
-  // const jsonItensHabilidades = await get("itens-habilidades")
 
   let jogoRodando = true;
   let personagens = localStorage.getObject('lista-de-personagens');
 
   console.clear()
   while (jogoRodando) {
-    // console.clear();
     console.log(chalk.yellow('  _______ _             _____               _           '))
     console.log(chalk.yellow(' |__   __| |           / ____|             (_)          '))
     console.log(chalk.yellow('    | |  | |__   ___  | |     _ __ ___  ___ _ _ __ ___  '))
     console.log(chalk.yellow("    | |  | '_ \\ / _ \\ | |    | '__/ _ \\/ __| | '_ ` _ \\ "))
     console.log(chalk.yellow('    | |  | | | |  __/ | |____| | |  __/\\__ \\ | | | | | |'))
     console.log(chalk.yellow('    |_|  |_| |_|\\___|  \\_____|_|  \\___||___/_|_| |_| |_|'))
-
     console.log('--------------------')
     console.log('O QUE DESEJA FAZER?');
     console.log('1 - Criar novo personagem');
@@ -77,20 +47,15 @@ const main = async () => {
     console.log('--------------------')
     let respostaUsuario = await useQuestion('      SELECIONE UMA OPÇÃO')
     console.clear();
-
     switch (respostaUsuario) {
       case '1':
         let criacaoPersonagem = true
         let chamarCriacao;
-
-
         while (criacaoPersonagem) {
           personagens = localStorage.getObject('lista-de-personagens')
-
           chamarCriacao = true;
           console.log('-------------------');
           const nome = await useQuestion('QUAL É O NOME DO(A) PERSONAGEM?');
-
           console.clear()
           console.log('QUAL É A ASPIRAÇÃO DE ' + nome.toUpperCase() + '?');
           console.log('-------------------');
@@ -103,12 +68,10 @@ const main = async () => {
           console.log('-------------------');
           let aspiracao = await useQuestion('SELECIONE UMA OPÇÃO');
           console.clear();
-
           if (aspiracao === '0') {
             criacaoPersonagem = false;
             break;
           }
-
           switch (aspiracao) {
             case '1':
               aspiracao = 'Gastronomia';
@@ -151,7 +114,7 @@ const main = async () => {
           console.log(chalk.blue("   |  ") + chalk.yellow('                                        __/ |               ') + chalk.blue("   |"))
           console.log(chalk.blue("   |  ") + chalk.yellow('                                       |___/                ') + chalk.blue("   |"))
           console.log(chalk.blue("   |_________________________________________________________________|"))
-          for (let i = 0; i < retornaTamanhoDaLista(personagens); i++) {
+          for (let i = 0; i < localStorage.returnListSize('lista-de-personagens'); i++) {
             if (personagens[i].tempoDeVida <= 0) {
               console.log(chalk.redBright(personagens[i].id + " - " + personagens[i].nome));
             } else {
@@ -159,11 +122,10 @@ const main = async () => {
             }
           }
           let personagemSelecionado = await useQuestion('Digite o ID do personagem desejado ou 0 para voltar:')
-
           if (personagemSelecionado === '0') {
             console.clear()
             break;
-          } else if (personagemSelecionado >= 1 && personagemSelecionado <= retornaTamanhoDaLista(personagens)) {
+          } else if (personagemSelecionado >= 1 && personagemSelecionado <= localStorage.returnListSize('lista-de-personagens')) {
             menuAcoes = true;
             for (let personagem of personagens) {
               if (personagem.id.toString() === personagemSelecionado) {
@@ -178,8 +140,6 @@ const main = async () => {
             console.clear();
             console.log("Personagem Inválido, tente novamente")
           }
-
-          //console.clear();
           while (menuAcoes) {
             console.clear()
             console.log(chalk.yellowBright("___       ___     __   __   ___  __          "))
@@ -197,7 +157,6 @@ const main = async () => {
             console.log("0 - Voltar")
             console.log("")
             let opcaoAcao = await useQuestion('SELECIONE UMA OPÇÃO');
-
             switch (opcaoAcao) {
               case '1':
                 console.clear();
@@ -244,7 +203,6 @@ const main = async () => {
                             itensCategoriaTreinada.push(itens[categoriaTreinada][i])
                           }
                         }
-
                         while (loopEscolherObjetoTreino) {
                           let contaItensDaCategoria = 0
                           let itemEscolhidoPraTreinar
@@ -278,7 +236,6 @@ const main = async () => {
                                 }
                               }
                               console.log(itemEscolhidoPraTreinar)
-                              // personagemSelecionado = personagemTreinar(personagemSelecionado, categoriaTreinada, itemEscolhidoPraTreinar)
                             }
                           }
                         }
@@ -360,7 +317,7 @@ const main = async () => {
                                 loopLojaCategoria = false
                                 break
                               case 1:
-                                personagemSelecionado = getPersonagemById(personagemSelecionado.id)
+                                personagemSelecionado = localStorage.getPersonagemById(personagemSelecionado.id)
                                 break
                               case 2:
                                 break
@@ -418,7 +375,7 @@ const main = async () => {
                     } else {
                       console.clear()
                       console.log("Trabalhou")
-                      personagemSelecionado = getPersonagemById(personagemSelecionado.id)
+                      personagemSelecionado = localStorage.getPersonagemById(personagemSelecionado.id)
                     }
                   } else {
                     console.clear()
@@ -446,12 +403,12 @@ const main = async () => {
                 let loopInteracao = true
                 console.clear()
                 while (loopInteracao) {
-                  if (retornaTamanhoDaLista(personagens) <= 1) {
+                  if (localStorage.returnListSize('lista-de-personagens') <= 1) {
                     console.log("Desculpe, você não tem ninguém para interagir... Que tistreza")
                     opcaoAcao = await useQuestion("Aperte ENTER para voltar")
                     break
                   } else {
-                    for (let i = 0; i < retornaTamanhoDaLista(personagens); i++) {
+                    for (let i = 0; i < localStorage.returnListSize('lista-de-personagens'); i++) {
                       if (personagens[i].id == personagemSelecionado.id) {
                         i++
                       }
@@ -466,7 +423,7 @@ const main = async () => {
                     } else if (opcaoAcao == personagemSelecionado.id) {
                       console.clear()
                       console.log(chalk.redBright("Opção inválida, tente novamente."))
-                    } else if (opcaoAcao >= 1 && opcaoAcao <= retornaTamanhoDaLista(personagens)) {
+                    } else if (opcaoAcao >= 1 && opcaoAcao <= localStorage.returnListSize('lista-de-personagens')) {
                       let menuInteracoes = true;
                       console.clear()
                       while (menuInteracoes) {
@@ -610,23 +567,3 @@ const main = async () => {
 }
 
 main()
-
-
-// Exemplo de como usar ação 'trabalhar'
-// const localStorage = useLocalStorage();
-// let personagemQueEstaSendoUsado = localStorage.getObject("lista-de-personagens")[0]
-// const mensagemSeNaoTiverEnergia = personagemTrabalha(personagemQueEstaSendoUsado, "JogadorDeDota", localStorage)
-// if (mensagemSeNaoTiverEnergia !== undefined){
-//   console.log(mensagemSeNaoTiverEnergia)
-// }
-
-
-// Exemplo de como usar ação 'interagir'
-// const jsonInteracoes = await get("interacoes")
-// const localStorage = useLocalStorage();
-// let personagemQueEstaUsando = localStorage.getObject("lista-de-personagens")[2]
-// let personagemAlvoDaInteracao = localStorage.getObject("lista-de-personagens")[1]
-// const relacionamento = definiORelacionamento(personagemQueEstaUsando,personagemAlvoDaInteracao)
-// const listaDeInteracoesDisponiveisDesseRelacionamento = retornaUmaListaDeTodasAsInteracoesComBaseNoNivelDeInteracao(relacionamento[1][0], jsonInteracoes)
-// const interacaoEscolhida = listaDeInteracoesDisponiveisDesseRelacionamento[3]
-// personagemInteragi(personagemQueEstaUsando, personagemAlvoDaInteracao, relacionamento, interacaoEscolhida, localStorage)
