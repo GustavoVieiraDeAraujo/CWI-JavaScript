@@ -1,8 +1,8 @@
-import { alteraEnergia } from '../energy/energy.js'
 import { alteraTempo } from '../time/time.js'
-import { alteraNivelHabilidade, verificaPromocaoHabilidade } from '../train/train.js'
+
+import { alteraNivelHabilidade, verificaPromocaoHabilidade } from '../training/training.js'
 import { atualizaPersonagemNaLista } from '../funcoes.js'
-import { useQuestion } from '../services/question/use-question.js'
+
 import chalk from 'chalk';
 
 export function verificaCheat(listaCheat, inputPassado) {
@@ -11,11 +11,9 @@ export function verificaCheat(listaCheat, inputPassado) {
         if (inputPassado === listaCheat[i].codigo) {
             return [true, listaCheat[i].codigo]
         }
-
     }
     return [false, "nada"]
 }
-
 export function realizaCheat(personagem, cheatEscolhido) {
     switch (cheatEscolhido) {
         case "SORTENAVIDA":
@@ -27,7 +25,6 @@ export function realizaCheat(personagem, cheatEscolhido) {
         case "DEITADONAREDE":
             personagem = alteraEnergia(personagem, cheatEscolhido, 0)
             return personagem
-
         case "JUNIM":
             personagem = alteraNivelHabilidade(personagem, false, personagem.aspiracao.toUpperCase(), "cheat")
             personagem = verificaPromocaoHabilidade(personagem, personagem.aspiracao.toUpperCase())
@@ -37,11 +34,11 @@ export function realizaCheat(personagem, cheatEscolhido) {
         case "CAROLINAS":
             personagem = alteraTempo(personagem, cheatEscolhido, 0)
             return personagem
-
         case "SINUSITE":
             personagem = alteraTempo(personagem, cheatEscolhido, 0)
             return personagem
-
+        default:
+            return "Cheat não existe"
     }
 }
 

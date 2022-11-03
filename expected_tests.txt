@@ -18,7 +18,7 @@ Deve validar para que o Cresim não consiga começar a trabalhar com os pontos d
 Deve descontar 10 Cresceleons ao tomar banho  
 Deve evoluir o relacionamento de dois Cresims para AMIZADE  
 Deve recuar o relacionamento de dois Cresims para INIMIZADE  
-Deve descontar os pontos de energia em uma interação entre dois Cresims  
+Deve descontar os pontos de energia em uma interação entre dois Cresims 
 Deve conseguir aplicar o cheat SORTENAVIDA e receber as recompensas  
 Deve conseguir aplicar o cheat DEITADONAREDE e receber as recompensas  
 Deve conseguir aplicar o cheat JUNIM e receber as recompensas para a habilidade escolhida  

@@ -25,7 +25,7 @@ import {
 } from "./relationships/relationships.js"
 import { personagemTrabalha } from './work/work.js';
 import { alteraEnergia } from './energy/energy.js';
-import { personagemTreinar } from './train/train.js';
+import { personagemTreinar } from './training/training.js'
 import { cheatOuMensagemDeErro, cheatWrapper, realizaCheat, verificaCheat, } from './cheats/cheats.js';
 import { arteDormir, arteInventario, arteLoja, artePersonagens, artePraticar, artePraticarConcluido, artePraticarFalhou, arteCansadoDemaisParaTrabalhar, logoPrincipal, arteSujoDemaisParaTrabalhar } from '../src/ascii-arts/arts.js'
 

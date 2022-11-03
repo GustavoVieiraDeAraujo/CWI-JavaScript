@@ -3,11 +3,6 @@ import { LocalStorage } from "node-localstorage"
 export const useLocalStorage = () => {
   const localStorage = new LocalStorage("./src/db")
 
-  // até agora não foi usado
-  const setString = (key, value) => {
-    localStorage.setItem(key, value)
-  }
-
   const setObject = (key, object) => {
     const stringFormattedObject = JSON.stringify(object)
     localStorage.setItem(key, stringFormattedObject)
@@ -55,11 +50,6 @@ export const useLocalStorage = () => {
     }
   }
 
-  // até agora não foi usado
-  const getString = (key) => {
-    return localStorage.getItem(key)
-  }
-
   const getObject = (key) => {
     const json = localStorage.getItem(key)
     if (json) {
@@ -69,17 +59,13 @@ export const useLocalStorage = () => {
   }
 
   return {
-    getString,
-    setString,
     getObject,
     setObject,
     addToList,
     updateList,
     returnListSize,
-    returnObjectPositionInListById,
+    deleteStorageByKey,
     removeFromListByPosition,
-    getString,
-    getObject,
-    deleteStorageByKey
+    returnObjectPositionInListById,
   }
 }
