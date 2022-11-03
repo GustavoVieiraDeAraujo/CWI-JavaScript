@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import { useQuestion } from './services/question/use-question.js'
 import { useLocalStorage } from "./services/local-storage/use-local-storage.js"
-import { criaPersonagem } from './character-creation/character-creation.js'
+import { criaPersonagem } from './src/character-creation/character-creation.js'
 import {
   retornaTamanhoDaLista,
   retornaItensPorCategoria,
@@ -16,18 +16,18 @@ import {
   getEmpregos,
   getCheats,
   // montaLojaDaCategoria
-} from './funcoes.js'
-import { alteraHigiene, } from "./hygiene/hygiene.js"
+} from './src/funcoes.js'
+import { alteraHigiene, } from "./src/hygiene/hygiene.js"
 import {
   definiORelacionamento,
   retornaUmaListaDeTodasAsInteracoesComBaseNoNivelDeInteracao,
   personagemInteragi
-} from "./relationships/relationships.js"
-import { personagemTrabalha } from './work/work.js';
-import { alteraEnergia } from './energy/energy.js';
-import { personagemTreinar } from './training/training.js'
-import { cheatOuMensagemDeErro, cheatWrapper, realizaCheat, verificaCheat, } from './cheats/cheats.js';
-import { arteDormir, arteInventario, arteLoja, artePersonagens, artePraticar, artePraticarConcluido, artePraticarFalhou, arteCansadoDemaisParaTrabalhar, logoPrincipal, arteSujoDemaisParaTrabalhar } from '../src/ascii-arts/arts.js'
+} from "./src/relationships/relationships.js"
+import { personagemTrabalha } from './src/work/work.js';
+import { alteraEnergia } from './src/energy/energy.js';
+import { personagemTreinar } from './src/training/training.js'
+import { cheatOuMensagemDeErro, cheatWrapper, realizaCheat, verificaCheat, } from './src/cheats/cheats.js';
+import { arteDormir, arteInventario, arteLoja, artePersonagens, artePraticar, artePraticarConcluido, artePraticarFalhou, arteCansadoDemaisParaTrabalhar, logoPrincipal, arteSujoDemaisParaTrabalhar } from './ascii-arts/arts.js'
 
 const main = async () => {
 

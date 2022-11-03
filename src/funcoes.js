@@ -1,9 +1,9 @@
-import { useLocalStorage } from "./services/local-storage/use-local-storage.js"
+import { useLocalStorage } from "../services/local-storage/use-local-storage.js"
 // import { useQuestion } from './services/question/use-question.js'
 import axios from "axios";
 import chalk from 'chalk';
-import { useQuestion } from "./services/question/use-question.js";
-import { arteCompraBemSucedida, arteItemJaPossuido, arteSaldoInsuficiente } from "./ascii-arts/arts.js";
+import { useQuestion } from "../services/question/use-question.js";
+import { arteCompraBemSucedida, arteItemJaPossuido, arteSaldoInsuficiente } from "../ascii-arts/arts.js";
 // import { verificaCheat } from "./cheats/cheats.js";
 
 
