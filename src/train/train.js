@@ -4,7 +4,7 @@ import { alteraTempo, verificaTempo } from '../time/time.js'
 
 export function personagemTreinar(personagem, categoria, objeto) {
     let personagemAspiracao = personagem.aspiracao
-    let bonusAspiracao 
+    let bonusAspiracao
     if (categoria === personagemAspiracao) {
         bonusAspiracao = true
     }
@@ -13,15 +13,20 @@ export function personagemTreinar(personagem, categoria, objeto) {
     }
 
     let verificacaoEnergia = verificaEnergia(personagem, -4)
-    let verificacaoHigiene =  verificaHigieneNegativa(personagem, -2)
-    let verificacaoTempo =  verificaTempo(personagem, -8000)
+    let verificacaoHigiene = verificaHigieneNegativa(personagem, -2)
+    let verificacaoTempo = verificaTempo(personagem, -8000)
 
     if (verificacaoEnergia && verificacaoHigiene && verificacaoTempo) {
+
         personagem = alteraEnergia(personagem, "Treino", 0)[0]
+
         personagem = alteraHigiene(personagem, "Treino")
+
         personagem = alteraTempo(personagem, "Treino", 0)
-        personagem = alteraNivelHabilidade(personagem, bonusAspiracao, categoria, objeto)
+        personagem = alteraNivelHabilidade(personagem, bonusAspiracao, categoria, objeto) //erro
+
         personagem = verificaPromocaoHabilidade(personagem, categoria)
+
         return [personagem, true]
     }
     else {
@@ -32,6 +37,7 @@ export function personagemTreinar(personagem, categoria, objeto) {
 export function alteraNivelHabilidade(personagem, bonusAspiracao, categoria, objeto) {
     let pontosGanhos
     if (objeto === "cheat") {
+
         pontosGanhos = 5
     } else {
         pontosGanhos = objeto.pontos
@@ -41,37 +47,42 @@ export function alteraNivelHabilidade(personagem, bonusAspiracao, categoria, obj
         pontoBonus = 1
     }
 
-    switch(categoria) {
-        case "Gastronomia":
+    switch (categoria) {
+        case "GASTRONOMIA":
             personagem.habilidades.gastronomia[1] = personagem.habilidades.gastronomia[1] + pontosGanhos + pontoBonus
             return personagem
 
-        case "Pintura":
-            personagem.habilidades.pintura[1] = personagem.habilidades.pintura[1] + pontosGanhos + pontoBonus
-            return personagem
-            
+        case "PINTURA":
 
-        case "Jogos":
+            personagem.habilidades.pintura[1] = personagem.habilidades.pintura[1] + pontosGanhos + pontoBonus
+
+            return personagem
+
+
+        case "JOGOS":
             personagem.habilidades.jogos[1] = personagem.habilidades.jogos[1] + pontosGanhos + pontoBonus
             return personagem
-            
 
 
-        case "Jardinagem":
+
+        case "JARDINAGEM":
             personagem.habilidades.jardinagem[1] = personagem.habilidades.jardinagem[1] + pontosGanhos + pontoBonus
             return personagem
-            
-    
-        case "Musica":
+
+
+        case "MUSICA":
             personagem.habilidades.musica[1] = personagem.habilidades.musica[1] + pontosGanhos + pontoBonus
             return personagem
-            
+
     }
+
 }
 
 export function verificaPromocaoHabilidade(personagem, categoria) {
-    switch(categoria) {
-        case "Gastronomia":
+    console.log(categoria)
+
+    switch (categoria) {
+        case "GASTRONOMIA":
             if (personagem.habilidades.gastronomia[1] > 27) {
                 personagem.habilidades.gastronomia[0] = "SENIOR"
             }
@@ -85,7 +96,7 @@ export function verificaPromocaoHabilidade(personagem, categoria) {
             }
             return personagem
 
-        case "Pintura":
+        case "PINTURA":
             if (personagem.habilidades.pintura[1] > 27) {
                 personagem.habilidades.pintura[0] = "SENIOR"
             }
@@ -99,7 +110,7 @@ export function verificaPromocaoHabilidade(personagem, categoria) {
             }
             return personagem
 
-        case "Jogos":
+        case "JOGOS":
             if (personagem.habilidades.jogos[1] > 27) {
                 personagem.habilidades.jogos[0] = "SENIOR"
             }
@@ -112,8 +123,8 @@ export function verificaPromocaoHabilidade(personagem, categoria) {
                 }
             }
             return personagem
-            
-        case "Jardinagem":
+
+        case "JARDINAGEM":
             if (personagem.habilidades.jardinagem[1] > 27) {
                 personagem.habilidades.jardinagem[0] = "SENIOR"
             }
@@ -125,9 +136,9 @@ export function verificaPromocaoHabilidade(personagem, categoria) {
                     personagem.habilidades.jardinagem[0] = "JUNIOR"
                 }
             }
-            return personagem      
-    
-        case "Musica":
+            return personagem
+
+        case "MUSICA":
             if (personagem.habilidades.musica[1] > 27) {
                 personagem.habilidades.musica[0] = "SENIOR"
             }

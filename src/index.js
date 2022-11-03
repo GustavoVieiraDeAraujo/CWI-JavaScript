@@ -1,6 +1,4 @@
 import chalk from 'chalk';
-
-// import { get } from "./services/requests/requests.js"
 import { useQuestion } from './services/question/use-question.js'
 import { useLocalStorage } from "./services/local-storage/use-local-storage.js"
 import { criaPersonagem } from './character-creation/character-creation.js'
@@ -16,6 +14,7 @@ import {
   mostraItensDoPersonagem,
   atualizaPersonagemNaLista,
   getEmpregos,
+  getCheats,
   // montaLojaDaCategoria
 } from './funcoes.js'
 import { alteraHigiene, } from "./hygiene/hygiene.js"
@@ -27,59 +26,43 @@ import {
 import { personagemTrabalha } from './work/work.js';
 import { alteraEnergia } from './energy/energy.js';
 import { personagemTreinar } from './train/train.js';
-
-
-// Função para usar ação de 'trabalhar'
-// import { personagemTrabalha } from "./work/work.js"
-
-
-
-// Funções para usar ação de 'interagir'
-// import {
-//   definiORelacionamento,
-//   retornaUmaListaDeTodasAsInteracoesComBaseNoNivelDeInteracao,
-//   personagemInteragi
-// } from "./relationships/relationships.js"
+import { cheatOuMensagemDeErro, cheatWrapper, realizaCheat, verificaCheat, } from './cheats/cheats.js';
+import { arteDormir, arteInventario, arteLoja, artePersonagens, artePraticar, artePraticarConcluido, artePraticarFalhou, arteCansadoDemaisParaTrabalhar, logoPrincipal, arteSujoDemaisParaTrabalhar } from '../src/ascii-arts/arts.js'
 
 const main = async () => {
 
   const itens = await getItens()
   const empregos = await getEmpregos()
   const interacoes = await getInteracoes()
-  // const cheats = await get('https://emilyspecht.github.io/the-cresim/empregos.json').data
-
+  const cheats = await getCheats()
   const localStorage = useLocalStorage();
-
-  // requisições
-  // const jsonCheats = await get("cheats")
-  // const jsonEmpregos = await get("empregos")
-  // const jsonInteracoes = await get("interacoes")
-  // const jsonItensHabilidades = await get("itens-habilidades")
 
   let jogoRodando = true;
   let personagens = localStorage.getObject('lista-de-personagens');
+  let cheatInserido
 
   console.clear()
   while (jogoRodando) {
     // console.clear();
-    console.log(chalk.yellow('  _______ _             _____               _           '))
-    console.log(chalk.yellow(' |__   __| |           / ____|             (_)          '))
-    console.log(chalk.yellow('    | |  | |__   ___  | |     _ __ ___  ___ _ _ __ ___  '))
-    console.log(chalk.yellow("    | |  | '_ \\ / _ \\ | |    | '__/ _ \\/ __| | '_ ` _ \\ "))
-    console.log(chalk.yellow('    | |  | | | |  __/ | |____| | |  __/\\__ \\ | | | | | |'))
-    console.log(chalk.yellow('    |_|  |_| |_|\\___|  \\_____|_|  \\___||___/_|_| |_| |_|'))
-
-    console.log('--------------------')
+    logoPrincipal()
     console.log('O QUE DESEJA FAZER?');
+    console.log("")
     console.log('1 - Criar novo personagem');
     console.log('2 - Selecionar personagem');
     console.log('0 - Sair')
-    console.log('--------------------')
+    console.log("")
+
+
     let respostaUsuario = await useQuestion('      SELECIONE UMA OPÇÃO')
     console.clear();
 
     switch (respostaUsuario) {
       case '1':
+
+        //##############################  
+        //CRIA PERSONAGEM
+        //############################## 
+
         let criacaoPersonagem = true
         let chamarCriacao;
 
@@ -136,21 +119,16 @@ const main = async () => {
         }
         break;
       case '2':
+        //##############################  
+        //SELECIONA PERSONAGEM
+        //############################## 
+        artePersonagens()
         let selecaoPersonagem = true;
         console.clear();
         while (selecaoPersonagem) {
           let menuAcoes = false;
           personagens = localStorage.getObject('lista-de-personagens');
-          console.log(chalk.blue("   ___________________________________________________________________"))
-          console.log(chalk.blue("   |  ") + chalk.yellow('  _____                                                     ') + chalk.blue("   |"))
-          console.log(chalk.blue("   |  ") + chalk.yellow(' |  __ \\                                                    ') + chalk.blue("   |"))
-          console.log(chalk.blue("   |  ") + chalk.yellow(' | |__) |__ _ __ ___  ___  _ __   __ _  __ _  ___ _ __  ___ ') + chalk.blue("   |"))
-          console.log(chalk.blue("   |  ") + chalk.yellow(" |  ___/ _ \\ '__/ __|/ _ \\| '_ \\ / _` |/ _` |/ _ \\ '_ \\/ __|") + chalk.blue("   |"))
-          console.log(chalk.blue("   |  ") + chalk.yellow(" | |  |  __/ |  \\__ \\ (_) | | | | (_| | (_| |  __/ | | \\__ \\") + chalk.blue("   |"))
-          console.log(chalk.blue("   |  ") + chalk.yellow(' |_|   \\___|_|  |___/\\___/|_| |_|\\__,_|\\__, |\\___|_| |_|___/') + chalk.blue("   |"))
-          console.log(chalk.blue("   |  ") + chalk.yellow('                                        __/ |               ') + chalk.blue("   |"))
-          console.log(chalk.blue("   |  ") + chalk.yellow('                                       |___/                ') + chalk.blue("   |"))
-          console.log(chalk.blue("   |_________________________________________________________________|"))
+          artePersonagens()
           for (let i = 0; i < retornaTamanhoDaLista(personagens); i++) {
             if (personagens[i].tempoDeVida <= 0) {
               console.log(chalk.redBright(personagens[i].id + " - " + personagens[i].nome));
@@ -158,19 +136,22 @@ const main = async () => {
               console.log(personagens[i].id + " - " + personagens[i].nome);
             }
           }
+          console.log("")
           let personagemSelecionado = await useQuestion('Digite o ID do personagem desejado ou 0 para voltar:')
 
           if (personagemSelecionado === '0') {
             console.clear()
             break;
           } else if (personagemSelecionado >= 1 && personagemSelecionado <= retornaTamanhoDaLista(personagens)) {
-            menuAcoes = true;
             for (let personagem of personagens) {
               if (personagem.id.toString() === personagemSelecionado) {
                 if (personagem.tempoDeVida > 0) {
+                  menuAcoes = true;
                   personagemSelecionado = personagem;
                 } else {
+                  console.clear()
                   console.log(chalk.redBright("Este personagem já morreu, escolha outro"))
+                  break
                 }
               }
             }
@@ -179,13 +160,13 @@ const main = async () => {
             console.log("Personagem Inválido, tente novamente")
           }
 
-          //console.clear();
+          console.clear();
           while (menuAcoes) {
-            console.clear()
-            console.log(chalk.yellowBright("___       ___     __   __   ___  __          "))
-            console.log(chalk.yellowBright(" |  |__| |__     /  ` |__) |__  /__` |  |\\/| "))
-            console.log(chalk.yellowBright(" |  |  | |___    \\__, |  \\ |___ .__/ |  |  | "))
-            console.log("")
+            //##############################  
+            //MENU
+            //############################## 
+
+            logoPrincipal()
             console.log('O QUE ' + personagemSelecionado.nome.toUpperCase() + ' DESEJA FAZER?')
             console.log("")
             console.log("1 - Praticar");
@@ -198,34 +179,48 @@ const main = async () => {
             console.log("")
             let opcaoAcao = await useQuestion('SELECIONE UMA OPÇÃO');
 
+
             switch (opcaoAcao) {
               case '1':
+                //##############################  
+                //PRATICAR MENU
+                //############################## 
+
+
                 console.clear();
                 let loopPraticar = true
                 while (loopPraticar) {
-                  console.log("PRATICAR");
-                  console.log("-------")
+                  artePraticar()
                   console.log("1 - Escolher categoria para praticar")
                   console.log("2 - Ver itens")
                   console.log("3 - Comprar itens")
                   console.log("0 - Voltar")
+                  console.log("")
                   opcaoAcao = await useQuestion('SELECIONE UMA OPÇÃO');
                   switch (opcaoAcao) {
                     case '1':
+                      //##############################  
+                      //ESCOLHER CATEGORIA PRATICAR
+                      //############################## 
+
+
                       console.clear()
                       let categoriaTreinada
                       let loopEscolherCategoriaTreino = true
                       let loopEscolherObjetoTreino = true
                       let itensCategoriaTreinada = []
                       while (loopEscolherCategoriaTreino) {
+                        categoriaTreinada = null
+                        itensCategoriaTreinada = []
                         loopEscolherObjetoTreino = true
-                        console.log("PRATICAR")
+                        artePraticar()
                         console.log("1 - Gastronomia")
                         console.log("2 - Pintura")
                         console.log("3 - Jogos")
                         console.log("4 - Jardinagem")
                         console.log("5 - Música")
                         console.log("0 - Voltar")
+                        console.log("")
                         opcaoAcao = await useQuestion("Digite o ID da categoria desejada: ")
                         switch (opcaoAcao) {
                           case '1': categoriaTreinada = "GASTRONOMIA"; break
@@ -233,11 +228,17 @@ const main = async () => {
                           case '3': categoriaTreinada = "JOGOS"; break
                           case '4': categoriaTreinada = "JARDINAGEM"; break
                           case '5': categoriaTreinada = "MUSICA"; break
-                          case '0': loopEscolherCategoriaTreino = false; break
+                          case '0': loopEscolherCategoriaTreino = false; loopEscolherObjetoTreino = false; console.clear(); break
                           default:
-                            console.clear()
-                            console.log(chalk.redBright("Opção inválida, tente novamente."))
-                            loopEscolherObjetoTreino = false
+                            cheatInserido = verificaCheat(cheats, opcaoAcao)
+                            if (cheatInserido[0]) {
+                              personagemSelecionado = cheatWrapper(opcaoAcao, personagemSelecionado)
+                              opcaoAcao = await useQuestion("Aperte ENTER para continuar")
+                              console.clear()
+                            } else {
+                              console.clear();
+                              console.log(chalk.redBright("Opção inválida, tente novamente."));
+                            }
                         }
                         if (loopEscolherObjetoTreino) {
                           for (let i = 0; i < 3; i++) {
@@ -245,9 +246,14 @@ const main = async () => {
                           }
                         }
 
+                        console.clear()
+                        //##############################  
+                        //ESCOLHER OBJETO PRATICAR
+                        //############################## 
                         while (loopEscolherObjetoTreino) {
                           let contaItensDaCategoria = 0
-                          let itemEscolhidoPraTreinar
+                          let itemEscolhidoPraTreinar = null
+                          artePraticar()
                           for (let i = 0; i < personagemSelecionado.inventario.length; i++) {
                             for (let j = 0; j < 3; j++) {
                               if (personagemSelecionado.inventario[i].nome == itensCategoriaTreinada[j].nome) {
@@ -260,25 +266,46 @@ const main = async () => {
                             console.clear()
                             console.log("Desculpe, " + personagemSelecionado.nome + " não tem nenhum item desta categoria")
                             opcaoAcao = await useQuestion("Aperte ENTER para voltar")
+                            console.clear()
                             loopEscolherObjetoTreino = false
                             break
                           } else {
+
                             opcaoAcao = await useQuestion("Digite o ID do item com o qual deseja treinar")
                             if (opcaoAcao === '0') {
                               console.clear()
                               loopEscolherObjetoTreino = false
                               break
                             } else if ((opcaoAcao < 1 && opcaoAcao !== '0') || opcaoAcao > contaItensDaCategoria) {
-                              console.clear()
-                              console.log(chalk.redBright("Opção inválida, tente novamente."))
+                              cheatInserido = verificaCheat(cheats, opcaoAcao)
+                              if (cheatInserido[0]) {
+                                personagemSelecionado = cheatWrapper(opcaoAcao, personagemSelecionado)
+                                opcaoAcao = await useQuestion("Aperte ENTER para continuar")
+                                console.clear()
+                              } else {
+                                console.clear();
+                                console.log(chalk.redBright("Opção inválida, tente novamente."));
+                              }
                             } else {
                               for (let item of itensCategoriaTreinada) {
                                 if (opcaoAcao == item.id) {
                                   itemEscolhidoPraTreinar = item
                                 }
                               }
-                              console.log(itemEscolhidoPraTreinar)
-                              // personagemSelecionado = personagemTreinar(personagemSelecionado, categoriaTreinada, itemEscolhidoPraTreinar)
+                              const praticaConcluida = personagemTreinar(personagemSelecionado, categoriaTreinada, itemEscolhidoPraTreinar)
+                              if (praticaConcluida[1]) {
+                                console.clear()
+                                personagemSelecionado = praticaConcluida[0]
+                                atualizaPersonagemNaLista(personagemSelecionado)
+                                artePraticarConcluido()
+                              } else {
+                                console.clear()
+                                artePraticarFalhou()
+                              }
+                              opcaoAcao = await useQuestion("Aperte ENTER para voltar")
+                              console.clear()
+
+                              loopEscolherObjetoTreino = false
                             }
                           }
                         }
@@ -286,22 +313,20 @@ const main = async () => {
                       }
                       break;
                     case '2':
+                      //##############################  
+                      //INVENTARIO
+                      //############################## 
                       console.clear()
-                      console.log(chalk.green("###########################################################"))
-                      console.log(chalk.green("#   ") + chalk.blueBright("  _____                      _    __       _       ") + chalk.green("   #"))
-                      console.log(chalk.green("#   ") + chalk.blueBright(" |_   _|                    | |  /_/      (_)      ") + chalk.green("   #"))
-                      console.log(chalk.green("#   ") + chalk.blueBright("   | |  _ ____   _____ _ __ | |_ __ _ _ __ _  ___  ") + chalk.green("   #"))
-                      console.log(chalk.green("#   ") + chalk.blueBright("   | | | '_ \\ \\ / / _ \\ '_ \\| __/ _` | '__| |/ _ \\ ") + chalk.green("   #"))
-                      console.log(chalk.green("#   ") + chalk.blueBright("  _| |_| | | \\ V /  __/ | | | || (_| | |  | | (_) |") + chalk.green("   #"))
-                      console.log(chalk.green("#   ") + chalk.blueBright(" |_____|_| |_|\\_/ \\___|_| |_|\\__\\__,_|_|  |_|\\___/ ") + chalk.green("   #"))
-                      console.log(chalk.green("#                                                         #"))
-                      console.log(chalk.green("###########################################################"))
+                      arteInventario()
                       mostraItensDoPersonagem(personagemSelecionado)
                       console.log("")
                       opcaoAcao = await useQuestion('Aperte ENTER para voltar')
                       console.clear()
                       break;
                     case '3':
+                      //##############################  
+                      //LOJA
+                      //############################## 
                       console.clear()
                       let loopLoja = true;
                       let opcaoValida = true;
@@ -309,16 +334,7 @@ const main = async () => {
                       let loopLojaCategoria = true
                       while (loopLoja) {
                         loopLoja = true
-                        console.log(chalk.yellowBright("##############################"))
-                        console.log(chalk.yellowBright("#   ") + chalk.green("  _           _       ") + chalk.yellowBright("   #"))
-                        console.log(chalk.yellowBright("#   ") + chalk.green(" | |         (_)      ") + chalk.yellowBright("   #"))
-                        console.log(chalk.yellowBright("#   ") + chalk.green(" | |     ___  _  __ _ ") + chalk.yellowBright("   #"))
-                        console.log(chalk.yellowBright("#   ") + chalk.green(" | |    / _ \\| |/ _` |") + chalk.yellowBright("   #"))
-                        console.log(chalk.yellowBright("#   ") + chalk.green(" | |___| (_) | | (_| |") + chalk.yellowBright("   #"))
-                        console.log(chalk.yellowBright("#   ") + chalk.green(" |______\\___/| |\\__,_|") + chalk.yellowBright("   #"))
-                        console.log(chalk.yellowBright("#   ") + chalk.green("            _/ |      ") + chalk.yellowBright("   #"))
-                        console.log(chalk.yellowBright("#   ") + chalk.green("           |__/       ") + chalk.yellowBright("   #"))
-                        console.log(chalk.yellowBright("##############################"))
+                        arteLoja()
                         console.log("-----")
                         console.log("1 - Gastronomia")
                         console.log("2 - Pintura")
@@ -328,8 +344,6 @@ const main = async () => {
                         console.log("0 - Voltar")
                         let opcaoAcaoLoja = await useQuestion('Qual categoria gostaria de dar uma olhadinha?')
                         loopLojaCategoria = true
-
-
                         let categoriaSelecionada
                         switch (opcaoAcaoLoja) {
                           case '1': categoriaSelecionada = 'Gastronomia'; break
@@ -343,13 +357,19 @@ const main = async () => {
                             opcaoValida = false
                             break
                           default:
-                            console.clear()
-                            console.log(chalk.redBright("Opção inválida, tente novamente."))
-                            opcaoValida = false
-                            break
+                            cheatInserido = verificaCheat(cheats, opcaoAcao)
+                            if (cheatInserido[0]) {
+                              personagemSelecionado = cheatWrapper(opcaoAcao, personagemSelecionado)
+                              opcaoAcao = await useQuestion("Aperte ENTER para continuar")
+                              console.clear()
+                            } else {
+                              console.clear();
+                              console.log(chalk.redBright("Opção inválida, tente novamente."));
+                            }
                         }
                         if (opcaoValida) {
                           console.clear()
+                          arteLoja()
                           while (loopLojaCategoria) {
                             loja(categoriaSelecionada, personagemSelecionado, itens)
                             opcaoAcao = await useQuestion('Digite o ID do produto desejado ou "0" para voltar')
@@ -378,8 +398,15 @@ const main = async () => {
                       loopPraticar = false;
                       break;
                     default:
-                      console.clear();
-                      console.log(chalk.redBright("Opção inválida, tente novamente."));
+                      cheatInserido = verificaCheat(cheats, opcaoAcao)
+                      if (cheatInserido[0]) {
+                        personagemSelecionado = cheatWrapper(opcaoAcao, personagemSelecionado)
+                        opcaoAcao = await useQuestion("Aperte ENTER para continuar")
+                        console.clear()
+                      } else {
+                        console.clear();
+                        console.log(chalk.redBright("Opção inválida, tente novamente."));
+                      }
                   }
                 }
                 break;
@@ -414,15 +441,25 @@ const main = async () => {
                     }
                     const mensagemSeNaoTiverEnergia = personagemTrabalha(personagemSelecionado, trabalhoSelecionado, localStorage)
                     if (mensagemSeNaoTiverEnergia !== undefined) {
-                      console.log(mensagemSeNaoTiverEnergia)
+                      switch (mensagemSeNaoTiverEnergia) {
+                        case 'Personagem atual não possui a energia minima para trabalhar': arteCansadoDemaisParaTrabalhar(); break
+                        case 'Personagem atual não possui a higiene minima para trabalhar': arteSujoDemaisParaTrabalhar(); break
+                      }
                     } else {
                       console.clear()
                       console.log("Trabalhou")
                       personagemSelecionado = getPersonagemById(personagemSelecionado.id)
                     }
                   } else {
-                    console.clear()
-                    console.log(chalk.redBright("Opção inválida, tente novamente."))
+                    cheatInserido = verificaCheat(cheats, opcaoAcao)
+                    if (cheatInserido[0]) {
+                      personagemSelecionado = cheatWrapper(opcaoAcao, personagemSelecionado)
+                      opcaoAcao = await useQuestion("Aperte ENTER para continuar")
+                      console.clear()
+                    } else {
+                      console.clear();
+                      console.log(chalk.redBright("Opção inválida, tente novamente."));
+                    }
                   }
 
                 }
@@ -434,11 +471,20 @@ const main = async () => {
                 if (opcaoAcao === '0') {
                   break
                 } else {
-                  opcaoAcao = Number(opcaoAcao)
-                  // console.log(opcaoAcao)
-                  personagemSelecionado = alteraEnergia(personagemSelecionado, "Dormir", opcaoAcao)[0]
-                  atualizaPersonagemNaLista(personagemSelecionado)
-                  opcaoAcao = await useQuestion("Aperte ENTER para voltar")
+                  cheatInserido = verificaCheat(cheats, opcaoAcao)
+                  if (cheatInserido[0]) {
+                    personagemSelecionado = cheatWrapper(opcaoAcao, personagemSelecionado)
+                    opcaoAcao = await useQuestion("Aperte ENTER para continuar")
+                    console.clear()
+                  } else {
+                    opcaoAcao = Number(opcaoAcao)
+                    // console.log(opcaoAcao)
+                    personagemSelecionado = alteraEnergia(personagemSelecionado, "Dormir", opcaoAcao)[0]
+                    atualizaPersonagemNaLista(personagemSelecionado)
+                    arteDormir()
+                    opcaoAcao = await useQuestion("Aperte ENTER para voltar")
+                    console.clear()
+                  }
                 }
 
                 break;
@@ -500,8 +546,15 @@ const main = async () => {
                           console.log(interacaoEscolhida)
                           personagemInteragi(personagemSelecionado, personagemInteracao, relacionamentoDosDois, interacaoEscolhida, localStorage)
                         } else {
-                          console.clear()
-                          console.log(chalk.redBright("Opção inválida, tente novamente."));
+                          cheatInserido = verificaCheat(cheats, opcaoAcao)
+                          if (cheatInserido[0]) {
+                            personagemSelecionado = cheatWrapper(opcaoAcao, personagemSelecionado)
+                            opcaoAcao = await useQuestion("Aperte ENTER para continuar")
+                            console.clear()
+                          } else {
+                            console.clear();
+                            console.log(chalk.redBright("Opção inválida, tente novamente."));
+                          }
                         }
 
                       }
@@ -593,8 +646,15 @@ const main = async () => {
                 menuAcoes = false;
                 break;
               default:
-                console.clear();
-                console.log(chalk.redBright("Opção inválida, tente novamente."));
+                cheatInserido = verificaCheat(cheats, opcaoAcao)
+                if (cheatInserido[0]) {
+                  personagemSelecionado = cheatWrapper(opcaoAcao, personagemSelecionado)
+                  opcaoAcao = await useQuestion("Aperte ENTER para continuar")
+                  console.clear()
+                } else {
+                  console.clear();
+                  console.log(chalk.redBright("Opção inválida, tente novamente."));
+                }
             }
           }
         }
