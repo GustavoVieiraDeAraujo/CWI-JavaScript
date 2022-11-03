@@ -1,6 +1,6 @@
 let HIGIENE_MAXIMA = 28
-let PERDA_HIGIENE_ATIVIDADE_INTEIRA = - 4
 let PERDA_HIGIENE_TREINO = - 2
+let PERDA_HIGIENE_ATIVIDADE_INTEIRA = - 4
 
 
 export function alteraHigiene(personagem, atividade) {

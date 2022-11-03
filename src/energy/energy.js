@@ -1,9 +1,9 @@
 let ENERGIA_MAXIMA = 32
-let PERDA_ENERGIA_ATIVIDADE_INTEIRA = - 10
 let PERDA_ENERGIA_TREINO = - 4
 let GANHO_ENERGIA_DORMIR_1 = 4
 let GANHO_ENERGIA_DORMIR_SEGUINTES = 6
 let GANHO_ENERGIA_CHEAT_DEITADONAREDE = 5
+let PERDA_ENERGIA_ATIVIDADE_INTEIRA = - 10
 
 export function alteraEnergia(personagem, atividade, ciclos) {
     let novaEnergia = 0

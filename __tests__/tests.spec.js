@@ -1,8 +1,8 @@
 import { realizaCheat } from '../src/cheats/cheats.js'
 import { alteraEnergia } from '../src/energy/energy.js'
 import { personagemTrabalha } from '../src/work/work.js'
-import { personagemTreinar } from '../src/train/train.js'
 import { alteraHigiene } from '../src/hygiene/hygiene.js'
+import { personagemTreinar } from '../src/training/training.js'
 import { compraItem , getPersonagemById} from '../src/funcoes.js'
 import { criaPersonagem } from '../src/character-creation/character-creation.js';
 import { useLocalStorage } from '../src/services/local-storage/use-local-storage.js';

@@ -1,6 +1,6 @@
-import { alteraNivelHabilidade, verificaPromocaoHabilidade } from '../train/train.js'
-import { alteraEnergia } from '../energy/energy.js'
 import { alteraTempo } from '../time/time.js'
+import { alteraEnergia } from '../energy/energy.js'
+import { alteraNivelHabilidade, verificaPromocaoHabilidade } from '../training/training.js'
 
 export function verificaCheat( listaCheat, inputPassado) {
     for (let i = 0; i < listaCheat.length; i ++) {
