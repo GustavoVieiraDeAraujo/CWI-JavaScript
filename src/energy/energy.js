@@ -23,17 +23,20 @@ export function alteraEnergia(personagem, atividade, ciclos) {
             if (personagem.energia < 4) {
                 finalizadaCorretamente = false
                 atividadesRealizadas = 0
+                console.log(personagem)
                 return [personagem, finalizadaCorretamente, atividadesRealizadas]
             } else {
                 if (verificaEnergia(personagem, (PERDA_ENERGIA_ATIVIDADE_INTEIRA - 5))) {
                     novaEnergia = alteraEnergiaTrabalhoCompleto()
                     personagem.energia = personagem.energia + novaEnergia
+                    console.log(personagem)
                     return [personagem, finalizadaCorretamente, atividadesRealizadas]
                 } else {
                     finalizadaCorretamente = false
                     novaEnergia = alteraEnergiaTrabalhoIncompleto(personagem)[0]
                     atividadesRealizadas = alteraEnergiaTrabalhoIncompleto(personagem)[1]
                     personagem.energia = personagem.energia + novaEnergia
+                    console.log(personagem)
                     return [personagem, finalizadaCorretamente, atividadesRealizadas]
                 }
             }
@@ -50,10 +53,10 @@ export function alteraEnergia(personagem, atividade, ciclos) {
             }
             break
         case "DEITADONAREDE":
-            console.log('caiu aqui')
+
             novaEnergia = alteraEnergiaCheat()
             permissao = verificaEnergia(personagem, novaEnergia)
-            console.log(permissao)
+
             if (!permissao) {
                 finalizadaCorretamente = false
                 atividadesRealizadas = 0

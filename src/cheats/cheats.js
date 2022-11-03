@@ -1,4 +1,5 @@
 import { alteraTempo } from '../time/time.js'
+import { alteraEnergia } from '../energy/energy.js';
 
 import { alteraNivelHabilidade, verificaPromocaoHabilidade } from '../training/training.js'
 import { atualizaPersonagemNaLista } from '../funcoes.js'
