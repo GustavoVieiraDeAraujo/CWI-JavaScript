@@ -32,6 +32,3 @@ module.exports = {
       '**/*.test.js',
     ],
   };
-  
-  
-  module.exports = createJestConfig(customJestConfig)
