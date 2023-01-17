@@ -15,12 +15,12 @@ jobs:
           fetch-depth: 0 
       - name: Get calculadora
         run:  git fetch origin calculadora
-      - name: Instalar dependencias
+      - name: Install dependencies
         run:  npm install
-      - name: Instalar Jest
-        run:  npm install -g jest
-      - name: Executar testes
-        run:  jest --coverage --runInBand --detectOpenHandles --forceExit
+      - name: Install Jest globally
+        run:  sudo npm install -g jest
+      - name: Run Tests
+        run:  npm run test
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:

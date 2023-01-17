@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testExecutions version="1">
+  <file path="/home/araujo/CWI-JavaScript/__tests__/calculadora/calculadora.test.js">
+    <testCase name="suite de testes calculadora Ao somar 5 e 2 deve retornar 7" duration="2"/>
+    <testCase name="suite de testes calculadora Ao subtrair 2 de 100 deve retornar 98" duration="0"/>
+    <testCase name="suite de testes calculadora Ao multiplicar 100 por 10 deve retornar 1000" duration="0"/>
+    <testCase name="suite de testes calculadora Ao dividir 45 por 9 deve retornar 5" duration="1"/>
+    <testCase name="suite de testes calculadora Ao passar uma operacao inválida deve retornar operaçao inválida" duration="0"/>
+  </file>
+</testExecutions>
